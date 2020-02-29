@@ -2,6 +2,7 @@
     <string name="app_name">Sport4Party</string>
     <string name="profile_level">Nivel de habilidad:</string>
     <string name="profile_popularity">Popularidad:</string>
-    <string name="profile_followers">Seguidores:</string>
+    <string name="profile_friends">Amigos:</string>
     <string name="profile_events">Eventos de</string>
+    <string name="profile_new_event">Nuevo evento</string>
 </resources>

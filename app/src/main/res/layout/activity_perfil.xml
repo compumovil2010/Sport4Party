@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageViewUserPicture"
+            android:id="@+id/imageViewUsuarioFoto"
             android:layout_width="152dp"
             android:layout_height="118dp"
             android:layout_gravity="center"
@@ -25,20 +25,19 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/textViewUserName"
+        android:id="@+id/textViewNombreUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
-        android:text="TextView"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
 
     <TextView
-        android:id="@+id/textViewLevel"
+        android:id="@+id/textViewNivelT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -46,10 +45,20 @@
         android:layout_marginTop="24dp"
         android:text="@string/profile_level"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewUserName" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewNombreUsuario" />
 
     <TextView
-        android:id="@+id/textViewPopularity"
+        android:id="@+id/textViewNivel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toEndOf="@+id/textViewNivelT"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNombreUsuario" />
+
+    <TextView
+        android:id="@+id/textViewPopularidadT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -57,18 +66,28 @@
         android:layout_marginTop="16dp"
         android:text="@string/profile_popularity"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLevel" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewNivelT" />
 
     <TextView
-        android:id="@+id/textViewFollowers"
+        android:id="@+id/textViewAmigosT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="16dp"
-        android:text="@string/profile_followers"
+        android:text="@string/profile_friends"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPopularity" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewPopularidadT" />
+
+    <TextView
+        android:id="@+id/textViewAmigos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/textViewNivelT"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPopularidadT" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -78,7 +97,7 @@
         android:layout_weight="0"
         android:background="#633F51B5"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFollowers">
+        app:layout_constraintTop_toBottomOf="@+id/textViewAmigosT">
 
         <ImageView
             android:id="@+id/imageView3"
@@ -90,13 +109,23 @@
             app:srcCompat="@mipmap/ic_launcher_round" />
 
         <TextView
-            android:id="@+id/textViewEvents"
+            android:id="@+id/textViewEventos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:layout_weight="0"
-            android:padding="16dp"
-            android:text="@string/profile_events" />
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:text="@string/profile_events"/>
+
+        <Button
+            android:id="@+id/buttonNuevoEvento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:layout_gravity="bottom"
+            android:text="@string/profile_new_event" />
     </LinearLayout>
 
     <ScrollView
