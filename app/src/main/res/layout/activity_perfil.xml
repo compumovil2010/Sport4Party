@@ -22,6 +22,14 @@
             android:layout_gravity="center"
             android:layout_margin="24dp"
             app:srcCompat="@drawable/user" />
+
+        <ImageButton
+            android:id="@+id/imageButtonPreferencias"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:background="@android:drawable/ic_menu_preferences"
+            app:srcCompat="@android:drawable/ic_menu_preferences" />
     </FrameLayout>
 
     <TextView
@@ -125,6 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:layout_gravity="bottom"
+            android:visibility="visible"
             android:text="@string/profile_new_event" />
     </LinearLayout>
 
