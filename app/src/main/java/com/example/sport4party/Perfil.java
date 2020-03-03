@@ -47,7 +47,9 @@ public class Perfil extends AppCompatActivity {
         buttonEventos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Nuevo evento creado", Toast.LENGTH_SHORT).show();
+                Intent nuevoEvento = new Intent(v.getContext(), CrearEvento.class);
+                nuevoEvento.putExtra("pantalla",1);
+                startActivity(nuevoEvento);
             }
         });
 

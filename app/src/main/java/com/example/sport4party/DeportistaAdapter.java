@@ -89,6 +89,7 @@ public class DeportistaAdapter extends BaseAdapter {
                     Toast.makeText(v.getContext(),"Participante agregado a la lista de amigos",Toast.LENGTH_LONG).show();
                 }
             });
+
         }else if(invitarAmigos){
             add.setText("Invitar");
             add.setOnClickListener(new View.OnClickListener() {

@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -103,6 +104,15 @@ public class CrearEvento extends AppCompatActivity {
                                       }
                                   }
         );
+
+        editar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent back = new Intent(v.getContext(),Mapa.class);
+                Toast.makeText(v.getContext(),"Evento publicado",Toast.LENGTH_LONG).show();
+                startActivity(back);
+            }
+        });
 
     }
     private  void initHoras()

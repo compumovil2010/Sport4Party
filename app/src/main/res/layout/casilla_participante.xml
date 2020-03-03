@@ -48,37 +48,41 @@
                     android:id="@+id/star1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
                     android:scaleType="centerInside"
-                    android:src="@drawable/emptystar"
-                    android:layout_weight="0.2"/>
+                    android:src="@drawable/emptystar" />
+
                 <ImageButton
                     android:id="@+id/star2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
                     android:scaleType="centerInside"
-                    android:src="@drawable/emptystar"
-                    android:layout_weight="0.2"/>
+                    android:src="@drawable/emptystar" />
+
                 <ImageButton
                     android:id="@+id/star3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
                     android:scaleType="centerInside"
-                    android:src="@drawable/emptystar"
-                    android:layout_weight="0.2"/>
+                    android:src="@drawable/emptystar" />
+
                 <ImageButton
                     android:id="@+id/star4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
                     android:scaleType="centerInside"
-                    android:src="@drawable/emptystar"
-                    android:layout_weight="0.2"/>
+                    android:src="@drawable/emptystar" />
+
                 <ImageButton
                     android:id="@+id/star5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
                     android:scaleType="centerInside"
-                    android:src="@drawable/emptystar"
-                    android:layout_weight="0.2"/>
+                    android:src="@drawable/emptystar" />
             </LinearLayout>
     </LinearLayout>
 

@@ -3,6 +3,8 @@ package com.example.sport4party;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.sport4party.Modelo.Deportista;
+import com.example.sport4party.Modelo.Evento;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -24,11 +26,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class Mapa extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private AppBarConfiguration mAppBarConfiguration;
-
+    ArrayList<Deportista> deportistas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,11 +73,47 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         int id = item.getItemId();
 
         if(id == R.id.nav_evento){
-            Intent change = new Intent(this, InicioDeSesión.class);
+            Intent change = new Intent(this, Mapa.class);
             startActivity(change);
         }
         else if (id == R.id.nav_mis_amigos){
-            Intent change = new Intent(this, Registro.class);
+            deportistas = new ArrayList<>();
+            deportistas.add(new Deportista(1,"Juan Francisco Hamon", "Bueno", 4f));
+            deportistas.add(new Deportista(2,"Diego Barajas", "Regular", 3f));
+            deportistas.add(new Deportista(3,"Brandonn Cruz", "Malo", 2f));
+            deportistas.add(new Deportista(4,"Santiago Chaparro", "Bueno", 5f));
+            deportistas.add(new Deportista(5,"Pedro Fernandez", "Bueno", 4f));
+            deportistas.add(new Deportista(6,"Santiago Herrera", "Regular", 3f));
+            deportistas.add(new Deportista(7,"Carlos Orduz", "Malo", 2f));
+            deportistas.add(new Deportista(8,"Diego Ignacio Martinez", "Bueno", 5f));
+            Intent change = new Intent(this, MisAmigos.class);
+            Bundle info = new Bundle();
+            info.putSerializable("amigos",deportistas);
+            change.putExtra("listaAmigos",info);
+            startActivity(change);
+        }else if(id == R.id.nav_mis_eventos){
+            Intent change = new Intent(this, misEventos.class);
+            Deportista miPerfil = new Deportista(0, "Mael", "Bueno", 5);
+            Evento evento = new Evento(10, "atletismo", null, 0, "bueno", true);
+            miPerfil.addEvento(evento);
+            Evento evento2 = new Evento(10, "atletismo2", null, 1, "bueno", true);
+            miPerfil.addEvento(evento2);
+            change.putExtra("deportista",miPerfil);
+            startActivity(change);
+
+        }else if(id == R.id.nav_mi_perfil){
+            Intent change = new Intent(this, Perfil.class);
+            Deportista miPerfil = new Deportista(0, "Mael", "Bueno", 5);
+            Evento evento = new Evento(10, "atletismo", null, 0, "bueno", true);
+            miPerfil.addEvento(evento);
+            Evento evento2 = new Evento(10, "atletismo2", null, 1, "bueno", true);
+            miPerfil.addEvento(evento2);
+            change.putExtra("deportista", miPerfil);
+            change.putExtra("tipo", "0");
+            startActivity(change);
+        }else if(id == R.id.nav_cerrar_sesion){
+            Intent change = new Intent(this, InicioDeSesión.class);
+            Toast.makeText(this,"Sesion cerrada",Toast.LENGTH_LONG).show();
             startActivity(change);
         }
         //Agregar todos los Intents
@@ -82,5 +123,10 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         return true;
     }
 
+    public void toInformacionEvento(View v){
+            Intent intent = new Intent(v.getContext(), InformacionEvento.class);
+            intent.putExtra("pantalla",1);
+            startActivity(intent);
+    }
 
 }

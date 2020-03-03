@@ -9,6 +9,11 @@ import android.widget.Button;
 
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.sport4party.Modelo.Deportista;
+
+import java.util.ArrayList;
 
 public class InformacionEvento extends AppCompatActivity {
     TextView nombre;
@@ -20,6 +25,7 @@ public class InformacionEvento extends AppCompatActivity {
     TextView precio;
     Button inscribirse;
     Button participantes;
+    ArrayList<Deportista>deportistas;
     void inflate()
     {
         nombre=(TextView)findViewById(R.id.nombre);
@@ -63,10 +69,10 @@ public class InformacionEvento extends AppCompatActivity {
         inscribirse.setOnClickListener(new View.OnClickListener() {
                                            @Override
                                            public void onClick(View v) {
-                                               //Aqui va para inscribirse
-                                               //Intent intent=new Intent(v.getContext(), CrearEvento.class);
-                                               //intent.putExtra("pantalla",0);
-                                               //startActivity(intent);
+
+                                               Intent intent=new Intent(v.getContext(), Mapa.class);
+                                               Toast.makeText(v.getContext(),"Inscripcion realizada",Toast.LENGTH_LONG).show();
+                                               startActivity(intent);
                                            }
                                        }
         );
@@ -90,10 +96,20 @@ public class InformacionEvento extends AppCompatActivity {
         participantes.setOnClickListener(new View.OnClickListener() {
                                            @Override
                                            public void onClick(View v) {
-                                               //Aqui va para ver participantes
-                                               //Intent intent=new Intent(v.getContext(), CrearEvento.class);
-                                               //intent.putExtra("pantalla",0);
-                                               //startActivity(intent);
+                                               deportistas = new ArrayList<>();
+                                               deportistas.add(new Deportista(1,"Juan Francisco Hamon", "Bueno", 4f));
+                                               deportistas.add(new Deportista(2,"Diego Barajas", "Regular", 3f));
+                                               deportistas.add(new Deportista(3,"Brandonn Cruz", "Malo", 2f));
+                                               deportistas.add(new Deportista(4,"Santiago Chaparro", "Bueno", 5f));
+                                               deportistas.add(new Deportista(5,"Pedro Fernandez", "Bueno", 4f));
+                                               deportistas.add(new Deportista(6,"Santiago Herrera", "Regular", 3f));
+                                               deportistas.add(new Deportista(7,"Carlos Orduz", "Malo", 2f));
+                                               deportistas.add(new Deportista(8,"Diego Ignacio Martinez", "Bueno", 5f));
+                                               Intent participantes =new Intent(v.getContext(), VerParticipantes.class);
+                                               Bundle info = new Bundle();
+                                               info.putSerializable("participantes",deportistas);
+                                               participantes.putExtra("listaParticipantes",info);
+                                               startActivity(participantes);
                                            }
                                        }
         );

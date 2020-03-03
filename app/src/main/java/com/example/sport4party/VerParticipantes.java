@@ -3,12 +3,14 @@ package com.example.sport4party;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sport4party.Modelo.Deportista;
+import com.example.sport4party.Modelo.Evento;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,10 +32,10 @@ public class VerParticipantes extends AppCompatActivity {
         //Este método es para cambiar el nombre en la barra de acción para que no quede el nombre del archivo
         getSupportActionBar().setTitle("Participantes del evento");
         //Activo la barra para volver hacia atrás que ofrece android
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         //Extraigo el Bundle con la información de los participantes del envento
-        Bundle info = getIntent().getBundleExtra("listaParticipantes");
+        final Bundle info = getIntent().getBundleExtra("listaParticipantes");
 
         //Asigno la lista de participantes al ArrayList que va a manejar el adaptador
         participantes = (ArrayList<Deportista>) info.getSerializable("participantes");
@@ -52,6 +54,17 @@ public class VerParticipantes extends AppCompatActivity {
                 extaInfo.putSerializable("amigos", (Serializable) participantes);
                 intentInvitarAmigos.putExtra("listaDeAmigos",extaInfo);
                 startActivity(intentInvitarAmigos);
+            }
+        });
+
+        listaAsistentes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent infoPerfil = new Intent(view.getContext(), Perfil.class);
+                Deportista miPerfil = participantes.get(position);
+                infoPerfil.putExtra("deportista", miPerfil);
+                infoPerfil.putExtra("tipo", "1");
+                startActivity(infoPerfil);
             }
         });
     }

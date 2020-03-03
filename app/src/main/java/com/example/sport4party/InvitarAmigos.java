@@ -1,6 +1,9 @@
 package com.example.sport4party;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +41,17 @@ public class InvitarAmigos extends AppCompatActivity {
 
         //Funcionalidad que debe "evitar" que el usuario añada a amigos que ya estén inscritos en el evento
         //Utilizar la información del límite de personas para el evento, con tal de no añadir de más
+
+        inivitarAmigos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent infoPerfil = new Intent(view.getContext(), Perfil.class);
+                Deportista miPerfil = friends.get(position);
+                infoPerfil.putExtra("deportista", miPerfil);
+                infoPerfil.putExtra("tipo", "1");
+                startActivity(infoPerfil);
+            }
+        });
 
     }
 }
