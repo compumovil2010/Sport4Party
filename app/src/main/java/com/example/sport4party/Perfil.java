@@ -5,16 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sport4party.Modelo.Deportista;
+import com.example.sport4party.Modelo.Evento;
 
 public class Perfil extends AppCompatActivity {
     private Deportista perfil;
@@ -25,6 +28,9 @@ public class Perfil extends AppCompatActivity {
     private TextView eventos;
     private Button buttonEventos;
     private ImageButton buttonPreferencias;
+
+    private EventosAdapter eventosAdapter;
+    private ListView listEventos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +83,8 @@ public class Perfil extends AppCompatActivity {
                 builder.show();
             }
         });
+
+        listEventos = (ListView)findViewById(R.id.listViewEventos);
     }
 
     @Override
@@ -94,6 +102,7 @@ public class Perfil extends AppCompatActivity {
         switch (tipo) {
             case 0: {
                 miPerfilVista();
+                actualizarEventosUsuario();
             }
             break;
             case 1: {
@@ -110,5 +119,10 @@ public class Perfil extends AppCompatActivity {
     private void amigoVista() {
         buttonEventos.setVisibility(View.GONE);
         buttonPreferencias.setVisibility(View.GONE);
+    }
+
+    private void actualizarEventosUsuario(){
+        eventosAdapter = new EventosAdapter(this, perfil.getEventos());
+        listEventos.setAdapter(eventosAdapter);
     }
 }

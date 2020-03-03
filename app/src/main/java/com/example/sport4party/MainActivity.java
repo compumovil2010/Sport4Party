@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.sport4party.Modelo.Deportista;
+import com.example.sport4party.Modelo.Evento;
+
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     Button button, button2;
@@ -48,5 +51,10 @@ public class MainActivity extends AppCompatActivity {
         miPerfil = new Deportista(0, "Mael", "Bueno", 5);
         Deportista friend = new Deportista(1, "Luduciel", "Regular", 4);
         miPerfil.addAmigo(friend);
+
+        Evento evento = new Evento(10, "atletismo", null, 0, "bueno", true);
+        miPerfil.addEvento(evento);
+        Evento evento2 = new Evento(10, "atletismo2", null, 1, "bueno", true);
+        miPerfil.addEvento(evento2);
     }
 }

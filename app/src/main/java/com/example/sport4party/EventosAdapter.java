@@ -1,33 +1,49 @@
 package com.example.sport4party;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class EventosAdapter extends CursorAdapter {
-    private static final int EVENTO_ID_INDICE = 0;
-    private  static final int EVENTO_NOMBRE_INDICE = 1;
+import com.example.sport4party.Modelo.Evento;
 
-    public EventosAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
+import java.util.ArrayList;
+
+public class EventosAdapter extends BaseAdapter {
+    Context context;
+    ArrayList<Evento> eventos;
+
+    public EventosAdapter(Context context, ArrayList<Evento> eventos) {
+        this.context = context;
+        this.eventos = eventos;
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.evento, parent, false);
+    public int getCount() {
+        return eventos.size();
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        TextView textViewNumero = (TextView) view.findViewById(R.id.textViewNumero);
-        TextView textViewNombreEvento = (TextView) view.findViewById(R.id.textViewNombreEvento);
-        int idEvemto = cursor.getInt(EVENTO_ID_INDICE);
-        String nombreEvento = cursor.getString(EVENTO_NOMBRE_INDICE);
-        textViewNumero.setText(String.valueOf(idEvemto));
-        textViewNombreEvento.setText(nombreEvento);
+    public Object getItem(int position) {
+        return eventos.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return eventos.get(position).getID();
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        convertView = LayoutInflater.from(context).inflate(R.layout.evento,parent,false);
+        TextView idEvento = (TextView)convertView.findViewById(R.id.textViewNumero);
+        TextView nombreEvento = (TextView)convertView.findViewById(R.id.textViewNombreEvento);
+
+        //idEvento.setText(eventos.get(position).getID());
+        idEvento.setText(Integer.toString(eventos.get(position).getID()));
+        nombreEvento.setText(eventos.get(position).getDeporte());
+        return convertView;
     }
 }

@@ -9,7 +9,7 @@ public class Deportista implements Serializable {
     private String nivelHabilidad;
     private float popularidad;
     private ArrayList<Deportista> amigos;
-    //private ArrayList<Evento> eventos;
+    private ArrayList<Evento> eventos;
     //private ArrayList<Evento> misEventos;
 
     public Deportista(int id, String nombre, String nivelHabilidad, float popularidad) {
@@ -18,6 +18,7 @@ public class Deportista implements Serializable {
         this.nivelHabilidad = nivelHabilidad;
         this.popularidad = popularidad;
         this.amigos = new ArrayList<>();
+        this.eventos = new ArrayList<>();
     }
 
     public int getId() {
@@ -56,11 +57,25 @@ public class Deportista implements Serializable {
         this.amigos = amigos;
     }
 
+    public ArrayList<Evento> getEventos() {
+        return eventos;
+    }
+
+    public void setEventos(ArrayList<Evento> eventos) {
+        this.eventos = eventos;
+    }
+
     public void addAmigo(Deportista amigo){
         this.amigos.add(amigo);
     }
 
-    public int sizeAmigos(){
-        return this.amigos.size();
+    public int sizeAmigos(){ return this.amigos.size(); }
+
+    public void addEvento(Evento evento){
+        this.eventos.add(evento);
+    }
+
+    public int sizeEventos(){
+        return this.eventos.size();
     }
 }
