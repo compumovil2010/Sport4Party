@@ -69,7 +69,7 @@ public class DeportistaAdapter extends BaseAdapter {
         stars.add(star5);
 
         userName.setText(deports.get(position).getNombre());
-        String popularity = deports.get(position).getNivelDeHabilidad();
+        String popularity = deports.get(position).getNivelHabilidad();
         userLevel.setText(popularity);
         if(popularity.equals("Bueno")){
             userLevel.setTextColor(Color.GREEN);

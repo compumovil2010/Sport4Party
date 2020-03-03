@@ -35,7 +35,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         setContentView(R.layout.activity_mapa);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);

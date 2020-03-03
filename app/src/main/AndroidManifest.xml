@@ -14,14 +14,11 @@
         <activity android:name=".InformacionEvento"></activity>
         <activity android:name=".CrearEvento" />
         <activity android:name=".Perfil"></activity>
-        <activity
-            android:name=".Mapa"
-            android:label="@string/title_activity_mapa"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Registro" />
         <activity android:name=".InicioDeSesión" />
-        <activity android:name=".MainActivity">
-          
+        <activity android:name=".Mapa">
+            android:label="@string/title_activity_mapa"
+            android:theme="@style/AppTheme.NoActionBar"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -30,13 +27,13 @@
         </activity>
         <activity
             android:name=".VerParticipantes"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".Mapa" />
         <activity
             android:name=".InvitarAmigos"
             android:parentActivityName=".VerParticipantes" />
         <activity
             android:name=".MisAmigos"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".Mapa" />
     </application>
 
 </manifest>
