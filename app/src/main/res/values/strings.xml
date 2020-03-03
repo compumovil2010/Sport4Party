@@ -1,6 +1,21 @@
 <resources>
     <string name="app_name">Sport4Party</string>
 
+    <string-array name="Deportes">
+        <item>Seleccionar Deporte</item>
+        <item>Futbol</item>
+        <item>Baloncesto</item>
+        <item>Voleibol</item>
+        <item>Tenis</item>
+
+    </string-array>
+    <string-array name="Habilidad">
+        <item>Seleccionar Habilidad</item>
+        <item>Avanzado</item>
+        <item>Intermedio</item>
+        <item>Basico</item>
+    </string-array>
+
     <string name="profile_level">Nivel de habilidad:</string>
     <string name="profile_popularity">Popularidad:</string>
     <string name="profile_friends">Amigos:</string>

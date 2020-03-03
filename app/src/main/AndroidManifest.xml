@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+      
+        <activity android:name=".InformacionEvento"></activity>
+        <activity android:name=".CrearEvento" />
         <activity android:name=".Perfil"></activity>
         <activity
             android:name=".Mapa"

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+
 import android.widget.Toast;
 import com.example.sport4party.Modelo.Deportista;
 import com.example.sport4party.Modelo.Evento;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     private void initMiPerfil(){
