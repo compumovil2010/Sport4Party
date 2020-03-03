@@ -1,4 +1,4 @@
-package com.example.sport4party;
+package com.example.sport4party.Modelo;
 
 import java.io.Serializable;
 

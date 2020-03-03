@@ -5,6 +5,8 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.sport4party.Modelo.Deportista;
+
 import java.util.ArrayList;
 
 public class InvitarAmigos extends AppCompatActivity {

@@ -10,6 +10,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sport4party.Modelo.Deportista;
+
 import java.util.ArrayList;
 
 
