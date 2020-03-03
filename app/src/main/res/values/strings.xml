@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Sport4Party</string>
+
+    <string name="profile_level">Nivel de habilidad:</string>
+    <string name="profile_popularity">Popularidad:</string>
+    <string name="profile_friends">Amigos:</string>
+    <string name="profile_events">Eventos de</string>
+    <string name="profile_new_event">Nuevo evento</string>
+    <string name="see">Ver</string>
+
     <string name="title_activity_mapa">Mapa</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
