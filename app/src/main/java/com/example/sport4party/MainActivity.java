@@ -6,11 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
+import android.widget.Toast;
 import com.example.sport4party.Modelo.Deportista;
+import com.example.sport4party.Modelo.Evento;
+import java.util.Date;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+    Button button, button2;
+    Deportista miPerfil;
 
 public class MainActivity extends AppCompatActivity {
     Button accionParticipantes;
@@ -21,43 +25,48 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        accionParticipantes = findViewById(R.id.botonparticipantes);
-        verAmigos = findViewById(R.id.botonVerAmigos);
+        initMiPerfil();
 
-        getSupportActionBar().setTitle("Información del evento");
-
-
-        deportistas = new ArrayList<>();
-        deportistas.add(new Deportista(1,"Juan Francisco Hamon", "Bueno", 4f));
-        deportistas.add(new Deportista(2,"Diego Barajas", "Regular", 3f));
-        deportistas.add(new Deportista(3,"Brandonn Cruz", "Malo", 2f));
-        deportistas.add(new Deportista(4,"Santiago Chaparro", "Bueno", 5f));
-        deportistas.add(new Deportista(5,"Pedro Fernandez", "Bueno", 4f));
-        deportistas.add(new Deportista(6,"Santiago Herrera", "Regular", 3f));
-        deportistas.add(new Deportista(7,"Carlos Orduz", "Malo", 2f));
-        deportistas.add(new Deportista(8,"Diego Ignacio Martinez", "Bueno", 5f));
-
-        accionParticipantes.setOnClickListener(new View.OnClickListener() {
+        button = (Button)findViewById(R.id.button);
+        button2 = (Button)findViewById(R.id.button2);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent verParticipantes = new Intent(v.getContext(), VerParticipantes.class);
-                Bundle extaInfo = new Bundle();
-                extaInfo.putSerializable("participantes", (Serializable) deportistas);
-                verParticipantes.putExtra("listaParticipantes",extaInfo);
-                startActivity(verParticipantes);
+                Intent intent = new Intent(getBaseContext(), Perfil.class);
+                intent.putExtra("deportista", miPerfil);
+                intent.putExtra("tipo", "0");
+                startActivity(intent);
             }
         });
 
-        verAmigos.setOnClickListener(new View.OnClickListener() {
+        button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent verAmigos = new Intent(v.getContext(),MisAmigos.class);
-                Bundle extaInfo = new Bundle();
-                extaInfo.putSerializable("amigos", (Serializable) deportistas);
-                verAmigos.putExtra("listaAmigos",extaInfo);
-                startActivity(verAmigos);
+                Intent intent = new Intent(getBaseContext(), Perfil.class);
+                intent.putExtra("deportista", miPerfil.getAmigos().get(0));
+                intent.putExtra("tipo", "1");
+                startActivity(intent);
             }
         });
+
     }
+
+    private void initMiPerfil(){
+        miPerfil = new Deportista(0, "Mael", "Bueno", 5);
+        Deportista friend = new Deportista(1, "Luduciel", "Regular", 4);
+        miPerfil.addAmigo(friend);
+
+        Evento evento = new Evento(10, "atletismo", null, 0, "bueno", true);
+        miPerfil.addEvento(evento);
+        Evento evento2 = new Evento(10, "atletismo2", null, 1, "bueno", true);
+        miPerfil.addEvento(evento2);
+    }
+
+
+    public void toMap(View v){
+        Intent change = new Intent(this, InicioDeSesión.class);
+        startActivity(change);
+    }
+
 }
 

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InformacionEvento">
+
+    <ScrollView
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="4dp">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/nombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:scrollbars="vertical"
+                android:text="default"
+            />
+            <TextView
+                android:id="@+id/cupos"
+                android:layout_width="244dp"
+                android:layout_height="33dp"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/deporte"
+                android:layout_width="242dp"
+                android:layout_height="33dp"
+
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/habilidad"
+                android:layout_width="244dp"
+                android:layout_height="30dp"
+
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/fechayhor"
+                android:layout_width="241dp"
+                android:layout_height="33dp"
+
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/precio"
+                android:layout_width="241dp"
+                android:layout_height="33dp"
+
+                android:text="TextView" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="298dp"
+                android:layout_height="59dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Inscribirse" />
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="298dp"
+                android:layout_height="59dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Participantes" />
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
