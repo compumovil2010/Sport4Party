@@ -7,11 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.example.sport4party.Modelo.Deportista;
 import com.example.sport4party.Modelo.Evento;
-
 import java.util.Date;
+
 
 public class MainActivity extends AppCompatActivity {
     Button button, button2;
@@ -57,4 +56,11 @@ public class MainActivity extends AppCompatActivity {
         Evento evento2 = new Evento(10, "atletismo2", null, 1, "bueno", true);
         miPerfil.addEvento(evento2);
     }
+
+
+    public void toMap(View v){
+        Intent change = new Intent(this, InicioDeSesión.class);
+        startActivity(change);
+    }
+
 }
