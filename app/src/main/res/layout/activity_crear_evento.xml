@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CrearEvento">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="4dp">
+
+
+            <EditText
+                android:id="@+id/nombre"
+                android:layout_width="333dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="12dp"
+                android:ems="10"
+                android:hint="Nombre del evento"
+                android:inputType="textPersonName" />
+
+
+            <EditText
+                android:id="@+id/descripcion"
+                android:layout_width="351dp"
+                android:layout_height="114dp"
+                android:ems="10"
+                android:hint="Descripcion del evento"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:scrollbars="vertical" />
+
+            <Spinner
+                android:id="@+id/deporte"
+                android:layout_width="231dp"
+                android:layout_height="48dp"
+                android:entries="@array/Deportes"
+                android:hint="Deporte a jugar" />
+
+            <Button
+                android:id="@+id/fecha"
+                android:layout_width="168dp"
+                android:layout_height="47dp"
+                android:layout_marginTop="24dp"
+                android:ems="10"
+                android:hint="Fecha (DD/MM/AA)"
+                android:inputType="date" />
+
+            <Button
+                android:id="@+id/hora"
+                android:layout_width="167dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="23dp"
+                android:ems="10"
+                android:hint="Hora (HH:MM)"
+                android:inputType="time" />
+
+            <EditText
+                android:id="@+id/cupos"
+                android:layout_width="168dp"
+                android:layout_height="47dp"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="Cupos disponibles"
+                android:inputType="numberSigned" />
+
+            <Spinner
+                android:id="@+id/habilidad"
+                android:layout_width="245dp"
+                android:layout_height="44dp"
+                android:entries="@array/Habilidad" />
+
+            <EditText
+                android:id="@+id/precio"
+                android:layout_width="193dp"
+                android:layout_height="56dp"
+                android:ems="10"
+                android:inputType="number"
+                android:hint="Precio (COP)"/>
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="258dp"
+                android:layout_height="75dp"
+                android:layout_weight="1"
+                android:text="Seleccionar Ubicación" />
+
+            <Button
+
+                android:id="@+id/button"
+                android:layout_width="261dp"
+                android:layout_height="69dp"
+                android:layout_weight="1"
+                android:text="Publicar" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
