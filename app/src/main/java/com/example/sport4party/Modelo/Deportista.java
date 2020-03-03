@@ -1,6 +1,8 @@
 package com.example.sport4party.Modelo;
 
 import java.io.Serializable;
+
+
 import java.util.ArrayList;
 
 public class Deportista implements Serializable {
@@ -39,6 +41,7 @@ public class Deportista implements Serializable {
 
     public void setNivelHabilidad(String nivelHabilidad) {
         this.nivelHabilidad = nivelHabilidad;
+
     }
 
     public float getPopularidad() {

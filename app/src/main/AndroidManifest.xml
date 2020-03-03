@@ -28,6 +28,15 @@
             </intent-filter>
           
         </activity>
+        <activity
+            android:name=".VerParticipantes"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".InvitarAmigos"
+            android:parentActivityName=".VerParticipantes" />
+        <activity
+            android:name=".MisAmigos"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

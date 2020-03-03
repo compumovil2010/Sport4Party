@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
-
 import android.widget.Toast;
 import com.example.sport4party.Modelo.Deportista;
 import com.example.sport4party.Modelo.Evento;
@@ -18,6 +16,10 @@ public class MainActivity extends AppCompatActivity {
     Button button, button2;
     Deportista miPerfil;
 
+public class MainActivity extends AppCompatActivity {
+    Button accionParticipantes;
+    Button verAmigos;
+    ArrayList<Deportista> deportistas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,3 +69,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
+
