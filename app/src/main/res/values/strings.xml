@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sport4Party</string>
+    <string name="app_name">Sports4Party</string>
 
     <string-array name="Deportes">
         <item>Seleccionar Deporte</item>
@@ -35,6 +35,12 @@
     <string name="mis_eventos">Mis Eventos</string>
     <string name="mi_perfil">Mi Perfil</string>
     <string name="cerrar_sesion">Cerrar Sesión</string>
+
+    <string name="appName"><font color='#FFFFFF'>Sports</font><font color='#FFBD00'>4</font><font color='#FFFFFF'>Party</font></string>
+    <string name="user">Nombre</string>
+    <string name="password">Conraseña</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="registry">Registrarse</string>
 
     <string-array name="sexo">
         <item>Femenino</item>
