@@ -6,22 +6,27 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_evento"
+            android:icon="@drawable/ic_event_black_24dp"
             android:title="@string/buscar_evento" />
         <item
-            android:id="@+id/nav_mis_amigos"
-            android:title="@string/mis_amigos" />
-        <item
             android:id="@+id/nav_mis_eventos"
+            android:icon="@drawable/ic_person_add_black_24dp"
             android:title="@string/mis_eventos" />
+        <item
+            android:id="@+id/nav_mis_amigos"
+            android:icon="@drawable/ic_group_black_24dp"
+            android:title="@string/mis_amigos" />
     </group>
 
     <item>
         <menu>
             <item
                 android:id="@+id/nav_mi_perfil"
+                android:icon="@drawable/ic_person_black_24dp"
                 android:title="@string/mi_perfil" />
             <item
                 android:id="@+id/nav_cerrar_sesion"
+                android:icon="@drawable/ic_exit_to_app_black_24dp"
                 android:title="@string/cerrar_sesion" />
         </menu>
     </item>

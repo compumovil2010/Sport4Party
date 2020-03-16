@@ -9,4 +9,6 @@
     <color name="colorEditTextInput">#7FFFFFFF</color>
     <color name="buttonMain">#80000000</color>
     <color name="buttonSecondary">#80FFFFFF</color>
+    <color name="buttonGrFirst">#FF5C00</color>
+    <color name="buttonGrSecond">#FFD868</color>
 </resources>
