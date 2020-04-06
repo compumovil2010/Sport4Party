@@ -60,8 +60,9 @@
     </string-array>
 
     <string-array name="sexo">
-        <item>Femenino</item>
         <item>Masculino</item>
+        <item>Femenino</item>
+        <item>Otro</item>
     </string-array>
 
 </resources>

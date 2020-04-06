@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.example.sport4party.Modelo.Evento;
 
 import java.util.ArrayList;
@@ -47,6 +49,12 @@ public class EventosAdapter extends BaseAdapter {
         //idEvento.setText(eventos.get(position).getID());
         idEvento.setText(Integer.toString(eventos.get(position).getID()));
         nombreEvento.setText(eventos.get(position).getDeporte());
+
+        if(eventos.get(position).isPrivado()){
+            infoEvento.setBackgroundColor(ContextCompat.getColor(parent.getContext(), R.color.colorPrivateEvent));
+        }else{
+            infoEvento.setBackgroundColor(ContextCompat.getColor(parent.getContext(), R.color.colorPublicEvent));
+        }
 
         infoEvento.setOnClickListener(new View.OnClickListener() {
             @Override
