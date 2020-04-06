@@ -26,6 +26,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,10 +36,24 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
 
     private AppBarConfiguration mAppBarConfiguration;
     ArrayList<Deportista> deportistas;
+
+    Spinner hora;
+    Spinner deportes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);
+
+        hora = findViewById(R.id.spinnerHour);
+
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.hours, R.layout.text_color_spinner_deportes);
+        adapter.setDropDownViewResource(R.layout.deportes_dropdown);
+        hora.setAdapter(adapter);
+
+        deportes = findViewById(R.id.spinnerSport);
+        ArrayAdapter adp = ArrayAdapter.createFromResource(this, R.array.sports, R.layout.text_color_spinner_deportes);
+        adp.setDropDownViewResource(R.layout.deportes_dropdown);
+        deportes.setAdapter(adp);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);

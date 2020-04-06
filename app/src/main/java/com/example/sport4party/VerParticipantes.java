@@ -29,11 +29,6 @@ public class VerParticipantes extends AppCompatActivity {
         invitarAmigos = findViewById(R.id.botonanadiramigos);
         listaAsistentes = findViewById(R.id.listaparticipantes);
 
-        //Este método es para cambiar el nombre en la barra de acción para que no quede el nombre del archivo
-        getSupportActionBar().setTitle("Participantes del evento");
-        //Activo la barra para volver hacia atrás que ofrece android
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
         //Extraigo el Bundle con la información de los participantes del envento
         final Bundle info = getIntent().getBundleExtra("listaParticipantes");
 

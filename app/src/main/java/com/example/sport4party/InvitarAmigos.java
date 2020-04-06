@@ -22,11 +22,6 @@ public class InvitarAmigos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invitar_amigos);
 
-        //Este método es para cambiar el nombre en la barra de acción para que no quede el nombre del archivo
-        getSupportActionBar().setTitle("Invitar amigos");
-        //Activo la barra para volver hacia atrás que ofrece android (por ahora queda en false por temas de onCreate de a donde vuelve)
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
 
         inivitarAmigos = findViewById(R.id.listaamigos);
 

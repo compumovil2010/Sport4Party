@@ -24,11 +24,6 @@ public class MisAmigos extends AppCompatActivity {
 
         misAmigos = findViewById(R.id.Amigos);
 
-        //Este método es para cambiar el nombre en la barra de acción para que no quede el nombre del archivo
-        getSupportActionBar().setTitle("Mis amigos");
-        //Activo la barra para volver hacia atrás que ofrece android
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         //Extraigo el Bundle con la información de los amigos del usuario actual
         Bundle info = getIntent().getBundleExtra("listaAmigos");
