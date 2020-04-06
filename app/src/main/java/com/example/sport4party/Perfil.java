@@ -32,9 +32,6 @@ public class Perfil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
-
         nombreUsuario = (TextView) findViewById(R.id.profileName);
         nivel = (TextView) findViewById(R.id.resultPromedioCalif);
         amigos = (TextView) findViewById(R.id.resultCantAmigos);

@@ -12,7 +12,5 @@ public class Registro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
     }
 }

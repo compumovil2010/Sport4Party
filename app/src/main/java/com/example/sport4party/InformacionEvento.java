@@ -99,9 +99,7 @@ public class InformacionEvento extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informacion_evento);
-
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+        
         int opcion= getIntent().getIntExtra("pantalla",-1);//0 para mostrar info 1 para lo mismo pero editando
         inflate();
         imprimirInfo();
