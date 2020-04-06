@@ -17,7 +17,8 @@
         <activity android:name=".Registro" />
         <activity android:name=".Mapa" />
         <activity android:name=".misEventos"/>
-        <activity android:name=".InicioDeSesión">
+        <activity android:name=".InicioDeSesión"
+            android:theme="@style/AppTheme.NoActionBar.Custom">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

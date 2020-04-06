@@ -3,6 +3,15 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
     <color name="colorPrivateEvent">#FB8D00</color>
     <color name="colorPublicEvent">#00BDAA</color>
+    <color name="colorBgFirst">#FF7C1E</color>
+    <color name="colorBgSecond">#FFD868</color>
+    <color name="color4">#FFBD00</color>
+    <color name="colorEditTextInput">#7FFFFFFF</color>
+    <color name="buttonMain">#80000000</color>
+    <color name="buttonSecondary">#80FFFFFF</color>
+    <color name="buttonGrFirst">#FF5C00</color>
+    <color name="buttonGrSecond">#FFD868</color>
 </resources>
