@@ -1,13 +1,16 @@
 package com.example.sport4party;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.Image;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,35 +26,45 @@ public class InformacionEvento extends AppCompatActivity {
     TextView habilidad;
     TextView fechaYHora;
     TextView precio;
-    Button inscribirse;
-    Button participantes;
+    TextView editarEinscribir;
+    TextView chatT;
+    ImageButton inscribirse;
+    ImageButton participantes;
+    ImageButton chatB;
     ArrayList<Deportista>deportistas;
     void inflate()
     {
-        nombre=(TextView)findViewById(R.id.nombre);
-        descripcion=(TextView)findViewById(R.id.descripcion);
+        nombre=(TextView)findViewById(R.id.nombreEvento);
+        descripcion=(TextView)findViewById(R.id.infoEvento);
         descripcion.setMovementMethod(new ScrollingMovementMethod());
-        cupos=(TextView)findViewById(R.id.cupos);
-        deporte=(TextView)findViewById(R.id.deporte);
-        habilidad=(TextView)findViewById(R.id.habilidad);
-        fechaYHora=(TextView) findViewById(R.id.fechayhor);
-        precio=(TextView)findViewById(R.id.precio);
-        inscribirse=(Button)findViewById(R.id.button3);
-        participantes=(Button)findViewById(R.id.button4);
+        cupos=(TextView)findViewById(R.id.CuposResult);
+        deporte=(TextView)findViewById(R.id.seVaAjugarResult);
+        habilidad=(TextView)findViewById(R.id.NivelDeHabilidadResultInfo);
+        fechaYHora=(TextView) findViewById(R.id.fechaResult);
+        precio=(TextView)findViewById(R.id.percioResult);
+        inscribirse=(ImageButton)findViewById(R.id.EditarButton);
+        participantes=(ImageButton)findViewById(R.id.ParticipantesButton);
+        chatB = (ImageButton)findViewById(R.id.chatButton);
+        chatT = (TextView)findViewById(R.id.chatText);
+        editarEinscribir = (TextView)findViewById(R.id.editarText);
     }
     private void imprimirInfo()
     {
         nombre.setText("Olimpiada 2020");
         descripcion.setText("Los Juegos Olímpicos modernos se inspiraron en los Juegos Olímpicos de la antigüedad del siglo VIII a. C. organizados en la antigua Grecia con sede en la ciudad de Olimpia, realizados entre los años 776 a. C. y el 393 de nuestra era. En el siglo XIX, surgió la idea de realizar unos eventos similares a los organizados en la antigüedad, los que se concretarían principalmente gracias a las gestiones del noble francés Pierre Frèdy, barón de Coubertin. El barón de Coubertin fundó el Comité Olímpico Internacional (COI) en 1894. Desde entonces, el COI se ha convertido en el órgano coordinador del Movimiento Olímpico, con la Carta Olímpica que define su estructura y autoridad.");
-        cupos.setText("Cupos: 10/20");
+        cupos.setText("10/20");
         deporte.setText("Futbol");
         habilidad.setText("Avanzado");
-        fechaYHora.setText("Fecha: (2020/11/31)");
-        precio.setText("20000 COP");
+        fechaYHora.setText("2020/11/31");
+        precio.setText("$20000");
     }
     private  void mostrarParaOrganizador()
     {
-        inscribirse.setText("Editar");
+        editarEinscribir.setText("Editar");
+        inscribirse.setImageResource(R.drawable.edit);
+        chatB.setVisibility(View.VISIBLE);
+        chatB.setClickable(true);
+        chatT.setVisibility(View.VISIBLE);
         inscribirse.setOnClickListener(new View.OnClickListener() {
                                           @Override
                                           public void onClick(View v) {
@@ -65,7 +78,11 @@ public class InformacionEvento extends AppCompatActivity {
     }
     private  void mostrarParaUnaPersonaNormal()
     {
-        inscribirse.setText("Inscribirse");
+        editarEinscribir.setText("Inscribirse");
+        inscribirse.setImageResource(R.drawable.join);
+        chatB.setVisibility(View.INVISIBLE);
+        chatB.setClickable(false);
+        chatT.setVisibility(View.INVISIBLE);
         inscribirse.setOnClickListener(new View.OnClickListener() {
                                            @Override
                                            public void onClick(View v) {
@@ -82,6 +99,9 @@ public class InformacionEvento extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informacion_evento);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
         int opcion= getIntent().getIntExtra("pantalla",-1);//0 para mostrar info 1 para lo mismo pero editando
         inflate();
         imprimirInfo();

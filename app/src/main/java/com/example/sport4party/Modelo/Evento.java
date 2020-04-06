@@ -10,14 +10,16 @@ public class Evento implements Serializable {
     private int ID;
     private String nivelHabilidad;
     private boolean pago;
+    private boolean privado;
 
-    public Evento(int cupo, String deporte, Date fecha, int ID, String nivelHabilidad, boolean pago) {
+    public Evento(int cupo, String deporte, Date fecha, int ID, String nivelHabilidad, boolean pago, boolean nTipo) {
         this.cupo = cupo;
         this.deporte = deporte;
         this.fecha = fecha;
         this.ID = ID;
         this.nivelHabilidad = nivelHabilidad;
         this.pago = pago;
+        this.privado = nTipo;
     }
 
     public int getCupo() {
@@ -62,5 +64,13 @@ public class Evento implements Serializable {
 
     public void setPago(boolean pago) {
         this.pago = pago;
+    }
+
+    public boolean isPrivado() {
+        return privado;
+    }
+
+    public void setPrivado(boolean privado) {
+        this.privado = privado;
     }
 }

@@ -4,153 +4,168 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FF7C1E"
     tools:context=".Perfil">
 
-    <FrameLayout
-        android:id="@+id/frameLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#3F51B5"
+    <ImageView
+        android:id="@+id/userImg"
+        android:layout_width="152dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/user2"
+        app:layout_constraintBottom_toTopOf="@+id/wScreen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageViewUsuarioFoto"
-            android:layout_width="152dp"
-            android:layout_height="118dp"
-            android:layout_gravity="center"
-            android:layout_margin="24dp"
-            app:srcCompat="@drawable/user" />
-
-        <ImageButton
-            android:id="@+id/imageButtonPreferencias"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            android:background="@android:drawable/ic_menu_preferences"
-            app:srcCompat="@android:drawable/ic_menu_preferences" />
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/textViewNombreUsuario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="24dp"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
-
-    <TextView
-        android:id="@+id/textViewNivelT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/profile_level"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNombreUsuario" />
-
-    <TextView
-        android:id="@+id/textViewNivel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toEndOf="@+id/textViewNivelT"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNombreUsuario" />
-
-    <TextView
-        android:id="@+id/textViewPopularidadT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/profile_popularity"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNivelT" />
-
-    <TextView
-        android:id="@+id/textViewAmigosT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/profile_friends"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPopularidadT" />
-
-    <TextView
-        android:id="@+id/textViewAmigos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toEndOf="@+id/textViewNivelT"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPopularidadT" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/wScreen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_weight="0"
-        android:background="#633F51B5"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAmigosT">
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="0"
-            android:padding="16dp"
-            app:srcCompat="@mipmap/ic_launcher_round" />
+        android:layout_gravity="center"
+        android:background="@drawable/screen"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
-            android:id="@+id/textViewEventos"
+            android:id="@+id/profileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_weight="0"
-            android:padding="8dp"
+            android:layout_marginTop="10dp"
+            android:hint="User name"
+            android:textColor="#000000"
+            android:textSize="25dp"
             android:textStyle="bold"
-            android:textSize="18sp"
-            android:text="@string/profile_events"/>
+            android:gravity="center_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/buttonNuevoEvento"
+        <TextView
+            android:id="@+id/textPromedioCalif"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:layout_gravity="bottom"
-            android:visibility="visible"
-            android:text="@string/profile_new_event" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="Promedio Calificacion"
+            android:textColor="#000000"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileName" />
 
-    </LinearLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" >
-
-        <ListView
-            android:id="@+id/listViewEventos"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/resultPromedioCalif"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0" />
-    </ScrollView>
+            android:layout_marginTop="20dp"
+            android:hint="CALIF"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textPromedioCalif"
+            app:layout_constraintTop_toBottomOf="@+id/profileName" />
+
+        <TextView
+            android:id="@+id/textCantAmigos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="Cantidad de amigos:"
+            android:textColor="#000000"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textPromedioCalif" />
+
+        <TextView
+            android:id="@+id/resultCantAmigos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:hint="###"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textCantAmigos"
+            app:layout_constraintTop_toBottomOf="@+id/resultPromedioCalif" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/casilla_editor_eventos"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textCantAmigos">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Editor de eventos"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent" />
+
+            <Button
+                android:id="@+id/botonNuevoEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="0.3"
+                android:background="#05004E"
+                android:text="Nuevo evento"
+                android:textColor="#FFFFFF"
+                app:layout_constraintStart_toEndOf="parent" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/layoutForList"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:fillViewport="true"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ListView
+                    android:id="@+id/listViewEventos"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+        </ScrollView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FF7C1E"
+        android:padding="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/abc_vector_test" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
