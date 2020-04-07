@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class VerParticipantes extends AppCompatActivity {
 
     Button invitarAmigos;
+    Button localizar;
     ListView listaAsistentes;
     DeportistaAdapter adapter;
     ArrayList<Deportista> participantes;
@@ -26,8 +27,9 @@ public class VerParticipantes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_participantes);
 
-        invitarAmigos = findViewById(R.id.botonanadiramigos);
-        listaAsistentes = findViewById(R.id.listaparticipantes);
+        invitarAmigos = findViewById(R.id.botonInvitarAmigos);
+        localizar = findViewById(R.id.botonLocalizar);
+        listaAsistentes = findViewById(R.id.listViewParticipantes);
 
         //Extraigo el Bundle con la información de los participantes del envento
         final Bundle info = getIntent().getBundleExtra("listaParticipantes");
@@ -58,7 +60,7 @@ public class VerParticipantes extends AppCompatActivity {
                 Intent infoPerfil = new Intent(view.getContext(), Perfil.class);
                 Deportista miPerfil = participantes.get(position);
                 infoPerfil.putExtra("deportista", miPerfil);
-                infoPerfil.putExtra("tipo", "1");
+                infoPerfil.putExtra("tipo", "2");
                 startActivity(infoPerfil);
             }
         });
