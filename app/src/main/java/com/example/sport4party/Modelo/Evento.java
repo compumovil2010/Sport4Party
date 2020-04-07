@@ -4,15 +4,20 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Evento implements Serializable {
-    private int cupo;
-    private String deporte;
-    private Date fecha;
-    private int ID;
-    private String nivelHabilidad;
-    private boolean pago;
-    private boolean privado;
 
-    public Evento(int cupo, String deporte, Date fecha, int ID, String nivelHabilidad, boolean pago, boolean nTipo) {
+    private int ID;
+    private String descripcion;
+    private Date fecha;
+    private String nivelHabilidad;
+    private String nombre;
+    private String precio;
+    private boolean pago;
+    //relaciones
+    private Deporte deporte;
+    private Ubicacion ubicacion;
+
+
+    /*public Evento(int cupo, String deporte, Date fecha, int ID, String nivelHabilidad, boolean pago, boolean nTipo) {
         this.cupo = cupo;
         this.deporte = deporte;
         this.fecha = fecha;
@@ -20,22 +25,24 @@ public class Evento implements Serializable {
         this.nivelHabilidad = nivelHabilidad;
         this.pago = pago;
         this.privado = nTipo;
-    }
+    }*/
 
     public int getCupo() {
-        return cupo;
+        return 0;
+        //return cupo;
     }
 
     public void setCupo(int cupo) {
-        this.cupo = cupo;
+        //this.cupo = cupo;
     }
 
     public String getDeporte() {
-        return deporte;
+        return "";
+        //return deporte;
     }
 
     public void setDeporte(String deporte) {
-        this.deporte = deporte;
+        //this.deporte = deporte;
     }
 
     public Date getFecha() {
@@ -66,11 +73,4 @@ public class Evento implements Serializable {
         this.pago = pago;
     }
 
-    public boolean isPrivado() {
-        return privado;
-    }
-
-    public void setPrivado(boolean privado) {
-        this.privado = privado;
-    }
 }
