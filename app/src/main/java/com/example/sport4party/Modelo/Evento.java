@@ -16,61 +16,72 @@ public class Evento implements Serializable {
     private Deporte deporte;
     private Ubicacion ubicacion;
 
-
-    /*public Evento(int cupo, String deporte, Date fecha, int ID, String nivelHabilidad, boolean pago, boolean nTipo) {
-        this.cupo = cupo;
-        this.deporte = deporte;
-        this.fecha = fecha;
+    //Constructor
+    public Evento(int ID, String descripcion, Date fecha, String nivelHabilidad, String nombre, String precio, boolean pago, Deporte deporte, Ubicacion ubicacion) {
         this.ID = ID;
-        this.nivelHabilidad = nivelHabilidad;
-        this.pago = pago;
-        this.privado = nTipo;
-    }*/
-
-    public int getCupo() {
-        return 0;
-        //return cupo;
-    }
-
-    public void setCupo(int cupo) {
-        //this.cupo = cupo;
-    }
-
-    public String getDeporte() {
-        return "";
-        //return deporte;
-    }
-
-    public void setDeporte(String deporte) {
-        //this.deporte = deporte;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
+        this.descripcion = descripcion;
         this.fecha = fecha;
+        this.nivelHabilidad = nivelHabilidad;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.pago = pago;
+        this.deporte = deporte;
+        this.ubicacion = ubicacion;
     }
 
+    //Getters and setters
     public int getID() {
         return ID;
     }
-
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+    public String getDescripcion() {
+        return descripcion;
+    }
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    public Date getFecha() {
+        return fecha;
+    }
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
     public String getNivelHabilidad() {
         return nivelHabilidad;
     }
-
     public void setNivelHabilidad(String nivelHabilidad) {
         this.nivelHabilidad = nivelHabilidad;
     }
-
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    public String getPrecio() {
+        return precio;
+    }
+    public void setPrecio(String precio) {
+        this.precio = precio;
+    }
     public boolean isPago() {
         return pago;
     }
-
     public void setPago(boolean pago) {
         this.pago = pago;
     }
-
+    public Deporte getDeporte() {
+        return deporte;
+    }
+    public void setDeporte(Deporte deporte) {
+        this.deporte = deporte;
+    }
+    public Ubicacion getUbicacion() {
+        return ubicacion;
+    }
+    public void setUbicacion(Ubicacion ubicacion) {
+        this.ubicacion = ubicacion;
+    }
 }
