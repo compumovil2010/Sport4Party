@@ -4,94 +4,45 @@
     android:descendantFocusability="blocksDescendants"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    >
 
-    <ImageView
-        android:id="@+id/profilePhoto"
-        android:layout_width="15dp"
-        android:layout_height="105dp"
-        android:layout_weight="0.2"
-        android:paddingRight="5dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/user" />
     <LinearLayout
         android:id="@+id/userInfo"
-        android:orientation="vertical"
         android:layout_width="100dp"
-        android:layout_height="105dp"
-        android:layout_weight="0.6">
-            <TextView
-                android:id="@+id/userName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:hint="Name"/>
-            <TextView
-                android:id="@+id/userLevel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:hint="Nivel de habilidad: "/>
-            <TextView
-                android:id="@+id/userPopularity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:hint="Popularidad: "/>
-            <LinearLayout
-                android:id="@+id/arrayStars"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:orientation="vertical"
+        android:layout_marginLeft="20sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp">
 
-                <ImageButton
-                    android:id="@+id/star1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/emptystar" />
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Name"
+            android:textStyle="bold" />
 
-                <ImageButton
-                    android:id="@+id/star2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/emptystar" />
+        <TextView
+            android:id="@+id/lastTimeCon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Ultima vez conectado:\n"
+            android:textColor="#80000000" />
 
-                <ImageButton
-                    android:id="@+id/star3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/emptystar" />
-
-                <ImageButton
-                    android:id="@+id/star4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/emptystar" />
-
-                <ImageButton
-                    android:id="@+id/star5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/emptystar" />
-            </LinearLayout>
     </LinearLayout>
 
     <Button
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.2"
-        android:text="Agregar"/>
+        android:layout_weight="0.1"
+        android:textColor="#FFFFFF"
+        android:hint="Agregar o no"
+        android:layout_marginRight="15sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"/>
 
 
 </LinearLayout>
