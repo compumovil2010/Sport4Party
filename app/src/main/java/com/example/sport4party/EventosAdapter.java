@@ -6,7 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -44,17 +45,17 @@ public class EventosAdapter extends BaseAdapter {
         convertView = LayoutInflater.from(context).inflate(R.layout.evento,parent,false);
         TextView idEvento = (TextView)convertView.findViewById(R.id.textViewNumero);
         TextView nombreEvento = (TextView)convertView.findViewById(R.id.textViewNombreEvento);
-        Button infoEvento = (Button) convertView.findViewById(R.id.buttonVer);
+        ImageButton infoEvento = (ImageButton) convertView.findViewById(R.id.buttonVer);
 
         //idEvento.setText(eventos.get(position).getID());
         idEvento.setText(Integer.toString(eventos.get(position).getID()));
         nombreEvento.setText(eventos.get(position).getDeporte());
-
+    /*
         if(eventos.get(position).isPrivado()){
             infoEvento.setBackgroundColor(ContextCompat.getColor(parent.getContext(), R.color.colorPrivateEvent));
         }else{
             infoEvento.setBackgroundColor(ContextCompat.getColor(parent.getContext(), R.color.colorPublicEvent));
-        }
+        }*/
 
         infoEvento.setOnClickListener(new View.OnClickListener() {
             @Override

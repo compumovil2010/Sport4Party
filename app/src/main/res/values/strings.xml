@@ -74,5 +74,6 @@
     <string name="event_cost">Precio</string>
 
     <string name="event_create">Nuevo Evento</string>
+    <string name="event_myList">Mis Eventos</string>
 
 </resources>
