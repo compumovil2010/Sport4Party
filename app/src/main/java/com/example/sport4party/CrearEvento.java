@@ -40,11 +40,13 @@ public class CrearEvento extends AppCompatActivity {
     EditText precio;
     DatePickerDialog.OnDateSetListener picker;
     TimePickerDialog timePickerDialog;
+    TextView textViewTittle;
     void editar()
     {
         //Aqui se extraerian los datos ya existentes
 
 
+        textViewTittle.setText("Editar Evento");
         nombre.setText("Olimpiada 2020");
         descripcion.setText("Los Juegos Olímpicos modernos se inspiraron en los Juegos Olímpicos de la antigüedad del siglo VIII a. C. organizados en la antigua Grecia con sede en la ciudad de Olimpia, realizados entre los años 776 a. C. y el 393 de nuestra era. En el siglo XIX, surgió la idea de realizar unos eventos similares a los organizados en la antigüedad, los que se concretarían principalmente gracias a las gestiones del noble francés Pierre Frèdy, barón de Coubertin. El barón de Coubertin fundó el Comité Olímpico Internacional (COI) en 1894. Desde entonces, el COI se ha convertido en el órgano coordinador del Movimiento Olímpico, con la Carta Olímpica que define su estructura y autoridad.");
         cupos.setText("Cupos: 10/20");
@@ -178,5 +180,6 @@ public class CrearEvento extends AppCompatActivity {
         cupos=(EditText)findViewById(R.id.cupos);
         habilidad=(Spinner)findViewById(R.id.habilidad);
         precio=(EditText) findViewById(R.id.precio);
+        textViewTittle=(TextView) findViewById(R.id.toolbar_title);
     }
 }

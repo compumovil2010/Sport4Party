@@ -73,4 +73,6 @@
     <string name="event_level">Habilidad</string>
     <string name="event_cost">Precio</string>
 
+    <string name="event_create">Nuevo Evento</string>
+
 </resources>
