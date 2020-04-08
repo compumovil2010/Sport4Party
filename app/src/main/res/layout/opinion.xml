@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:descendantFocusability="blocksDescendants"
+    android:layout_height="match_parent"
+    android:background="#D6D5D5"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingRight="10dp">
+
+    <ImageView
+        android:id="@+id/userOpinionImg"
+        android:layout_width="wrap_content"
+        android:layout_height="50sp"
+        android:layout_weight="0.2"
+        android:gravity="center"
+        android:src="@drawable/user3" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="0.7">
+
+        <TextView
+            android:id="@+id/comentario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center|left"
+            android:hint="comentarioUsuario"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/userDelComentario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center|left"
+            android:hint="nombreUsuarioOpinion"
+            android:textColor="#80000000" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/starsOpinon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center|left"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/star1"
+            android:layout_width="20sp"
+            android:layout_height="20sp"
+            android:layout_weight="0.25"
+            app:srcCompat="@drawable/star" />
+
+        <ImageView
+            android:id="@+id/star2"
+            android:layout_width="20sp"
+            android:layout_height="20sp"
+            android:layout_weight="0.25"
+            app:srcCompat="@drawable/star" />
+
+        <ImageView
+            android:id="@+id/star3"
+            android:layout_width="20sp"
+            android:layout_height="20sp"
+            android:layout_weight="0.25"
+            app:srcCompat="@drawable/star" />
+
+        <ImageView
+            android:id="@+id/star4"
+            android:layout_width="20sp"
+            android:layout_height="20sp"
+            android:layout_weight="0.25"
+            app:srcCompat="@drawable/star" />
+
+        <ImageView
+            android:id="@+id/star5"
+            android:layout_width="20sp"
+            android:layout_height="20sp"
+            android:layout_weight="0.25"
+            app:srcCompat="@drawable/star" />
+    </LinearLayout>
+</LinearLayout>

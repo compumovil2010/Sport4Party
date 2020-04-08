@@ -1,5 +1,4 @@
 package com.example.sport4party.Modelo;
-
 import java.io.Serializable;
 
 public class Opinion implements Serializable {

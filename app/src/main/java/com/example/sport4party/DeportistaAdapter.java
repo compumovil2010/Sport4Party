@@ -1,12 +1,10 @@
 package com.example.sport4party;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,38 +49,16 @@ public class DeportistaAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vista = View.inflate(aContext, R.layout.casilla_participante,null);
 
-        ArrayList<ImageButton> stars = new ArrayList<>();
-
         TextView userName = vista.findViewById(R.id.userName);
-        TextView userLevel = vista.findViewById(R.id.userLevel);
+        TextView lastTime = vista.findViewById(R.id.lastTimeCon);
         Button add = vista.findViewById(R.id.addButton);
-        ImageButton star1 = vista.findViewById(R.id.star1);
-        ImageButton star2 = vista.findViewById(R.id.star2);
-        ImageButton star3 = vista.findViewById(R.id.star3);
-        ImageButton star4 = vista.findViewById(R.id.star4);
-        ImageButton star5 = vista.findViewById(R.id.star5);
-
-        stars.add(star1);
-        stars.add(star2);
-        stars.add(star3);
-        stars.add(star4);
-        stars.add(star5);
 
         userName.setText(deports.get(position).getNombre());
-        String popularity = deports.get(position).getNivelHabilidad();
-        userLevel.setText(popularity);
-        if(popularity.equals("Bueno")){
-            userLevel.setTextColor(Color.GREEN);
-        }else if(popularity.equals("Regular")){
-            userLevel.setTextColor(Color.YELLOW);
-        }else if(popularity.equals("Malo")){
-            userLevel.setTextColor(Color.RED);
-        }
-
-        setStars(deports.get(position),stars);
+        lastTime.setText("Ultima vez conectado \n 02/04/2020");
 
         if(enParticipantes){
-            add.setText("Agregar");
+            add.setText("Agregar a mis amigos");
+            add.setBackgroundResource(R.drawable.boton_general3);
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -92,27 +68,20 @@ public class DeportistaAdapter extends BaseAdapter {
 
         }else if(invitarAmigos){
             add.setText("Invitar");
+            add.setBackgroundResource(R.drawable.boton_general);
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(v.getContext(),"Amigo agregado al evento",Toast.LENGTH_LONG).show();
                 }
             });
-        }else{
-            add.setVisibility(View.GONE);
-            star1.setClickable(false);
-            star2.setClickable(false);
-            star3.setClickable(false);
-            star4.setClickable(false);
-            star5.setClickable(false);
+        }else if(!enParticipantes && !invitarAmigos){
+            add.setVisibility(View.INVISIBLE);
+            add.setClickable(false);
         }
 
         return vista;
     }
 
-    public void setStars(Deportista toSet, ArrayList<ImageButton> stars){
-        for(int i = 0; i < Math.round(toSet.getPopularidad()); i++){
-            stars.get(i).setImageResource(R.drawable.icons8_star_30px);
-        }
-    }
+
 }
