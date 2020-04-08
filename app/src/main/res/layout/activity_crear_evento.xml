@@ -1,112 +1,289 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    android:fillViewport="true"
     tools:context=".CrearEvento">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            android:gravity="center_horizontal"
-            android:layout_marginStart="4dp">
+            android:background="@android:color/transparent"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_light_rounded"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/textViewNameEvent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/event_name"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/nombre"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/event_name_hint"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+                <TextView
+                    android:id="@+id/textViewDescriptionEvent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/event_description"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/descripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Descripcion del evento"
+                    android:inputType="textMultiLine"
+                    android:lines="1"
+                    android:scrollbars="vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+                <TextView
+                    android:id="@+id/textViewSportEvent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="@string/event_sport"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/deporte"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="60dp"
+                    android:layout_weight="0.6"
+                    android:entries="@array/Deportes"
+                    android:hint="Deporte a jugar" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+
+                <TextView
+                    android:id="@+id/textViewDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="@string/event_date"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/fecha"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="60dp"
+                    android:layout_weight="0.6"
+                    android:ems="10"
+                    android:hint="Fecha (DD/MM/AA)"
+                    android:inputType="date" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+
+                <TextView
+                    android:id="@+id/textViewHourEvent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="@string/event_hour"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/hora"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="60dp"
+                    android:layout_weight="0.6"
+                    android:ems="10"
+                    android:hint="Hora (HH:MM)"
+                    android:inputType="time" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
+
+                <TextView
+                    android:id="@+id/textViewCapacityEvent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="@string/event_capacity"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/cupos"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="60dp"
+                    android:layout_weight="0.6"
+                    android:ems="10"
+                    android:hint="Cupos disponibles"
+                    android:inputType="numberSigned" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
+
+                <TextView
+                    android:id="@+id/textViewLevelEvent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="@string/event_level"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/habilidad"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="60dp"
+                    android:layout_weight="0.6"
+                    android:entries="@array/Habilidad" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+
+                <TextView
+                    android:id="@+id/textViewCostEvent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="@string/event_cost"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/precio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="60dp"
+                    android:layout_weight="0.6"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:text="0.00" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout10">
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_weight="1"
+                    android:text="Publicar" />
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_weight="1"
+                    android:text="Seleccionar Ubicación" />
+            </LinearLayout>
 
 
-            <EditText
-                android:id="@+id/nombre"
-                android:layout_width="333dp"
-                android:layout_height="64dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="12dp"
-                android:ems="10"
-                android:hint="Nombre del evento"
-                android:inputType="textPersonName" />
-
-
-            <EditText
-                android:id="@+id/descripcion"
-                android:layout_width="351dp"
-                android:layout_height="114dp"
-                android:ems="10"
-                android:hint="Descripcion del evento"
-                android:inputType="textMultiLine"
-                android:lines="5"
-                android:scrollbars="vertical" />
-
-            <Spinner
-                android:id="@+id/deporte"
-                android:layout_width="231dp"
-                android:layout_height="48dp"
-                android:entries="@array/Deportes"
-                android:hint="Deporte a jugar" />
-
-            <Button
-                android:id="@+id/fecha"
-                android:layout_width="168dp"
-                android:layout_height="47dp"
-                android:layout_marginTop="24dp"
-                android:ems="10"
-                android:hint="Fecha (DD/MM/AA)"
-                android:inputType="date" />
-
-            <Button
-                android:id="@+id/hora"
-                android:layout_width="167dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="23dp"
-                android:ems="10"
-                android:hint="Hora (HH:MM)"
-                android:inputType="time" />
-
-            <EditText
-                android:id="@+id/cupos"
-                android:layout_width="168dp"
-                android:layout_height="47dp"
-                android:layout_marginTop="16dp"
-                android:ems="10"
-                android:hint="Cupos disponibles"
-                android:inputType="numberSigned" />
-
-            <Spinner
-                android:id="@+id/habilidad"
-                android:layout_width="245dp"
-                android:layout_height="44dp"
-                android:entries="@array/Habilidad" />
-
-            <EditText
-                android:id="@+id/precio"
-                android:layout_width="193dp"
-                android:layout_height="56dp"
-                android:ems="10"
-                android:inputType="number"
-                android:hint="Precio (COP)"/>
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="258dp"
-                android:layout_height="75dp"
-                android:layout_weight="1"
-                android:text="Seleccionar Ubicación" />
-
-            <Button
-
-                android:id="@+id/button"
-                android:layout_width="261dp"
-                android:layout_height="69dp"
-                android:layout_weight="1"
-                android:text="Publicar" />
-
-        </LinearLayout>
-    </ScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</ScrollView>
