@@ -45,7 +45,7 @@ public class OpinionesAdapter extends BaseAdapter {
         TextView nombreUsuario = (TextView)convertView.findViewById(R.id.userDelComentario);
 
         comentario.setText(opiniones.get(position).getDescripcion());
-        nombreUsuario.setText("por: "+opiniones.get(position).getRemitente().getNombre());
+        nombreUsuario.setText("por: "+opiniones.get(position).getRemitente().getNombreUsuario());
 
         //Faltaria funcionalidad para calcular las estrellas
         return convertView;

@@ -49,7 +49,7 @@ public class EventosAdapter extends BaseAdapter {
 
         //idEvento.setText(eventos.get(position).getID());
         idEvento.setText(Integer.toString(eventos.get(position).getID()));
-        nombreEvento.setText(eventos.get(position).getDeporte());
+        nombreEvento.setText(eventos.get(position).getDeporte().getNombre());
     /*
         if(eventos.get(position).isPrivado()){
             infoEvento.setBackgroundColor(ContextCompat.getColor(parent.getContext(), R.color.colorPrivateEvent));

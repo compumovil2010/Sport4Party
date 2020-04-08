@@ -9,9 +9,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.sport4party.Modelo.Deportista;
+import com.example.sport4party.Modelo.Jugador;
 import com.example.sport4party.Modelo.Opinion;
+import com.example.sport4party.Modelo.Ubicacion;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class InformacionLugar extends AppCompatActivity {
 
@@ -43,11 +46,10 @@ public class InformacionLugar extends AppCompatActivity {
         Deportista perfil1 = new Deportista(0, "Brandonn Cruz", "Bueno", 5);
         Deportista perfil2 = new Deportista(0, "Santiago Chaparro", "Bueno", 5);
 
-        Opinion opinion1 = new Opinion(5f, "Que emocionate");
-        Opinion opinion2 = new Opinion(5f, "Un lugar excelente");
-
-        opinion1.setRemitente(perfil1);
-        opinion2.setRemitente(perfil2);
+        Ubicacion ubicacionPa = new Ubicacion("ubicacion de prueba", new Date(), (long)0, (long) 0, true);
+        Jugador remitente = new Jugador("asd", "asd", "Pepito Perez", "Masculino");
+        Opinion opinion1 = new Opinion(5f, "Que emocionate", ubicacionPa, remitente);
+        Opinion opinion2 = new Opinion(5f, "Un lugar excelente", ubicacionPa, remitente);
 
         opns.add(opinion1);
         opns.add(opinion2);

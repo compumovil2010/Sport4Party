@@ -7,7 +7,6 @@ import java.util.List;
 public class Ubicacion implements Serializable {
 
     private String descripcion;
-    private Date horario;
     private Long latitud;
     private Long Longitud;
     private boolean valida;
@@ -17,14 +16,12 @@ public class Ubicacion implements Serializable {
     //Constructor
     public Ubicacion(String descripcion, Date horario, Long latitud, Long longitud, boolean valida) {
         this.descripcion = descripcion;
-        this.horario = horario;
         this.latitud = latitud;
         Longitud = longitud;
         this.valida = valida;
     }
     public Ubicacion(String descripcion, Date horario, Long latitud, Long longitud, boolean valida, List<Deporte> deportesDisponibles) {
         this.descripcion = descripcion;
-        this.horario = horario;
         this.latitud = latitud;
         Longitud = longitud;
         this.valida = valida;
@@ -42,12 +39,6 @@ public class Ubicacion implements Serializable {
     }
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-    public Date getHorario() {
-        return horario;
-    }
-    public void setHorario(Date horario) {
-        this.horario = horario;
     }
     public Long getLatitud() {
         return latitud;

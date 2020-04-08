@@ -3,8 +3,10 @@ package com.example.sport4party;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.sport4party.Modelo.Deporte;
 import com.example.sport4party.Modelo.Deportista;
 import com.example.sport4party.Modelo.Evento;
+import com.example.sport4party.Modelo.Ubicacion;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -31,6 +33,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Mapa extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -110,9 +113,12 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         }else if(id == R.id.nav_mis_eventos){
             Intent change = new Intent(this, misEventos.class);
             Deportista miPerfil = new Deportista(0, "Mael", "Bueno", 5);
-            Evento evento = new Evento(10, "atletismo", null, 0, "bueno", true,false);
+
+            Deporte futbol = new Deporte(10, "Futbol");
+            Ubicacion ubicacion = new Ubicacion("ubicacion de prueba", new Date(), (long)0, (long) 0, true);
+            Evento evento = new Evento(10, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, futbol, ubicacion);
             miPerfil.addEvento(evento);
-            Evento evento2 = new Evento(10, "atletismo2", null, 1, "bueno", true,true);
+            Evento evento2 = new Evento(10, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, futbol, ubicacion);
             miPerfil.addEvento(evento2);
             change.putExtra("deportista",miPerfil);
             startActivity(change);
@@ -120,9 +126,12 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         }else if(id == R.id.nav_mi_perfil){
             Intent change = new Intent(this, Perfil.class);
             Deportista miPerfil = new Deportista(0, "Mael", "Bueno", 5);
-            Evento evento = new Evento(10, "atletismo", null, 0, "bueno", true, false);
+
+            Deporte futbol = new Deporte(10, "Futbol");
+            Ubicacion ubicacion = new Ubicacion("ubicacion de prueba", new Date(), (long)0, (long) 0, true);
+            Evento evento = new Evento(10, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, futbol, ubicacion);
             miPerfil.addEvento(evento);
-            Evento evento2 = new Evento(10, "atletismo2", null, 1, "bueno", true, true);
+            Evento evento2 = new Evento(10, "atletismo2", new Date(),"bueno", "Evento 2", "2000 pesos", false, futbol, ubicacion);
             miPerfil.addEvento(evento2);
             change.putExtra("deportista", miPerfil);
             change.putExtra("tipo", "0");
