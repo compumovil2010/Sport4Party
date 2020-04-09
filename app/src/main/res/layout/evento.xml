@@ -10,7 +10,7 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/textViewNumero"
+        android:id="@+id/idEventoList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -21,10 +21,10 @@
         android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNombreEvento" />
+        app:layout_constraintTop_toBottomOf="@+id/nombreEventoList" />
 
     <TextView
-        android:id="@+id/textViewNombreEvento"
+        android:id="@+id/nombreEventoList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -38,7 +38,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/buttonVer"
+        android:id="@+id/botonInfoEventoList"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_marginTop="8dp"

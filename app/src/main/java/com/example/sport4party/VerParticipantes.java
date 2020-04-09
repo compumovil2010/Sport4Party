@@ -9,8 +9,7 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.sport4party.Modelo.Deportista;
-import com.example.sport4party.Modelo.Evento;
+import com.example.sport4party.Modelo.Jugador;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,8 +19,8 @@ public class VerParticipantes extends AppCompatActivity {
     Button invitarAmigos;
     Button localizar;
     ListView listaAsistentes;
-    DeportistaAdapter adapter;
-    ArrayList<Deportista> participantes;
+    JugadorAdapter adapter;
+    ArrayList<Jugador> participantes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,10 +34,10 @@ public class VerParticipantes extends AppCompatActivity {
         final Bundle info = getIntent().getBundleExtra("listaParticipantes");
 
         //Asigno la lista de participantes al ArrayList que va a manejar el adaptador
-        participantes = (ArrayList<Deportista>) info.getSerializable("participantes");
+        participantes = (ArrayList<Jugador>) info.getSerializable("participantes");
 
 
-        adapter = new DeportistaAdapter(getApplicationContext(), participantes,true, false);
+        adapter = new JugadorAdapter(getApplicationContext(), participantes,true, false);
         listaAsistentes.setAdapter(adapter);
 
         invitarAmigos.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +46,7 @@ public class VerParticipantes extends AppCompatActivity {
                 Intent intentInvitarAmigos = new Intent(v.getContext(), InvitarAmigos.class);
                 Bundle extaInfo = new Bundle();
                 //Se debería incluir la capacidad máxima del evento, con el fin de que al agregar no se pase del límite establecido
-                //Amigos debería ser la lista de Deportistas que tiene el usuario actual
+                //Amigos debería ser la lista de Jugador que tiene el usuario actual
                 extaInfo.putSerializable("amigos", (Serializable) participantes);
                 intentInvitarAmigos.putExtra("listaDeAmigos",extaInfo);
                 startActivity(intentInvitarAmigos);
@@ -58,8 +57,8 @@ public class VerParticipantes extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent infoPerfil = new Intent(view.getContext(), Perfil.class);
-                Deportista miPerfil = participantes.get(position);
-                infoPerfil.putExtra("deportista", miPerfil);
+                Jugador miPerfil = participantes.get(position);
+                infoPerfil.putExtra("jugador", miPerfil);
                 infoPerfil.putExtra("tipo", "2");
                 startActivity(infoPerfil);
             }

@@ -1,20 +1,17 @@
 package com.example.sport4party;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.media.Image;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
-import android.widget.Button;
 
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.sport4party.Modelo.Deportista;
+import com.example.sport4party.Modelo.Jugador;
 
 import java.util.ArrayList;
 
@@ -31,7 +28,7 @@ public class InformacionEvento extends AppCompatActivity {
     ImageButton inscribirse;
     ImageButton participantes;
     ImageButton chatB;
-    ArrayList<Deportista>deportistas;
+    ArrayList<Jugador> jugadores;
     void inflate()
     {
         nombre=(TextView)findViewById(R.id.nombreEvento);
@@ -114,18 +111,18 @@ public class InformacionEvento extends AppCompatActivity {
         participantes.setOnClickListener(new View.OnClickListener() {
                                            @Override
                                            public void onClick(View v) {
-                                               deportistas = new ArrayList<>();
-                                               deportistas.add(new Deportista(1,"Juan Francisco Hamon", "Bueno", 4f));
-                                               deportistas.add(new Deportista(2,"Diego Barajas", "Regular", 3f));
-                                               deportistas.add(new Deportista(3,"Brandonn Cruz", "Malo", 2f));
-                                               deportistas.add(new Deportista(4,"Santiago Chaparro", "Bueno", 5f));
-                                               deportistas.add(new Deportista(5,"Pedro Fernandez", "Bueno", 4f));
-                                               deportistas.add(new Deportista(6,"Santiago Herrera", "Regular", 3f));
-                                               deportistas.add(new Deportista(7,"Carlos Orduz", "Malo", 2f));
-                                               deportistas.add(new Deportista(8,"Diego Ignacio Martinez", "Bueno", 5f));
+                                               jugadores = new ArrayList<>();
+                                               jugadores.add(new Jugador("asd","asd", "Juan Francisco Hamon", "Masculino"));
+                                               jugadores.add(new Jugador("asd","asd", "Diego Barajas", "Masculino"));
+                                               jugadores.add(new Jugador("asd","asd", "Brandonn Cruz", "Masculino"));
+                                               jugadores.add(new Jugador("asd","asd", "Santiago Chaparro", "Masculino"));
+                                               jugadores.add(new Jugador("asd","asd", "Pedro Fernandez", "Masculino"));
+                                               jugadores.add(new Jugador("asd","asd", "Santiago Herrera", "Masculino"));
+                                               jugadores.add(new Jugador("asd","asd", "Carlos Orduz", "Masculino"));
+                                               jugadores.add(new Jugador("asd","asd", "Diego Ignacio Martinez", "Masculino"));
                                                Intent participantes =new Intent(v.getContext(), VerParticipantes.class);
                                                Bundle info = new Bundle();
-                                               info.putSerializable("participantes",deportistas);
+                                               info.putSerializable("participantes", jugadores);
                                                participantes.putExtra("listaParticipantes",info);
                                                startActivity(participantes);
                                            }

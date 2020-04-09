@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 
-import com.example.sport4party.Modelo.Deportista;
+import com.example.sport4party.Modelo.Jugador;
 
 public class misEventos extends AppCompatActivity {
     private EventosAdapter eventosAdapter;
     private ListView listEventos;
-    private Deportista perfil;
+    private Jugador perfil;
     private int tipo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +19,7 @@ public class misEventos extends AppCompatActivity {
         setContentView(R.layout.activity_mis_eventos);
         listEventos = (ListView)findViewById(R.id.listViewEventos);
         Intent intent = getIntent();
-        perfil = (Deportista) intent.getSerializableExtra("deportista");
+        perfil = (Jugador) intent.getSerializableExtra("jugador");
     }
     protected void onResume() {
         super.onResume();
@@ -30,7 +30,7 @@ public class misEventos extends AppCompatActivity {
                 actualizarEventosUsuario();
     }
     private void actualizarEventosUsuario(){
-        eventosAdapter = new EventosAdapter(this, perfil.getEventos());
+        eventosAdapter = new EventosAdapter(this, perfil.getEventos(), true, false);
         listEventos.setAdapter(eventosAdapter);
     }
 

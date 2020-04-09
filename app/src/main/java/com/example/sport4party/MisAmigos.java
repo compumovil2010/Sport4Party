@@ -8,15 +8,15 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.sport4party.Modelo.Deportista;
+import com.example.sport4party.Modelo.Jugador;
 
 import java.util.ArrayList;
 
 public class MisAmigos extends AppCompatActivity {
 
     ListView misAmigos;
-    DeportistaAdapter adapter;
-    ArrayList<Deportista> amigos;
+    JugadorAdapter adapter;
+    ArrayList<Jugador> amigos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,17 +28,17 @@ public class MisAmigos extends AppCompatActivity {
         //Extraigo el Bundle con la información de los amigos del usuario actual
         Bundle info = getIntent().getBundleExtra("listaAmigos");
         //Asigno la lista de amigos al ArrayList que va a manejar el adaptador
-        amigos = (ArrayList<Deportista>) info.getSerializable("amigos");
+        amigos = (ArrayList<Jugador>) info.getSerializable("amigos");
 
-        adapter = new DeportistaAdapter(this, amigos, false, false);
+        adapter = new JugadorAdapter(this, amigos, false, false);
         misAmigos.setAdapter(adapter);
 
         misAmigos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent infoPerfil = new Intent(view.getContext(), Perfil.class);
-                Deportista miPerfil = amigos.get(position);
-                infoPerfil.putExtra("deportista", miPerfil);
+                Jugador miPerfil = amigos.get(position);
+                infoPerfil.putExtra("jugador", miPerfil);
                 infoPerfil.putExtra("tipo", "1");
                 startActivity(infoPerfil);
             }

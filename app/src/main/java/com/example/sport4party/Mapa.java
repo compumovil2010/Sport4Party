@@ -4,21 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.sport4party.Modelo.Deporte;
-import com.example.sport4party.Modelo.Deportista;
 import com.example.sport4party.Modelo.Evento;
+import com.example.sport4party.Modelo.Jugador;
 import com.example.sport4party.Modelo.Ubicacion;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -27,7 +22,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -38,7 +32,7 @@ import java.util.Date;
 public class Mapa extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private AppBarConfiguration mAppBarConfiguration;
-    ArrayList<Deportista> deportistas;
+    ArrayList<Jugador> jugadores;
 
     Spinner hora;
     Spinner deportes;
@@ -96,44 +90,46 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(change);
         }
         else if (id == R.id.nav_mis_amigos){
-            deportistas = new ArrayList<>();
-            deportistas.add(new Deportista(1,"Juan Francisco Hamon", "Bueno", 4f));
-            deportistas.add(new Deportista(2,"Diego Barajas", "Regular", 3f));
-            deportistas.add(new Deportista(3,"Brandonn Cruz", "Malo", 2f));
-            deportistas.add(new Deportista(4,"Santiago Chaparro", "Bueno", 5f));
-            deportistas.add(new Deportista(5,"Pedro Fernandez", "Bueno", 4f));
-            deportistas.add(new Deportista(6,"Santiago Herrera", "Regular", 3f));
-            deportistas.add(new Deportista(7,"Carlos Orduz", "Malo", 2f));
-            deportistas.add(new Deportista(8,"Diego Ignacio Martinez", "Bueno", 5f));
+            jugadores = new ArrayList<>();
+            jugadores.add(new Jugador("asd","asd", "Juan Francisco Hamon", "Masculino"));
+            jugadores.add(new Jugador("asd","asd", "Diego Barajas", "Masculino"));
+            jugadores.add(new Jugador("asd","asd", "Brandonn Cruz", "Masculino"));
+            jugadores.add(new Jugador("asd","asd", "Santiago Chaparro", "Masculino"));
+            jugadores.add(new Jugador("asd","asd", "Pedro Fernandez", "Masculino"));
+            jugadores.add(new Jugador("asd","asd", "Santiago Herrera", "Masculino"));
+            jugadores.add(new Jugador("asd","asd", "Carlos Orduz", "Masculino"));
+            jugadores.add(new Jugador("asd","asd", "Diego Ignacio Martinez", "Masculino"));
             Intent change = new Intent(this, MisAmigos.class);
             Bundle info = new Bundle();
-            info.putSerializable("amigos",deportistas);
+            info.putSerializable("amigos", jugadores);
             change.putExtra("listaAmigos",info);
             startActivity(change);
         }else if(id == R.id.nav_mis_eventos){
             Intent change = new Intent(this, misEventos.class);
-            Deportista miPerfil = new Deportista(0, "Mael", "Bueno", 5);
+            Jugador miPerfil = new Jugador("asd", "asd", "Mael", "Masculino");
 
             Deporte futbol = new Deporte(10, "Futbol");
+            Deporte patinaje = new Deporte(10,"Patinaje");
             Ubicacion ubicacion = new Ubicacion("ubicacion de prueba", new Date(), (long)0, (long) 0, true);
-            Evento evento = new Evento(10, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, futbol, ubicacion);
-            miPerfil.addEvento(evento);
-            Evento evento2 = new Evento(10, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, futbol, ubicacion);
-            miPerfil.addEvento(evento2);
-            change.putExtra("deportista",miPerfil);
+            Evento evento1 = new Evento(10, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, true, futbol, ubicacion);
+            miPerfil.addEventos(evento1);
+            Evento evento2 = new Evento(20, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, true, patinaje, ubicacion);
+            miPerfil.addEventos(evento2);
+            change.putExtra("jugador",miPerfil);
             startActivity(change);
 
         }else if(id == R.id.nav_mi_perfil){
             Intent change = new Intent(this, Perfil.class);
-            Deportista miPerfil = new Deportista(0, "Mael", "Bueno", 5);
+            Jugador miPerfil = new Jugador("asd", "asd", "Mael", "Masculino");
 
             Deporte futbol = new Deporte(10, "Futbol");
+            Deporte patinaje = new Deporte(10,"Patinaje");
             Ubicacion ubicacion = new Ubicacion("ubicacion de prueba", new Date(), (long)0, (long) 0, true);
-            Evento evento = new Evento(10, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, futbol, ubicacion);
-            miPerfil.addEvento(evento);
-            Evento evento2 = new Evento(10, "atletismo2", new Date(),"bueno", "Evento 2", "2000 pesos", false, futbol, ubicacion);
-            miPerfil.addEvento(evento2);
-            change.putExtra("deportista", miPerfil);
+            Evento evento = new Evento(1, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, true, futbol, ubicacion);
+            miPerfil.addEventos(evento);
+            Evento evento2 = new Evento(2, "atletismo2", new Date(),"bueno", "Evento 2", "2000 pesos", false, false, patinaje, ubicacion);
+            miPerfil.addEventos(evento2);
+            change.putExtra("jugador", miPerfil);
             change.putExtra("tipo", "0");
             startActivity(change);
         }else if(id == R.id.nav_cerrar_sesion){

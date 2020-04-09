@@ -8,22 +8,22 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.sport4party.Modelo.Deportista;
+import com.example.sport4party.Modelo.Jugador;
 
 import java.util.ArrayList;
 
 
-public class DeportistaAdapter extends BaseAdapter {
+public class JugadorAdapter extends BaseAdapter {
 
     private Context aContext;
-    //Lista de deportistas que maneja el adaptador
-    private ArrayList<Deportista> deports;
+    //Lista de jugadores que maneja el adaptador
+    private ArrayList<Jugador> deports;
     //Boolean para indicar si se va a desplegar en pantalla de Ver participantes
     private boolean enParticipantes;
     //Boolena para indicar si se va a desplegar en pantalla de Invitar amigos
     private boolean invitarAmigos;
 
-    public DeportistaAdapter(Context nContext, ArrayList<Deportista>nDeports, boolean nparticipantes, boolean ninvitar){
+    public JugadorAdapter(Context nContext, ArrayList<Jugador>nDeports, boolean nparticipantes, boolean ninvitar){
         this.aContext = nContext;
         this.deports = nDeports;
         this.enParticipantes = nparticipantes;
@@ -53,7 +53,7 @@ public class DeportistaAdapter extends BaseAdapter {
         TextView lastTime = vista.findViewById(R.id.lastTimeCon);
         Button add = vista.findViewById(R.id.addButton);
 
-        userName.setText(deports.get(position).getNombre());
+        userName.setText(deports.get(position).getNombreUsuario());
         lastTime.setText("Ultima vez conectado \n 02/04/2020");
 
         if(enParticipantes){

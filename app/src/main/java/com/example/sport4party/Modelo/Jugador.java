@@ -3,6 +3,7 @@ package com.example.sport4party.Modelo;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Jugador extends Usuario {
@@ -17,9 +18,17 @@ public class Jugador extends Usuario {
     //Constructores
     public Jugador(String contraseña, String correo, String nombreUsuario, String sexo) {
         super(contraseña, correo, nombreUsuario, sexo);
+        amigos = new ArrayList<>();
+        enviados = new ArrayList<>();
+        opiniones = new ArrayList<>();
+        eventos = new ArrayList<>();
     }
     public Jugador(String contraseña, String correo, Bitmap imagenPerfil, String nombreUsuario, String sexo) {
         super(contraseña, correo, imagenPerfil, nombreUsuario, sexo);
+        amigos = new ArrayList<>();
+        enviados = new ArrayList<>();
+        opiniones = new ArrayList<>();
+        eventos = new ArrayList<>();
     }
 
     //adders

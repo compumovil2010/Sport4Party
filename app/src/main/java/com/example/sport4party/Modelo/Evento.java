@@ -12,12 +12,13 @@ public class Evento implements Serializable {
     private String nombre;
     private String precio;
     private boolean pago;
+    private boolean privado;
     //relaciones
     private Deporte deporte;
     private Ubicacion ubicacion;
 
     //Constructor
-    public Evento(int ID, String descripcion, Date fecha, String nivelHabilidad, String nombre, String precio, boolean pago, Deporte deporte, Ubicacion ubicacion) {
+    public Evento(int ID, String descripcion, Date fecha, String nivelHabilidad, String nombre, String precio, boolean pago, boolean privado, Deporte deporte, Ubicacion ubicacion) {
         this.ID = ID;
         this.descripcion = descripcion;
         this.fecha = fecha;
@@ -25,6 +26,7 @@ public class Evento implements Serializable {
         this.nombre = nombre;
         this.precio = precio;
         this.pago = pago;
+        this.privado = privado;
         this.deporte = deporte;
         this.ubicacion = ubicacion;
     }
@@ -71,6 +73,12 @@ public class Evento implements Serializable {
     }
     public void setPago(boolean pago) {
         this.pago = pago;
+    }
+    public boolean isPrivado() {
+        return privado;
+    }
+    public void setPrivado(boolean privado) {
+        this.privado = privado;
     }
     public Deporte getDeporte() {
         return deporte;

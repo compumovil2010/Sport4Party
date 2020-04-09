@@ -18,10 +18,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.sport4party.Modelo.Deportista;
+import com.example.sport4party.Modelo.Jugador;
 
 public class Perfil extends AppCompatActivity {
-    private Deportista perfil;
+    private Jugador perfil;
     private int tipo;
     private TextView nombreUsuario;
     private TextView nivel;
@@ -65,13 +65,13 @@ public class Perfil extends AppCompatActivity {
 
                 final EditText input = new EditText(v.getContext());
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
-                input.setText(perfil.getNombre());
+                input.setText(perfil.getNombreUsuario());
                 builder.setView(input);
 
                 builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        perfil.setNombre(input.getText().toString());
+                        perfil.setNombreUsuario(input.getText().toString());
                         actualizar();
                     }
                 });
@@ -86,7 +86,7 @@ public class Perfil extends AppCompatActivity {
             }
         });
         Intent intent = getIntent();
-        perfil = (Deportista) intent.getSerializableExtra("deportista");
+        perfil = (Jugador) intent.getSerializableExtra("jugador");
         tipo = Integer.parseInt(intent.getStringExtra("tipo"));
         listEventos = (ListView)findViewById(R.id.listViewEventos);
     }
@@ -98,9 +98,9 @@ public class Perfil extends AppCompatActivity {
     }
 
     private void actualizar() {
-        nombreUsuario.setText(perfil.getNombre());
+        nombreUsuario.setText(perfil.getNombreUsuario());
         nivel.setText(Double.toString(4.5));
-        amigos.setText(Integer.toString(perfil.sizeAmigos()));
+        amigos.setText(Integer.toString(perfil.getAmigos().size()));
         switch (tipo) {
             case 0: {
                 miPerfilVista();
@@ -127,7 +127,7 @@ public class Perfil extends AppCompatActivity {
     }
 
     private void amigoVista() {
-        editEvent.setText("Eventos de "+perfil.getNombre());
+        editEvent.setText("Eventos de "+perfil.getNombreUsuario());
         buttonEventos.setVisibility(View.GONE);
         toAdd.setText("Eliminar de mis amigos");
         toAdd.setBackgroundResource(R.drawable.boton_general2);
@@ -136,7 +136,7 @@ public class Perfil extends AppCompatActivity {
     }
 
     private  void otherVista(){
-        editEvent.setText("Eventos de "+perfil.getNombre());
+        editEvent.setText("Eventos de "+perfil.getNombreUsuario());
         buttonEventos.setVisibility(View.GONE);
         toAdd.setText("Agregar a mis amigos");
         toAdd.setBackgroundResource(R.drawable.boton_general3);
@@ -144,7 +144,7 @@ public class Perfil extends AppCompatActivity {
         buttonPreferencias.setClickable(false);
     }
     private void actualizarEventosUsuario(){
-        eventosAdapter = new EventosAdapter(this, perfil.getEventos());
+        eventosAdapter = new EventosAdapter(this, perfil.getEventos(), false, true);
         listEventos.setAdapter(eventosAdapter);
     }
 }

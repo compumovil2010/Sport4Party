@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.sport4party.Modelo.Deportista;
 import com.example.sport4party.Modelo.Jugador;
 import com.example.sport4party.Modelo.Opinion;
 import com.example.sport4party.Modelo.Ubicacion;
@@ -43,13 +42,11 @@ public class InformacionLugar extends AppCompatActivity {
         deportesDisp.setText("Futbol y baloncesto");
         horario.setText("Lunes a Sabado 8 a.m - 7 p.m");
 
-        Deportista perfil1 = new Deportista(0, "Brandonn Cruz", "Bueno", 5);
-        Deportista perfil2 = new Deportista(0, "Santiago Chaparro", "Bueno", 5);
-
         Ubicacion ubicacionPa = new Ubicacion("ubicacion de prueba", new Date(), (long)0, (long) 0, true);
-        Jugador remitente = new Jugador("asd", "asd", "Pepito Perez", "Masculino");
+        Jugador remitente = new Jugador("asd", "asd", "Brandonn Cruz", "Masculino");
+        Jugador remitente2 = new Jugador("asd", "asd", "Santiago Chaparro", "Masculino");
         Opinion opinion1 = new Opinion(5f, "Que emocionate", ubicacionPa, remitente);
-        Opinion opinion2 = new Opinion(5f, "Un lugar excelente", ubicacionPa, remitente);
+        Opinion opinion2 = new Opinion(5f, "Un lugar excelente", ubicacionPa, remitente2);
 
         opns.add(opinion1);
         opns.add(opinion2);

@@ -8,15 +8,15 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.sport4party.Modelo.Deportista;
+import com.example.sport4party.Modelo.Jugador;
 
 import java.util.ArrayList;
 
 public class InvitarAmigos extends AppCompatActivity {
 
     ListView inivitarAmigos;
-    ArrayList<Deportista> friends;
-    DeportistaAdapter adapter;
+    ArrayList<Jugador> friends;
+    JugadorAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,9 +29,9 @@ public class InvitarAmigos extends AppCompatActivity {
         Bundle bundleInfo = getIntent().getBundleExtra("listaDeAmigos");
 
         //Asigno la lista de amigos al ArrayList que va a manejar el adaptador
-        friends = (ArrayList<Deportista>) bundleInfo.getSerializable("amigos");
+        friends = (ArrayList<Jugador>) bundleInfo.getSerializable("amigos");
 
-        adapter = new DeportistaAdapter(getApplicationContext(), friends, false, true);
+        adapter = new JugadorAdapter(getApplicationContext(), friends, false, true);
         inivitarAmigos.setAdapter(adapter);
 
         //Funcionalidad que debe "evitar" que el usuario añada a amigos que ya estén inscritos en el evento
@@ -41,8 +41,8 @@ public class InvitarAmigos extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent infoPerfil = new Intent(view.getContext(), Perfil.class);
-                Deportista miPerfil = friends.get(position);
-                infoPerfil.putExtra("deportista", miPerfil);
+                Jugador miPerfil = friends.get(position);
+                infoPerfil.putExtra("jugador", miPerfil);
                 infoPerfil.putExtra("tipo", "1");
                 startActivity(infoPerfil);
             }
