@@ -16,6 +16,7 @@ import androidx.core.view.GravityCompat;
 import androidx.navigation.ui.AppBarConfiguration;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -32,15 +33,18 @@ import java.util.Date;
 public class Mapa extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private AppBarConfiguration mAppBarConfiguration;
+    private FirebaseAuth mAuth;
     ArrayList<Jugador> jugadores;
 
     Spinner hora;
     Spinner deportes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);
 
+        mAuth = FirebaseAuth.getInstance();
         hora = findViewById(R.id.spinnerHour);
 
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.hours, R.layout.text_color_spinner_deportes);
@@ -133,9 +137,12 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             change.putExtra("tipo", "0");
             startActivity(change);
         }else if(id == R.id.nav_cerrar_sesion){
+            mAuth.signOut();
             Intent change = new Intent(this, InicioDeSesión.class);
+            change.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             Toast.makeText(this,"Sesion cerrada",Toast.LENGTH_LONG).show();
             startActivity(change);
+            finish();
         }
         //Agregar todos los Intents
 
@@ -145,9 +152,9 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     public void toInformacionEvento(View v){
-            Intent intent = new Intent(v.getContext(), InformacionEvento.class);
-            intent.putExtra("pantalla",1);
-            startActivity(intent);
+        Intent intent = new Intent(v.getContext(), InformacionEvento.class);
+        intent.putExtra("pantalla",1);
+        startActivity(intent);
     }
 
 }

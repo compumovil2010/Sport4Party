@@ -140,6 +140,7 @@
             android:background="@drawable/boton_general"
             android:padding="20dp"
             android:text="Registrarse"
+            android:onClick="registro"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
