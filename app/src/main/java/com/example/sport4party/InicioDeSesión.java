@@ -95,7 +95,7 @@ public class InicioDeSesión extends AppCompatActivity{
             valid = false;
         }
         else{
-            Pattern direccionCorrecta = Pattern.compile("^*@*.*");
+            Pattern direccionCorrecta = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
             Matcher analisis = direccionCorrecta.matcher(email);
             if(!analisis.find()){
                 mUser.setError("Direccion no valida");
