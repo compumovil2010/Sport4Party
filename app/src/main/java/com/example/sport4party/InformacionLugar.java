@@ -42,7 +42,7 @@ public class InformacionLugar extends AppCompatActivity {
         deportesDisp.setText("Futbol y baloncesto");
         horario.setText("Lunes a Sabado 8 a.m - 7 p.m");
 
-        Ubicacion ubicacionPa = new Ubicacion("ubicacion de prueba", new Date(), (long)0, (long) 0, true);
+        Ubicacion ubicacionPa = new Ubicacion("ubicacion de prueba", new Date(), new Double(0), new Double(0), true);
         Jugador remitente = new Jugador("asd", "asd", "Brandonn Cruz", "Masculino");
         Jugador remitente2 = new Jugador("asd", "asd", "Santiago Chaparro", "Masculino");
         Opinion opinion1 = new Opinion(5f, "Que emocionate", ubicacionPa, remitente);

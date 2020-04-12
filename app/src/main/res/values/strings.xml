@@ -75,5 +75,6 @@
 
     <string name="event_create">Nuevo Evento</string>
     <string name="event_myList">Mis Eventos</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
