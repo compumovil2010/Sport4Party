@@ -14,6 +14,8 @@
         <item>Basico</item>
     </string-array>
 
+    <string name="rutas_yolo">Ir a rutas</string>
+
     <string name="profile_level">Nivel de habilidad:</string>
     <string name="profile_popularity">Popularidad:</string>
     <string name="profile_friends">Amigos:</string>

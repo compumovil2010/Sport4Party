@@ -177,6 +177,9 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             Intent change = new Intent(this, InicioDeSesión.class);
             Toast.makeText(this,"Sesion cerrada",Toast.LENGTH_LONG).show();
             startActivity(change);
+        }else if(id == R.id.nav_rutas){
+            Intent change = new Intent(this, RutaEvento.class);
+            startActivity(change);
         }
         //Agregar todos los Intents
 
@@ -210,14 +213,11 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     public void loadMarkers(List<Evento> eventos){
 
         for (Evento evento: eventos) {
-
             if(!evento.isPrivado() && evento.getUbicacion().isValida()){
                 LatLng position = new LatLng(evento.getUbicacion().getLatitud(), evento.getUbicacion().getLongitud());
                 addMarkerUbication(position);
             }
-
         }
-
     }
 
     @Override

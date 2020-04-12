@@ -113,7 +113,6 @@ public class UbicationFinder {
     public void onLocation(Location location){
     }
 
-
     private void initListenersLocalizacion(Task<LocationSettingsResponse> task) {
         onLocationUpdate();
         task.addOnSuccessListener(actividadProveniente, new OnSuccessListener<LocationSettingsResponse>() {
