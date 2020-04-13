@@ -33,8 +33,14 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback 
                 .findFragmentById(R.id.mapRuta);
         mapFragment.getMapAsync(this);
 
-        gCoderHandler = new LocationFinder(RutaEvento.this);
-        myPosition = null;
+        //gCoderHandler = new LocationFinder(RutaEvento.this);
+        //myPosition = null;
+
+        LatLng actual = new LatLng(4.5796769, -74.1383976);
+        //Marker marker1 = mMap.addMarker(new MarkerOptions().position(actual).title(gCoderHandler.searchFromLocation(actual, 1).getAddressLine(0)));
+        LatLng futuro = new LatLng(4.724959, -74.074470);
+        //Marker marker2 = mMap.addMarker(new MarkerOptions().position(futuro).title(gCoderHandler.searchFromLocation(futuro, 1).getAddressLine(0)));
+        markerRoute(actual, futuro);
     }
 
 
@@ -83,39 +89,39 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        ubicationFinder = new UbicationFinder(this){
-            @Override
-            public void onLocation(Location location) {
-                if (location != null && mMap != null) {
-                    RutaEvento.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
-
-                    LatLng actual = new LatLng(location.getLatitude(), location.getLongitude());
-                    Marker marker1 = mMap.addMarker(new MarkerOptions().position(actual).title(gCoderHandler.searchFromLocation(actual, 1).getAddressLine(0)));
-                    LatLng futuro = new LatLng(4.724959, -74.074470);
-                    Marker marker2 = mMap.addMarker(new MarkerOptions().position(futuro).title(gCoderHandler.searchFromLocation(futuro, 1).getAddressLine(0)));
-                    markerRoute(actual, futuro);
-
-                    RutaEvento.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
-                }
-            }
-        };
+        //ubicationFinder = new UbicationFinder(this){
+        //    @Override
+        //    public void onLocation(Location location) {
+        //        if (location != null && mMap != null) {
+        //            RutaEvento.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+//
+        //                   //LatLng actual = new LatLng(location.getLatitude(), location.getLongitude());
+        //          //Marker marker1 = mMap.addMarker(new MarkerOptions().position(actual).title(gCoderHandler.searchFromLocation(actual, 1).getAddressLine(0)));
+        //          //LatLng futuro = new LatLng(4.724959, -74.074470);
+        //          //Marker marker2 = mMap.addMarker(new MarkerOptions().position(futuro).title(gCoderHandler.searchFromLocation(futuro, 1).getAddressLine(0)));
+        //          //markerRoute(actual, futuro);
+//
+        //                  //RutaEvento.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+        //      }
+        //  }
+        //};
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         //sensorManager.registerListener(lightSensorListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        if (ubicationFinder != null)
-            ubicationFinder.startLocationUpdates();
+        //if (ubicationFinder != null)
+        //    ubicationFinder.startLocationUpdates();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         //sensorManager.unregisterListener(lightSensorListener);
-        if (ubicationFinder != null)
-            ubicationFinder.stopLocationUpdates();
-        myPosition = null;
-    }
+        //if (ubicationFinder != null)
+        //    ubicationFinder.stopLocationUpdates();
+    //myPosition = null;
+}
 
 }
