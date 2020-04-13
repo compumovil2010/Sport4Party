@@ -4,9 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,18 +31,24 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Registro extends AppCompatActivity {
 
-    ImageButton imagenPerfil;
-    EditText nombreUsuario;
-    EditText contraseña;
-    EditText contraseñaReply;
-    EditText correo;
-    Spinner sexo;
+    private ImageButton imagenPerfil;
+    private EditText nombreUsuario;
+    private EditText contraseña;
+    private EditText contraseñaReply;
+    private EditText correo;
+    private Spinner sexo;
+    private Bitmap imagenBitMap;
     private FirebaseAuth mAuth;
+    private AlertDialog dialog;
+    private static final int IMAGE_PICKER_REQUEST = 6;
+    private static final int REQUEST_IMAGE_CAPTURE = 7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +64,7 @@ public class Registro extends AppCompatActivity {
         sexo = findViewById(R.id.sexoRegistro);
         //Actualizo las credenciales de autenticacion
         mAuth = FirebaseAuth.getInstance();
+        imagenBitMap = null;
     }
 
     private void updateUI(FirebaseUser currentUser){
@@ -126,9 +142,96 @@ public class Registro extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_image_customer,null);
         builder.setView(view);
-        final AlertDialog dialog = builder.create();
+        dialog = builder.create();
         dialog.show();
     }
 
+    public void requestPermission(Activity context, String permission, String just, int id) {
+        if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(context, permission)) {
 
+            }
+            ActivityCompat.requestPermissions(context, new String[]{permission}, id);
+        }
+    }
+
+    public void eliminarImagen(View v){
+        imagenBitMap = null;
+        imagenPerfil.setImageResource(R.drawable.user2);
+        if(dialog != null){
+            if(dialog.isShowing()){
+                dialog.dismiss();
+            }
+        }
+    }
+
+    public void buscarImagen(View v){
+        requestPermission(this, Manifest.permission.CAMERA, "Es necesario para usar la camamara", REQUEST_IMAGE_CAPTURE );
+
+
+        Intent pickImage = new Intent(Intent.ACTION_PICK);
+        pickImage.setType("image/*");
+        startActivityForResult(pickImage, IMAGE_PICKER_REQUEST);
+        if(dialog != null){
+            if(dialog.isShowing()){
+                dialog.dismiss();
+            }
+        }
+    }
+
+    public void tomarImagen(View v){
+        requestPermission(this, Manifest.permission.CAMERA, "Es necesario para usar la camamara", REQUEST_IMAGE_CAPTURE );
+
+        if (ContextCompat.checkSelfPermission( this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+
+            if(dialog != null){
+                if(dialog.isShowing()){
+                    dialog.dismiss();
+                }
+            }
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode) {
+            case REQUEST_IMAGE_CAPTURE:
+                if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED){
+                    if(resultCode == RESULT_OK){
+                        Bundle extras = data.getExtras();
+                        imagenBitMap = (Bitmap) extras.get("data");
+                        if(imagenBitMap != null){
+                            imagenPerfil.setImageBitmap(imagenBitMap);
+                        }
+                        else{
+                            imagenPerfil.setImageResource(R.drawable.user2);
+                        }
+                    }
+                }
+                break;
+
+            case IMAGE_PICKER_REQUEST:
+                if(resultCode == RESULT_OK){
+                    try {
+                        Uri imageUri = data.getData();
+                        InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                        imagenBitMap = BitmapFactory.decodeStream(imageStream);
+                        if(imagenBitMap != null){
+                            imagenPerfil.setImageBitmap(imagenBitMap);
+                        }
+                        else{
+                            imagenPerfil.setImageResource(R.drawable.user2);
+                        }
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+        }
+    }
 }

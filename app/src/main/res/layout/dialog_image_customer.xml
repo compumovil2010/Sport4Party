@@ -12,24 +12,27 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/eliminarImagen"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="eliminarImagen"
             app:srcCompat="@android:drawable/ic_menu_delete" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/buscarImagen"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="buscarImagen"
             app:srcCompat="@drawable/ic_menu_gallery" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/tomarImagen"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="tomarImagen"
             app:srcCompat="@drawable/ic_menu_camera" />
     </LinearLayout>
 
