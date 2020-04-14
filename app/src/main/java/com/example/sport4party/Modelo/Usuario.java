@@ -19,6 +19,7 @@ public class Usuario implements Serializable {
         this.correo = correo;
         this.nombreUsuario = nombreUsuario;
         this.sexo = sexo;
+        this.imagenPerfil = null;
     }
 
     public Usuario(String contraseña, String correo, Bitmap imagenPerfil, String nombreUsuario, String sexo) {

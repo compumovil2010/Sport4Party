@@ -14,6 +14,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:src="@drawable/user2"
+        android:onClick="popupImagen"
         app:layout_constraintBottom_toTopOf="@+id/wScreen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,46 +39,23 @@
             android:textSize="25dp"
             android:textStyle="bold"
             android:gravity="center_horizontal"
+            android:onClick="cambiarNombre"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textPromedioCalif"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:text="Promedio Calificacion"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profileName" />
-
-        <TextView
-            android:id="@+id/resultPromedioCalif"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:hint="CALIF"
-            android:textSize="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textPromedioCalif"
-            app:layout_constraintTop_toBottomOf="@+id/profileName" />
 
         <TextView
             android:id="@+id/textCantAmigos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:text="Cantidad de amigos:"
             android:textColor="#000000"
             android:textSize="15dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textPromedioCalif" />
+            app:layout_constraintTop_toBottomOf="@+id/profileName" />
 
         <TextView
             android:id="@+id/resultCantAmigos"
@@ -85,17 +63,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:hint="###"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textCantAmigos"
-            app:layout_constraintTop_toBottomOf="@+id/resultPromedioCalif" />
+            app:layout_constraintTop_toBottomOf="@+id/profileName" />
 
         <Button
             android:id="@+id/toAddOrDelete"
             android:layout_width="200sp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="24dp"
             android:hint="typeFriend"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
@@ -106,7 +84,7 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/casilla_editor_eventos"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
