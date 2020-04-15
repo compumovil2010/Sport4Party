@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,10 +17,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -49,6 +55,14 @@ public class Perfil extends AppCompatActivity {
     private Button toAdd;
     private EventosAdapter eventosAdapter;
     private ListView listEventos;
+    //Popup de la imagen de perfil
+    Dialog imgPopup;
+    ImageView imgPopProf;
+    Button aceptarImg;
+    Button cancelarImg;
+    Button camera;
+    Button gallery;
+    ImageButton cerrarPopup;
     //Autenticación
     private FirebaseAuth mAuth;
     //Funcionalidad
@@ -96,6 +110,20 @@ public class Perfil extends AppCompatActivity {
         buttonEventos = (Button) findViewById(R.id.botonNuevoEvento);
         toAdd = (Button) findViewById(R.id.toAddOrDelete);
         listEventos = (ListView) findViewById(R.id.listViewEventos);
+
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+        ConstraintLayout ll = (ConstraintLayout) inflater.inflate(R.layout.popupimagenperfil, null);
+
+        imgPopup = new Dialog(this);
+        imgPopup.setContentView(R.layout.popupimagenperfil);
+        imgPopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        imgPopProf = (ImageView) ll.findViewById(R.id.imageViewPopImgPerfil);
+        cerrarPopup = (ImageButton) ll.findViewById(R.id.imageButtonCloseImg);
+        aceptarImg = (Button) ll.findViewById(R.id.buttonImgOk);
+        cancelarImg = (Button) ll.findViewById(R.id.buttonImgCancel);
+        camera = (Button) ll.findViewById(R.id.buttonCamera);
+        gallery = (Button) ll.findViewById(R.id.buttonGallery);
     }
 
     private void actualizar() {
@@ -175,13 +203,39 @@ public class Perfil extends AppCompatActivity {
         builder.show();
     }
 
-    public ImageView imagenPerfilIV() {
-        Bitmap bitmap = ((BitmapDrawable) usrImage.getDrawable()).getBitmap();
-        ImageView imageView = new ImageView(this);
-        imageView.setImageBitmap(bitmap);
-        return imageView;
+    public Bitmap getBitmap(ImageView imageView) {
+        return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
     }
 
+    public void popupImagen(View view) {
+        imgPopup.show();
+    }
+
+    public void cerrarPopupImgPerfil(View view) {
+        imgPopup.dismiss();
+    }
+
+    public void aceptarImagenPerfil(View view) {
+        perfil.setImagenPerfil(getBitmap(imgPopProf));
+        actualizar();
+    }
+
+    public void cancelarImagenPerfil(View view) {
+        imgPopup.cancel();
+    }
+
+    public void tomarFoto(View view) {
+        permissionCamera();
+        takePicture();
+    }
+
+    public void buscarGaleria(View view) {
+        permissionStorage();
+        initViews();
+        imgPopProf.setImageBitmap(getBitmap(usrImage));
+    }
+
+/*
     public void popupImagen(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         builder.setView(imagenPerfilIV());
@@ -228,7 +282,7 @@ public class Perfil extends AppCompatActivity {
         builder.create();
         builder.show();
     }
-
+*/
     private void permissionStorage() {
         Utils.requestPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE, "Necesario para cargar una imágen", IMAGE_PICKER_REQUEST);
     }
@@ -238,7 +292,7 @@ public class Perfil extends AppCompatActivity {
     }
 
     public void initViews() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(imgPopup.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             Intent pickImage = new Intent(Intent.ACTION_PICK);
             pickImage.setType("image/*");
             startActivityForResult(pickImage, IMAGE_PICKER_REQUEST);
@@ -265,7 +319,7 @@ public class Perfil extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     Bundle extras = data.getExtras();
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    usrImage.setImageBitmap(imageBitmap);
+                    imgPopProf.setImageBitmap(imageBitmap);
                 }
             }
             break;
@@ -273,7 +327,7 @@ public class Perfil extends AppCompatActivity {
     }
 
     private void takePicture() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(imgPopup.getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
