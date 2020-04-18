@@ -102,10 +102,11 @@ public class CrearEvento extends AppCompatActivity {
         seleccionarUbicacion.setOnClickListener(new View.OnClickListener() {
                                       @Override
                                       public void onClick(View v) {
+
                                           //Aqui se abre seleccionar ubicacion
-                                          //Intent intent=new Intent(v.getContext(), InformacionEvento.class);
-                                          //intent.putExtra("pantalla",1);
-                                          //startActivity(intent);
+                                          Intent intent=new Intent(v.getContext(), Mapa.class);
+                                          intent.putExtra("pantalla",1);
+                                          startActivity(intent);
                                       }
                                   }
         );

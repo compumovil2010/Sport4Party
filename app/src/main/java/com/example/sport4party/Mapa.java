@@ -35,6 +35,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ import java.util.List;
 public class Mapa extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
     private AppBarConfiguration mAppBarConfiguration;
+    Intent opcion;
     private ArrayList<Jugador> jugadores;
     private GoogleMap mMap;
     private UbicationFinder ubicationFinder;
@@ -57,9 +59,12 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     Spinner deportes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         //FakeInformation-------------------------------------------------------
-
+        opcion=getIntent();
+        if(mMap!=null)
+        {
+            mMap.clear();
+        }
         Deporte deportePrueba = new Deporte(12, "futbol");
 
         Ubicacion ubicacion1 = new Ubicacion("Prueba 1", new Date(), new Double(4.618234), new Double(-74.069133), true);
@@ -118,7 +123,21 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
 
         gCoderHandler = new LocationFinder(Mapa.this);
         myPosition = null;
-
+        CrearEventosNuevo();
+    }
+    private void CrearEventosNuevo()
+    {
+        opcion = getIntent();
+        if(opcion!=null)
+        {
+            int pantalla=opcion.getIntExtra("pantalla",-1);
+            if(pantalla==1)
+            {
+                LinearLayout cosasInnecesarias=findViewById(R.id.cosasInecesarias);
+                cosasInnecesarias.setVisibility(View.INVISIBLE);
+            }
+        }
+        return;
     }
 
     @Override
@@ -188,10 +207,12 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         return true;
     }
 
-    public void toInformacionEvento(View v){
-            Intent intent = new Intent(v.getContext(), InformacionEvento.class);
-            intent.putExtra("pantalla",1);
+    public void toInformacionEvento(Marker marker, int pantalla){
+            Intent intent = new Intent(this, InformacionEvento.class);
+            intent.putExtra("pantalla",pantalla);
+            mMap.clear();
             startActivity(intent);
+            loadMarkers(eventos);
     }
 
     //MAP HANDLER
@@ -211,7 +232,6 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     public void loadMarkers(List<Evento> eventos){
-
         for (Evento evento: eventos) {
             if(!evento.isPrivado() && evento.getUbicacion().isValida()){
                 LatLng position = new LatLng(evento.getUbicacion().getLatitud(), evento.getUbicacion().getLongitud());
@@ -224,6 +244,31 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                int tipo;
+                if(opcion.getIntExtra("pantalla",-1)==-1)
+                {
+                    tipo=1;
+                }
+                else
+                {
+                    tipo=3;
+                }
+                if(myPosition!=null) {
+                    if (!marker.getId().equals(myPosition.getId())) {
+                        toInformacionEvento(marker, tipo);
+                    }
+                }
+                else
+                {
+                    toInformacionEvento(marker,tipo);
+                }
+                return false;
+            }
+
+        });
         loadMarkers(this.eventos);
 
         ubicationFinder = new UbicationFinder(this){
@@ -248,6 +293,10 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onPause() {
         super.onPause();
+        if(mMap!=null)
+        {
+            mMap.clear();
+        }
         //sensorManager.unregisterListener(lightSensorListener);
         if (ubicationFinder != null)
             ubicationFinder.stopLocationUpdates();

@@ -7,6 +7,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,10 +26,12 @@ public class InformacionEvento extends AppCompatActivity {
     TextView precio;
     TextView editarEinscribir;
     TextView chatT;
+    TextView participantesT;
     ImageButton inscribirse;
     ImageButton participantes;
     ImageButton chatB;
     ArrayList<Jugador> jugadores;
+    Button seleccionarLugar;
     void inflate()
     {
         nombre=(TextView)findViewById(R.id.nombreEvento);
@@ -44,6 +47,8 @@ public class InformacionEvento extends AppCompatActivity {
         chatB = (ImageButton)findViewById(R.id.chatButton);
         chatT = (TextView)findViewById(R.id.chatText);
         editarEinscribir = (TextView)findViewById(R.id.editarText);
+        participantesT=(TextView)findViewById(R.id.ParticipantesText);
+        seleccionarLugar=(Button)findViewById(R.id.SeleccionarLugar);
     }
     private void imprimirInfo()
     {
@@ -92,13 +97,33 @@ public class InformacionEvento extends AppCompatActivity {
         );
 
     }
+    private void mostrarParaCrearEventos()
+    {
+        seleccionarLugar.setVisibility(View.VISIBLE);
+        seleccionarLugar.setClickable(true);
+        participantes.setVisibility(View.INVISIBLE);
+        participantes.setClickable(false);
+        editarEinscribir.setVisibility(View.INVISIBLE);
+        editarEinscribir.setClickable(false);
+        chatB.setVisibility(View.INVISIBLE);
+        chatB.setClickable(false);
+        chatT.setVisibility(View.INVISIBLE);
+        participantes.setVisibility(View.INVISIBLE);
+        participantes.setClickable(false);
+        participantesT.setVisibility(View.INVISIBLE);
+        inscribirse.setVisibility(View.INVISIBLE);
+        inscribirse.setClickable(false);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informacion_evento);
         
         int opcion= getIntent().getIntExtra("pantalla",-1);//0 para mostrar info 1 para lo mismo pero editando
+
         inflate();
+        seleccionarLugar.setVisibility(View.INVISIBLE);
+        seleccionarLugar.setClickable(false);
         imprimirInfo();
         if(opcion==1)
         {
@@ -107,6 +132,10 @@ public class InformacionEvento extends AppCompatActivity {
         if(opcion==0)
         {
             mostrarParaOrganizador();
+        }
+        if(opcion==3)
+        {
+            mostrarParaCrearEventos();
         }
         participantes.setOnClickListener(new View.OnClickListener() {
                                            @Override
