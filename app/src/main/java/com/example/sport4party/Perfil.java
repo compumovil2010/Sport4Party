@@ -56,13 +56,13 @@ public class Perfil extends AppCompatActivity {
     private EventosAdapter eventosAdapter;
     private ListView listEventos;
     //Popup de la imagen de perfil
-    Dialog imgPopup;
-    ImageView imgPopProf;
-    Button aceptarImg;
-    Button cancelarImg;
-    Button camera;
-    Button gallery;
-    ImageButton cerrarPopup;
+    private Dialog imgPopup;
+    private ImageView imgPopProf;
+    private Button aceptarImg;
+    private Button cancelarImg;
+    private Button camera;
+    private Button gallery;
+    private ImageButton cerrarPopup;
     //Autenticación
     private FirebaseAuth mAuth;
     //Funcionalidad
@@ -110,20 +110,6 @@ public class Perfil extends AppCompatActivity {
         buttonEventos = (Button) findViewById(R.id.botonNuevoEvento);
         toAdd = (Button) findViewById(R.id.toAddOrDelete);
         listEventos = (ListView) findViewById(R.id.listViewEventos);
-
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService
-                (Context.LAYOUT_INFLATER_SERVICE);
-        ConstraintLayout ll = (ConstraintLayout) inflater.inflate(R.layout.popupimagenperfil, null);
-
-        imgPopup = new Dialog(this);
-        imgPopup.setContentView(R.layout.popupimagenperfil);
-        imgPopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        imgPopProf = (ImageView) ll.findViewById(R.id.imageViewPopImgPerfil);
-        cerrarPopup = (ImageButton) ll.findViewById(R.id.imageButtonCloseImg);
-        aceptarImg = (Button) ll.findViewById(R.id.buttonImgOk);
-        cancelarImg = (Button) ll.findViewById(R.id.buttonImgCancel);
-        camera = (Button) ll.findViewById(R.id.buttonCamera);
-        gallery = (Button) ll.findViewById(R.id.buttonGallery);
     }
 
     private void actualizar() {
@@ -207,7 +193,24 @@ public class Perfil extends AppCompatActivity {
         return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
     }
 
+    public void crearPopUp() {
+        imgPopup = new Dialog(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View ll = inflater.inflate(R.layout.popupimagenperfil, null);
+        imgPopup.setContentView(ll);
+        imgPopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        imgPopProf = (ImageView) ll.findViewById(R.id.imageViewPopImgPerfil);
+        imgPopProf.setImageBitmap(getBitmap(usrImage));
+        cerrarPopup = (ImageButton) ll.findViewById(R.id.imageButtonCloseImg);
+        aceptarImg = (Button) ll.findViewById(R.id.buttonImgOk);
+        cancelarImg = (Button) ll.findViewById(R.id.buttonImgCancel);
+        camera = (Button) ll.findViewById(R.id.buttonCamera);
+        gallery = (Button) ll.findViewById(R.id.buttonGallery);
+    }
+
     public void popupImagen(View view) {
+        crearPopUp();
         imgPopup.show();
     }
 
@@ -218,10 +221,11 @@ public class Perfil extends AppCompatActivity {
     public void aceptarImagenPerfil(View view) {
         perfil.setImagenPerfil(getBitmap(imgPopProf));
         actualizar();
+        imgPopup.dismiss();
     }
 
     public void cancelarImagenPerfil(View view) {
-        imgPopup.cancel();
+        imgPopup.dismiss();
     }
 
     public void tomarFoto(View view) {
@@ -232,57 +236,8 @@ public class Perfil extends AppCompatActivity {
     public void buscarGaleria(View view) {
         permissionStorage();
         initViews();
-        imgPopProf.setImageBitmap(getBitmap(usrImage));
     }
 
-/*
-    public void popupImagen(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-        builder.setView(imagenPerfilIV());
-        builder.setNeutralButton("Actualizar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                actualizarImagenPerfil();
-            }
-        });
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.create();
-        builder.show();
-    }
-
-    public void actualizarImagenPerfil() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Actualizar foto de perfil");
-        builder.setView(imagenPerfilIV());
-        builder.setPositiveButton("Galería", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                permissionStorage();
-                initViews();
-            }
-        });
-        builder.setNegativeButton("Cámara", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                permissionCamera();
-                takePicture();
-            }
-        });
-        builder.create();
-        builder.show();
-    }
-*/
     private void permissionStorage() {
         Utils.requestPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE, "Necesario para cargar una imágen", IMAGE_PICKER_REQUEST);
     }
@@ -292,7 +247,7 @@ public class Perfil extends AppCompatActivity {
     }
 
     public void initViews() {
-        if (ContextCompat.checkSelfPermission(imgPopup.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             Intent pickImage = new Intent(Intent.ACTION_PICK);
             pickImage.setType("image/*");
             startActivityForResult(pickImage, IMAGE_PICKER_REQUEST);
@@ -308,7 +263,7 @@ public class Perfil extends AppCompatActivity {
                         final Uri imageUri = data.getData();
                         final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                         final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                        usrImage.setImageBitmap(selectedImage);
+                        imgPopProf.setImageBitmap(selectedImage);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -327,7 +282,7 @@ public class Perfil extends AppCompatActivity {
     }
 
     private void takePicture() {
-        if (ContextCompat.checkSelfPermission(imgPopup.getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
