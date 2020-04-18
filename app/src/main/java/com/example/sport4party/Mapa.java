@@ -111,7 +111,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             Deporte futbol = new Deporte(10, "Futbol");
             Deporte patinaje = new Deporte(10,"Patinaje");
             Ubicacion ubicacion = new Ubicacion("ubicacion de prueba", new Date(), (long)0, (long) 0, true);
-            Evento evento1 = new Evento(10, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, true, futbol, ubicacion);
+            Evento evento1 = new Evento(10, "atletismo", new Date(),"bueno", "Evento 2", "2000 pesos", true, true, futbol, ubicacion);
             miPerfil.addEventos(evento1);
             Evento evento2 = new Evento(20, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, true, patinaje, ubicacion);
             miPerfil.addEventos(evento2);

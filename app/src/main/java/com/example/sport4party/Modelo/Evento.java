@@ -1,6 +1,7 @@
 package com.example.sport4party.Modelo;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 
 public class Evento implements Serializable {
@@ -92,4 +93,21 @@ public class Evento implements Serializable {
     public void setUbicacion(Ubicacion ubicacion) {
         this.ubicacion = ubicacion;
     }
+
+    public static class NombreSorter implements Comparator<Evento> {
+        @Override
+        public int compare(Evento o1, Evento o2) { return o1.getNombre().compareTo(o2.getNombre() );
+        }};
+    public static class DeporteSorter implements Comparator<Evento> {
+        @Override
+        public int compare(Evento o1, Evento o2) { return o1.getDeporte().getNombre().compareTo(o2.getDeporte().getNombre() );
+        }};
+    public static class FechaSorter implements Comparator<Evento> {
+        @Override
+        public int compare(Evento o1, Evento o2) { return o1.getFecha().compareTo(o2.getFecha() );
+        }};
+    public static class PagoeSorter implements Comparator<Evento> {
+        @Override
+        public int compare(Evento o1, Evento o2) { return o1.getPrecio().compareTo(o2.getPrecio() );
+        }};
 }

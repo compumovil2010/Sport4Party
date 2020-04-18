@@ -272,9 +272,13 @@ public class Perfil extends AppCompatActivity {
             break;
             case REQUEST_IMAGE_CAPTURE: {
                 if (resultCode == RESULT_OK) {
-                    Bundle extras = data.getExtras();
-                    Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    imgPopProf.setImageBitmap(imageBitmap);
+                    try {
+                        Bundle extras = data.getExtras();
+                        Bitmap imageBitmap = (Bitmap) extras.get("data");
+                        imgPopProf.setImageBitmap(imageBitmap);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             break;
@@ -293,12 +297,12 @@ public class Perfil extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch(requestCode){
+        switch (requestCode) {
             case IMAGE_PICKER_REQUEST: {
                 initViews();
                 return;
             }
-            case REQUEST_IMAGE_CAPTURE:{
+            case REQUEST_IMAGE_CAPTURE: {
                 takePicture();
                 return;
             }
