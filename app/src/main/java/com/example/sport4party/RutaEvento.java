@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.sport4party.Utils.LocationFinder;
+import com.example.sport4party.Utils.TaskLoadedCallback;
 import com.example.sport4party.Utils.TraceRute;
 import com.example.sport4party.Utils.UbicationFinder;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -16,13 +18,18 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
-public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback {
+public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
     private LocationFinder gCoderHandler;
     private Marker myPosition;
     private GoogleMap mMap;
     private UbicationFinder ubicationFinder;
+    private Polyline currentPolyline;
+    private LatLng posicionEvento;
+    private String nombreEvento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +39,20 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapRuta);
         mapFragment.getMapAsync(this);
+        nombreEvento = "por definir";
+        gCoderHandler = new LocationFinder(RutaEvento.this);
+        myPosition = null;
 
-        //gCoderHandler = new LocationFinder(RutaEvento.this);
-        //myPosition = null;
+        Bundle parametros = this.getIntent().getExtras();
 
-        LatLng actual = new LatLng(4.5796769, -74.1383976);
-        //Marker marker1 = mMap.addMarker(new MarkerOptions().position(actual).title(gCoderHandler.searchFromLocation(actual, 1).getAddressLine(0)));
-        LatLng futuro = new LatLng(4.724959, -74.074470);
-        //Marker marker2 = mMap.addMarker(new MarkerOptions().position(futuro).title(gCoderHandler.searchFromLocation(futuro, 1).getAddressLine(0)));
-        markerRoute(actual, futuro);
+        if(parametros != null){
+            String datos = parametros.getString("latitud");
+            String datos2 = parametros.getString("longitud");
+            posicionEvento = new LatLng(Integer.parseInt(datos), Integer.parseInt(datos2));
+        }
+        else{
+            posicionEvento = new LatLng(4.57, -74.13);
+        }
     }
 
 
@@ -54,7 +66,7 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback 
         else{
             myPosition.remove();
         }
-        myPosition = mMap.addMarker(new MarkerOptions().position(position).title(gCoderHandler.searchFromLocation(position, 1).getAddressLine(0)));
+        myPosition = mMap.addMarker(new MarkerOptions().position(position).title("Posición actual"));
     }
 
     public void markRoute(Marker a, Marker b) {
@@ -89,39 +101,57 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        //ubicationFinder = new UbicationFinder(this){
-        //    @Override
-        //    public void onLocation(Location location) {
-        //        if (location != null && mMap != null) {
-        //            RutaEvento.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
-//
-        //                   //LatLng actual = new LatLng(location.getLatitude(), location.getLongitude());
-        //          //Marker marker1 = mMap.addMarker(new MarkerOptions().position(actual).title(gCoderHandler.searchFromLocation(actual, 1).getAddressLine(0)));
-        //          //LatLng futuro = new LatLng(4.724959, -74.074470);
-        //          //Marker marker2 = mMap.addMarker(new MarkerOptions().position(futuro).title(gCoderHandler.searchFromLocation(futuro, 1).getAddressLine(0)));
-        //          //markerRoute(actual, futuro);
-//
-        //                  //RutaEvento.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
-        //      }
-        //  }
-        //};
+
+
+        //LatLng actual = new LatLng(4.5796769, -74.1383976);
+        //Marker marker1 = mMap.addMarker(new MarkerOptions().position(actual).title(gCoderHandler.searchFromLocation(actual, 1).getAddressLine(0)));
+        // futuro = new LatLng(4.724959, -74.074470);
+        //Marker marker2 = mMap.addMarker(new MarkerOptions().position(futuro).title(gCoderHandler.searchFromLocation(futuro, 1).getAddressLine(0)));
+
+
+        ubicationFinder = new UbicationFinder(this){
+            @Override
+            public void onLocation(Location location) {
+                if (location != null && mMap != null) {
+
+                    Marker marker2 = mMap.addMarker(new MarkerOptions().position(posicionEvento).title(gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
+
+                    if(posicionEvento == null){
+                        Toast.makeText(RutaEvento.this, "Ubicación no encontrada", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        //mMap.clear();
+                        LatLng actual = new LatLng(location.getLatitude(), location.getLongitude());
+                        markerRoute(actual, RutaEvento.this.posicionEvento);
+                        RutaEvento.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+                    }
+                }
+            }
+        };
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         //sensorManager.registerListener(lightSensorListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        //if (ubicationFinder != null)
-        //    ubicationFinder.startLocationUpdates();
+        if (ubicationFinder != null)
+            ubicationFinder.startLocationUpdates();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         //sensorManager.unregisterListener(lightSensorListener);
-        //if (ubicationFinder != null)
-        //    ubicationFinder.stopLocationUpdates();
+        if (ubicationFinder != null)
+            ubicationFinder.stopLocationUpdates();
     //myPosition = null;
-}
+    }
+
+    @Override
+    public void onTaskDone(Object... values) {
+        if (currentPolyline != null)
+            currentPolyline.remove();
+        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+    }
 
 }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.sport4party.RutaEvento;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
