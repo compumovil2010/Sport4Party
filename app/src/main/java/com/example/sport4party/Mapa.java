@@ -203,7 +203,6 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         }else if(id == R.id.nav_rutas){
             Intent change = new Intent(this, RutaEvento.class);
             startActivity(change);
-            finish();
         }
         //Agregar todos los Intents
 
