@@ -1,79 +1,42 @@
 {
   "project_info": {
-    "project_number": "573888912648",
-    "firebase_url": "https://authentication-d1df8.firebaseio.com",
-    "project_id": "authentication-d1df8",
-    "storage_bucket": "authentication-d1df8.appspot.com"
+    "project_number": "447838773314",
+    "firebase_url": "https://sport4party.firebaseio.com",
+    "project_id": "sport4party",
+    "storage_bucket": "sport4party.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:573888912648:android:b3bdc21fb591e99cb5e0bd",
-        "android_client_info": {
-          "package_name": "com.example.authentication"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "573888912648-q5ufinmpmnbbpf7qrf6r0vl6urcttpa6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.authentication",
-            "certificate_hash": "2fc7db0b9559b4a18257c8aadc90fef1369df517"
-          }
-        },
-        {
-          "client_id": "573888912648-di3lkq431jtkfrtk3j6b4ji87v9ljhcl.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAfoGhBOq2WrcjDLhgRtToHISbO3ye-K-I"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "573888912648-di3lkq431jtkfrtk3j6b4ji87v9ljhcl.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:573888912648:android:600adef7c2b4fe01b5e0bd",
+        "mobilesdk_app_id": "1:447838773314:android:d1ac5bc55b32b864778ddb",  
         "android_client_info": {
           "package_name": "com.example.sport4party"
         }
       },
       "oauth_client": [
         {
-          "client_id": "573888912648-2cjtluajc7o53oe9qjssrenblq7l8jg5.apps.googleusercontent.com",
+          "client_id": "447838773314-4npgl0cms18cjj51u55rd81ftbus46ut.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.sport4party",
-            "certificate_hash": "2fc7db0b9559b4a18257c8aadc90fef1369df517"
+            "certificate_hash": "b5b434d942f804db802c6edda04dc241360dd3a7"
           }
         },
         {
-          "client_id": "573888912648-di3lkq431jtkfrtk3j6b4ji87v9ljhcl.apps.googleusercontent.com",
+          "client_id": "447838773314-i9ivacmc654qk47v49l0pp2bd8verbrn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAfoGhBOq2WrcjDLhgRtToHISbO3ye-K-I"
+          "current_key": "AIzaSyD_FF46MR41Q7-Sog3rt_dUU3qoh9Ai5bI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "573888912648-di3lkq431jtkfrtk3j6b4ji87v9ljhcl.apps.googleusercontent.com",
+              "client_id": "447838773314-i9ivacmc654qk47v49l0pp2bd8verbrn.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
