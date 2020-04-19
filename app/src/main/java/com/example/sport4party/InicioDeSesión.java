@@ -75,7 +75,7 @@ public class InicioDeSesión extends AppCompatActivity{
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        Toast.makeText(InicioDeSesión.this, "Inicio de sesión exitoso", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(InicioDeSesión.this, "Inicio de sesión exitoso", Toast.LENGTH_LONG).show();
                         FirebaseUser user = mAuth.getCurrentUser();
                         updateUI(user);
                     }
