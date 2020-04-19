@@ -7,20 +7,20 @@ import java.util.List;
 public class Ubicacion implements Serializable {
 
     private String descripcion;
-    private Long latitud;
-    private Long Longitud;
+    private Double latitud;
+    private Double Longitud;
     private boolean valida;
     //Relaciones
     private List<Deporte> deportesDisponibles;
 
     //Constructor
-    public Ubicacion(String descripcion, Date horario, Long latitud, Long longitud, boolean valida) {
+    public Ubicacion(String descripcion, Date horario, Double latitud, Double longitud, boolean valida) {
         this.descripcion = descripcion;
         this.latitud = latitud;
         Longitud = longitud;
         this.valida = valida;
     }
-    public Ubicacion(String descripcion, Date horario, Long latitud, Long longitud, boolean valida, List<Deporte> deportesDisponibles) {
+    public Ubicacion(String descripcion, Date horario, Double latitud, Double longitud, boolean valida, List<Deporte> deportesDisponibles) {
         this.descripcion = descripcion;
         this.latitud = latitud;
         Longitud = longitud;
@@ -40,16 +40,16 @@ public class Ubicacion implements Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    public Long getLatitud() {
+    public Double getLatitud() {
         return latitud;
     }
-    public void setLatitud(Long latitud) {
+    public void setLatitud(Double latitud) {
         this.latitud = latitud;
     }
-    public Long getLongitud() {
+    public Double getLongitud() {
         return Longitud;
     }
-    public void setLongitud(Long longitud) {
+    public void setLongitud(Double longitud) {
         Longitud = longitud;
     }
     public boolean isValida() {

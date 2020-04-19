@@ -16,6 +16,10 @@
             android:id="@+id/nav_mis_amigos"
             android:icon="@drawable/ic_group_black_24dp"
             android:title="@string/mis_amigos" />
+        <item
+            android:id="@+id/nav_rutas"
+            android:icon="@drawable/ic_group_black_24dp"
+            android:title="@string/rutas_yolo" />
     </group>
 
     <item>

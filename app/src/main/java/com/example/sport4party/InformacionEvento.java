@@ -2,11 +2,13 @@ package com.example.sport4party;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,10 +27,12 @@ public class InformacionEvento extends AppCompatActivity {
     TextView precio;
     TextView editarEinscribir;
     TextView chatT;
+    TextView participantesT;
     ImageButton inscribirse;
     ImageButton participantes;
     ImageButton chatB;
     ArrayList<Jugador> jugadores;
+    Button seleccionarLugar;
     void inflate()
     {
         nombre=(TextView)findViewById(R.id.nombreEvento);
@@ -44,6 +48,7 @@ public class InformacionEvento extends AppCompatActivity {
         chatB = (ImageButton)findViewById(R.id.chatButton);
         chatT = (TextView)findViewById(R.id.chatText);
         editarEinscribir = (TextView)findViewById(R.id.editarText);
+        participantesT=(TextView)findViewById(R.id.ParticipantesText);
     }
     private void imprimirInfo()
     {
@@ -98,6 +103,7 @@ public class InformacionEvento extends AppCompatActivity {
         setContentView(R.layout.activity_informacion_evento);
         
         int opcion= getIntent().getIntExtra("pantalla",-1);//0 para mostrar info 1 para lo mismo pero editando
+
         inflate();
         imprimirInfo();
         if(opcion==1)

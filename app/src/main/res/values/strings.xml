@@ -14,6 +14,8 @@
         <item>Basico</item>
     </string-array>
 
+    <string name="rutas_yolo">Ir a rutas</string>
+
     <string name="profile_level">Nivel de habilidad:</string>
     <string name="profile_popularity">Popularidad:</string>
     <string name="profile_friends">Amigos:</string>
@@ -72,13 +74,12 @@
     <string name="event_capacity">Cupos</string>
     <string name="event_level">Habilidad</string>
     <string name="event_cost">Precio</string>
-
     <string name="event_create">Nuevo Evento</string>
     <string name="event_myList">Mis Eventos</string>
+    <string name="title_activity_maps">Map</string>
     <string name="update">Actualizar</string>
     <string name="camera">Cámara</string>
     <string name="gallery">Galería</string>
     <string name="accept">Aceptar</string>
     <string name="cancel">Cancelar</string>
-
 </resources>

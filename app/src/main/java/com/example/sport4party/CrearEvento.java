@@ -3,6 +3,7 @@ package com.example.sport4party;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import java.util.Calendar;
 import javax.microedition.khronos.egl.EGLDisplay;
 
 public class CrearEvento extends AppCompatActivity {
+    private int idLugar=-1;
     Button editar;
     Button seleccionarUbicacion;
     EditText nombre;
@@ -81,6 +83,7 @@ public class CrearEvento extends AppCompatActivity {
                                   }
         );
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,9 +106,9 @@ public class CrearEvento extends AppCompatActivity {
                                       @Override
                                       public void onClick(View v) {
                                           //Aqui se abre seleccionar ubicacion
-                                          //Intent intent=new Intent(v.getContext(), InformacionEvento.class);
-                                          //intent.putExtra("pantalla",1);
-                                          //startActivity(intent);
+                                          Intent intent=new Intent(v.getContext(), Mapa.class);
+                                          intent.putExtra("pantalla",1);
+                                          startActivityForResult(intent,666);
                                       }
                                   }
         );
@@ -181,5 +184,31 @@ public class CrearEvento extends AppCompatActivity {
         habilidad=(Spinner)findViewById(R.id.habilidad);
         precio=(EditText) findViewById(R.id.precio);
         textViewTittle=(TextView) findViewById(R.id.toolbar_title);
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case 666:
+                if(Activity.RESULT_OK==resultCode)
+                {
+                    String nombreLugar=data.getStringExtra("nombreLugar");
+
+                    seleccionarUbicacion.setText(nombreLugar);
+                }
+                else
+                {
+
+                }
+
+                break;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        if(idLugar!=-1)
+        {
+            seleccionarUbicacion.setText("lol");
+        }
+        super.onResume();
     }
 }
