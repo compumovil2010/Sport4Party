@@ -38,7 +38,7 @@
 
     <string name="appName"><font color='#FFFFFF'>Sports</font><font color='#FFBD00'>4</font><font color='#FFFFFF'>Party</font></string>
     <string name="user">Nombre</string>
-    <string name="password">Conraseña</string>
+    <string name="password">Contraseña</string>
     <string name="login">Iniciar Sesión</string>
     <string name="registry">Registrarse</string>
 
