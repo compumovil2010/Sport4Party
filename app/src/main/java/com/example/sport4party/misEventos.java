@@ -64,7 +64,6 @@ public class misEventos extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.miseventos_menu, menu);
-        Toast.makeText(this, "Action clicked", Toast.LENGTH_LONG).show();
         return true;
     }
 

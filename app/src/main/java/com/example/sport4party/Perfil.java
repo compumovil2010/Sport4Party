@@ -210,8 +210,10 @@ public class Perfil extends AppCompatActivity {
     }
 
     public void popupImagen(View view) {
-        crearPopUp();
-        imgPopup.show();
+        if(tipo == 0){
+            crearPopUp();
+            imgPopup.show();
+        }
     }
 
     public void cerrarPopupImgPerfil(View view) {
