@@ -46,9 +46,14 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
         Bundle parametros = this.getIntent().getExtras();
 
         if(parametros != null){
-            String datos = parametros.getString("latitud");
-            String datos2 = parametros.getString("longitud");
-            posicionEvento = new LatLng(Integer.parseInt(datos), Integer.parseInt(datos2));
+            Double latitud = parametros.getDouble("latitud");
+            Double longitud = parametros.getDouble("longitud");
+            if(latitud != null && longitud != null){
+                posicionEvento = new LatLng(latitud, longitud);
+            }
+            else{
+                posicionEvento = new LatLng(4.57, -74.13);
+            }
         }
         else{
             posicionEvento = new LatLng(4.57, -74.13);
@@ -114,7 +119,7 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
             public void onLocation(Location location) {
                 if (location != null && mMap != null) {
 
-                    Marker marker2 = mMap.addMarker(new MarkerOptions().position(posicionEvento).title(gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
+                    Marker marker2 = mMap.addMarker(new MarkerOptions().position(posicionEvento).title("Evento"));//gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
 
                     if(posicionEvento == null){
                         Toast.makeText(RutaEvento.this, "Ubicación no encontrada", Toast.LENGTH_LONG).show();

@@ -2,6 +2,7 @@ package com.example.sport4party;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,12 +47,14 @@ public class EventosAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if(enMisEventos){
             convertView = LayoutInflater.from(context).inflate(R.layout.evento,parent,false);
             TextView idEvento = (TextView)convertView.findViewById(R.id.idEventoList);
             TextView nombreEvento = (TextView)convertView.findViewById(R.id.nombreEventoList);
             ImageButton infoEvento = (ImageButton) convertView.findViewById(R.id.botonInfoEventoList);
+            ImageButton rutaEvento = (ImageButton) convertView.findViewById(R.id.botonRuta);
+
 
             //idEvento.setText(eventos.get(position).getID());
             idEvento.setText(Integer.toString(eventos.get(position).getID()));
@@ -63,6 +66,16 @@ public class EventosAdapter extends BaseAdapter {
                     Intent info = new Intent(v.getContext(), InformacionEvento.class);
                     info.putExtra("pantalla",0);
                     context.startActivity(info);
+                }
+            });
+
+            rutaEvento.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent change = new Intent(v.getContext(), RutaEvento.class);
+                    change.putExtra("latitud", eventos.get(position).getUbicacion().getLatitud().doubleValue());
+                    change.putExtra("longitud", eventos.get(position).getUbicacion().getLongitud().doubleValue());
+                    context.startActivity(change);
                 }
             });
         }
@@ -90,6 +103,9 @@ public class EventosAdapter extends BaseAdapter {
                 }
             });
         }
+
+
         return convertView;
     }
+
 }

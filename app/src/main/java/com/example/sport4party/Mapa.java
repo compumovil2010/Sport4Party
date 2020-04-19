@@ -166,18 +166,20 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(change);
         }else if(id == R.id.nav_mis_eventos){
             Intent change = new Intent(this, misEventos.class);
-            Jugador miPerfil = new Jugador("asd", "asd", "Mael", "Masculino");
+            //Jugador miPerfil = new Jugador("asd", "asd", "Mael", "Masculino");
 
-            Deporte futbol = new Deporte(10, "Futbol");
-            Deporte patinaje = new Deporte(10,"Patinaje");
+            //Deporte futbol = new Deporte(10, "Futbol");
+            //Deporte patinaje = new Deporte(10,"Patinaje");
 
-            Ubicacion ubicacion = new Ubicacion("ubicacion de prueba", new Date(), new Double(0), new Double(0), true);
-            Evento evento1 = new Evento(10, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, true, futbol, ubicacion);
+            //Ubicacion ubicacion = new Ubicacion("ubicacion de prueba", new Date(), new Double(0), new Double(0), true);
+            //Evento evento1 = new Evento(10, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, true, futbol, ubicacion);
 
-            miPerfil.addEventos(evento1);
-            Evento evento2 = new Evento(20, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, true, patinaje, ubicacion);
-            miPerfil.addEventos(evento2);
-            change.putExtra("jugador",miPerfil);
+            //miPerfil.addEventos(evento1);
+            //Evento evento2 = new Evento(20, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, true, patinaje, ubicacion);
+            //miPerfil.addEventos(evento2);
+
+
+            change.putExtra("jugador", jugador);
             startActivity(change);
 
         }else if(id == R.id.nav_mi_perfil){
@@ -199,9 +201,6 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             Intent change = new Intent(this, InicioDeSesión.class);
             change.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             Toast.makeText(this,"Sesion cerrada",Toast.LENGTH_LONG).show();
-            startActivity(change);
-        }else if(id == R.id.nav_rutas){
-            Intent change = new Intent(this, RutaEvento.class);
             startActivity(change);
         }
         //Agregar todos los Intents
