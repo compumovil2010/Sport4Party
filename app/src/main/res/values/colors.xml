@@ -15,4 +15,5 @@
     <color name="buttonGrFirst">#FF5C00</color>
     <color name="buttonGrSecond">#FFD868</color>
     <color name="buttonThird">#C02E2E</color>
+    <color name="colorBgFirstTrans">#99FF7C1E</color>
 </resources>

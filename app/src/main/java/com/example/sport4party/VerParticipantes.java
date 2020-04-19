@@ -21,6 +21,7 @@ public class VerParticipantes extends AppCompatActivity {
     ListView listaAsistentes;
     JugadorAdapter adapter;
     ArrayList<Jugador> participantes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +37,12 @@ public class VerParticipantes extends AppCompatActivity {
         //Asigno la lista de participantes al ArrayList que va a manejar el adaptador
         participantes = (ArrayList<Jugador>) info.getSerializable("participantes");
 
-
-        adapter = new JugadorAdapter(getApplicationContext(), participantes,true, false);
+        //La idea es que este sea el perfil que se maneja en la aplicacion
+        final Jugador origin = new Jugador("asb", "asb", "Mael", "masculino");
+        origin.addAmigos(participantes.get(0));
+        origin.addAmigos(participantes.get(3));
+        origin.addAmigos(participantes.get(6));
+        adapter = new JugadorAdapter(getApplicationContext(), participantes,true, false, origin);
         listaAsistentes.setAdapter(adapter);
 
         invitarAmigos.setOnClickListener(new View.OnClickListener() {
@@ -48,6 +53,7 @@ public class VerParticipantes extends AppCompatActivity {
                 //Se debería incluir la capacidad máxima del evento, con el fin de que al agregar no se pase del límite establecido
                 //Amigos debería ser la lista de Jugador que tiene el usuario actual
                 extaInfo.putSerializable("amigos", (Serializable) participantes);
+                extaInfo.putSerializable("perfilActual",(Serializable) origin);
                 intentInvitarAmigos.putExtra("listaDeAmigos",extaInfo);
                 startActivity(intentInvitarAmigos);
             }

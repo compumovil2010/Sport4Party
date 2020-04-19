@@ -75,5 +75,10 @@
 
     <string name="event_create">Nuevo Evento</string>
     <string name="event_myList">Mis Eventos</string>
+    <string name="update">Actualizar</string>
+    <string name="camera">Cámara</string>
+    <string name="gallery">Galería</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
 
 </resources>

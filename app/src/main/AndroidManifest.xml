@@ -2,12 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sport4party">
 
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-feature android:name="android.hardware.camera" android:required="true" />
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-
 
     <application
         android:allowBackup="true"
@@ -19,7 +17,7 @@
         <activity android:name=".InformacionLugar"></activity>
         <activity android:name=".InformacionEvento" />
         <activity android:name=".CrearEvento" />
-        <activity android:name=".Perfil" />
+        <activity android:name=".Perfil" android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".Registro" />
         <activity android:name=".Mapa" />
         <activity android:name=".misEventos" />

@@ -8,7 +8,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:447838773314:android:d1ac5bc55b32b864778ddb",
+        "mobilesdk_app_id": "1:447838773314:android:d1ac5bc55b32b864778ddb",  
         "android_client_info": {
           "package_name": "com.example.sport4party"
         }
