@@ -2,6 +2,7 @@ package com.example.sport4party;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -48,7 +49,6 @@ public class InformacionEvento extends AppCompatActivity {
         chatT = (TextView)findViewById(R.id.chatText);
         editarEinscribir = (TextView)findViewById(R.id.editarText);
         participantesT=(TextView)findViewById(R.id.ParticipantesText);
-        seleccionarLugar=(Button)findViewById(R.id.SeleccionarLugar);
     }
     private void imprimirInfo()
     {
@@ -97,23 +97,6 @@ public class InformacionEvento extends AppCompatActivity {
         );
 
     }
-    private void mostrarParaCrearEventos()
-    {
-        seleccionarLugar.setVisibility(View.VISIBLE);
-        seleccionarLugar.setClickable(true);
-        participantes.setVisibility(View.INVISIBLE);
-        participantes.setClickable(false);
-        editarEinscribir.setVisibility(View.INVISIBLE);
-        editarEinscribir.setClickable(false);
-        chatB.setVisibility(View.INVISIBLE);
-        chatB.setClickable(false);
-        chatT.setVisibility(View.INVISIBLE);
-        participantes.setVisibility(View.INVISIBLE);
-        participantes.setClickable(false);
-        participantesT.setVisibility(View.INVISIBLE);
-        inscribirse.setVisibility(View.INVISIBLE);
-        inscribirse.setClickable(false);
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,8 +105,6 @@ public class InformacionEvento extends AppCompatActivity {
         int opcion= getIntent().getIntExtra("pantalla",-1);//0 para mostrar info 1 para lo mismo pero editando
 
         inflate();
-        seleccionarLugar.setVisibility(View.INVISIBLE);
-        seleccionarLugar.setClickable(false);
         imprimirInfo();
         if(opcion==1)
         {
@@ -132,10 +113,6 @@ public class InformacionEvento extends AppCompatActivity {
         if(opcion==0)
         {
             mostrarParaOrganizador();
-        }
-        if(opcion==3)
-        {
-            mostrarParaCrearEventos();
         }
         participantes.setOnClickListener(new View.OnClickListener() {
                                            @Override

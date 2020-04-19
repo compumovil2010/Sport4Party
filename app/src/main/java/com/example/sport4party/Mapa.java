@@ -1,5 +1,6 @@
 package com.example.sport4party;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -54,19 +55,9 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     private Marker myPosition;
     private Jugador jugador;
     private List<Evento> eventos;
-
-    Spinner hora;
-    Spinner deportes;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        //FakeInformation-------------------------------------------------------
-        opcion=getIntent();
-        if(mMap!=null)
-        {
-            mMap.clear();
-        }
+    private void quemar()
+    {
         Deporte deportePrueba = new Deporte(12, "futbol");
-
         Ubicacion ubicacion1 = new Ubicacion("Prueba 1", new Date(), new Double(4.618234), new Double(-74.069133), true);
         Ubicacion ubicacion2 = new Ubicacion("Prueba 2", new Date(), new Double(4.630430), new Double(-74.0822808), true);
         Ubicacion ubicacion3 = new Ubicacion("Prueba 3", new Date(), new Double(4.588268), new Double(-74.100860), true);
@@ -82,19 +73,22 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         this.eventos.add(evento2);
         this.eventos.add(evento3);
         this.eventos.add(evento4);
-
-
         jugador = new Jugador("123456", "yolo@g.com", "yolo", "Masculino");
         jugador.addEventos(evento1);
         jugador.addEventos(evento2);
         jugador.addEventos(evento3);
         jugador.addEventos(evento4);
-
+    }
+    Spinner hora;
+    Spinner deportes;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        //FakeInformation-------------------------------------------------------
+        opcion=getIntent();
+        quemar();
         //----------------------------------------------------------------------
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);
-
         hora = findViewById(R.id.spinnerHour);
 
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.hours, R.layout.text_color_spinner_deportes);
@@ -208,11 +202,21 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     public void toInformacionEvento(Marker marker, int pantalla){
-            Intent intent = new Intent(this, InformacionEvento.class);
-            intent.putExtra("pantalla",pantalla);
-            mMap.clear();
-            startActivity(intent);
-            loadMarkers(eventos);
+            Intent intent = new Intent(this, InformacionLugar.class);
+            if(myPosition!=null)
+                myPosition.remove();
+            if(pantalla==1)
+            {
+                intent.putExtra("pantalla",pantalla);
+
+                startActivity(intent);
+            }
+            if(pantalla==3)
+            {
+                intent.putExtra("pantalla",pantalla);
+                startActivityForResult(intent,666);
+            }
+
     }
 
     //MAP HANDLER
@@ -293,13 +297,27 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onPause() {
         super.onPause();
-        if(mMap!=null)
-        {
-            mMap.clear();
-        }
         //sensorManager.unregisterListener(lightSensorListener);
+        if(myPosition!=null)
+            myPosition.remove();
         if (ubicationFinder != null)
             ubicationFinder.stopLocationUpdates();
             myPosition = null;
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case 666:
+                if(resultCode== Activity.RESULT_OK)
+                {
+                    //Intent intent=new Intent();
+                    //String extra=getIntent().getStringExtra("nombreLugar");
+                    //intent.putExtra("nombreLugar",extra);
+                    setResult(Activity.RESULT_OK,data);
+                    finish();
+                }
+                //you just got back from activity B - deal with resultCode
+                //use data.getExtra(...) to retrieve the returned data
+                break;
+        }
     }
 }
