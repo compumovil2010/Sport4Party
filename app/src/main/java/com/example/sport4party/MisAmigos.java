@@ -30,7 +30,9 @@ public class MisAmigos extends AppCompatActivity {
         //Asigno la lista de amigos al ArrayList que va a manejar el adaptador
         amigos = (ArrayList<Jugador>) info.getSerializable("amigos");
 
-        adapter = new JugadorAdapter(this, amigos, false, false);
+        //La idea es que este sea el perfil que se maneja en la aplicacion
+        Jugador origin = new Jugador("asb", "asb", "Mael", "masculino");
+        adapter = new JugadorAdapter(this, amigos, false, false, origin);
         misAmigos.setAdapter(adapter);
 
         misAmigos.setOnItemClickListener(new AdapterView.OnItemClickListener() {

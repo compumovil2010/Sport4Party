@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "447838773314",
+    "firebase_url": "https://sport4party.firebaseio.com",
+    "project_id": "sport4party",
+    "storage_bucket": "sport4party.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447838773314:android:d1ac5bc55b32b864778ddb",  
+        "android_client_info": {
+          "package_name": "com.example.sport4party"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "447838773314-4npgl0cms18cjj51u55rd81ftbus46ut.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sport4party",
+            "certificate_hash": "b5b434d942f804db802c6edda04dc241360dd3a7"
+          }
+        },
+        {
+          "client_id": "447838773314-i9ivacmc654qk47v49l0pp2bd8verbrn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_FF46MR41Q7-Sog3rt_dUU3qoh9Ai5bI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "447838773314-i9ivacmc654qk47v49l0pp2bd8verbrn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

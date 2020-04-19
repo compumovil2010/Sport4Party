@@ -17,6 +17,7 @@ public class InvitarAmigos extends AppCompatActivity {
     ListView inivitarAmigos;
     ArrayList<Jugador> friends;
     JugadorAdapter adapter;
+    Jugador origin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +31,9 @@ public class InvitarAmigos extends AppCompatActivity {
 
         //Asigno la lista de amigos al ArrayList que va a manejar el adaptador
         friends = (ArrayList<Jugador>) bundleInfo.getSerializable("amigos");
+        origin = (Jugador) bundleInfo.getSerializable("perfilActual");
 
-        adapter = new JugadorAdapter(getApplicationContext(), friends, false, true);
+        adapter = new JugadorAdapter(getApplicationContext(), friends, false, true, origin);
         inivitarAmigos.setAdapter(adapter);
 
         //Funcionalidad que debe "evitar" que el usuario añada a amigos que ya estén inscritos en el evento

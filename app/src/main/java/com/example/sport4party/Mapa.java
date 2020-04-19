@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -54,6 +55,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     private LocationFinder gCoderHandler;
     private Marker myPosition;
     private Jugador jugador;
+     private FirebaseAuth mAuth;
     private List<Evento> eventos;
     private void quemar()
     {
@@ -62,6 +64,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         Ubicacion ubicacion2 = new Ubicacion("Prueba 2", new Date(), new Double(4.630430), new Double(-74.0822808), true);
         Ubicacion ubicacion3 = new Ubicacion("Prueba 3", new Date(), new Double(4.588268), new Double(-74.100860), true);
         Ubicacion ubicacion4 = new Ubicacion("Prueba 4", new Date(), new Double(4.638389), new Double(-74.141524), false);
+
 
         Evento evento1 = new Evento(111, "evento 1", new Date(), "Bajo", "Evento 1", "0", false, false, deportePrueba, ubicacion1);
         Evento evento2 = new Evento(111, "evento 2", new Date(), "Bajo", "Evento 2", "0", false, false, deportePrueba, ubicacion2);
@@ -81,6 +84,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     }
     Spinner hora;
     Spinner deportes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //FakeInformation-------------------------------------------------------
@@ -89,6 +93,8 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         //----------------------------------------------------------------------
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);
+
+        mAuth = FirebaseAuth.getInstance();
         hora = findViewById(R.id.spinnerHour);
 
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.hours, R.layout.text_color_spinner_deportes);
@@ -164,8 +170,10 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
 
             Deporte futbol = new Deporte(10, "Futbol");
             Deporte patinaje = new Deporte(10,"Patinaje");
+
             Ubicacion ubicacion = new Ubicacion("ubicacion de prueba", new Date(), new Double(0), new Double(0), true);
             Evento evento1 = new Evento(10, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, true, futbol, ubicacion);
+
             miPerfil.addEventos(evento1);
             Evento evento2 = new Evento(20, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, true, patinaje, ubicacion);
             miPerfil.addEventos(evento2);
@@ -187,12 +195,15 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             change.putExtra("tipo", "0");
             startActivity(change);
         }else if(id == R.id.nav_cerrar_sesion){
+            mAuth.signOut();
             Intent change = new Intent(this, InicioDeSesión.class);
+            change.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             Toast.makeText(this,"Sesion cerrada",Toast.LENGTH_LONG).show();
             startActivity(change);
         }else if(id == R.id.nav_rutas){
             Intent change = new Intent(this, RutaEvento.class);
             startActivity(change);
+            finish();
         }
         //Agregar todos los Intents
 
@@ -200,6 +211,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     public void toInformacionEvento(Marker marker, int pantalla){
             Intent intent = new Intent(this, InformacionLugar.class);
@@ -292,6 +304,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         //sensorManager.registerListener(lightSensorListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
         if (ubicationFinder != null)
             ubicationFinder.startLocationUpdates();
+
     }
 
     @Override
