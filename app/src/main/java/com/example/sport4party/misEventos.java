@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -37,25 +39,35 @@ public class misEventos extends AppCompatActivity {
         iniciarVista();
         Intent intent = getIntent();
         perfil = (Jugador) intent.getSerializableExtra("jugador");
+        listEventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent info = new Intent(view.getContext(), InformacionEvento.class);
+                info.putExtra("pantalla", 0);
+                startActivity(info);
+            }
+        });
     }
+
     protected void onResume() {
         super.onResume();
         actualizar();
     }
 
     private void actualizar() {
-                actualizarEventosUsuario();
+        actualizarEventosUsuario();
     }
-    private void actualizarEventosUsuario(){
+
+    private void actualizarEventosUsuario() {
         eventosAdapter = new EventosAdapter(this, perfil.getEventos(), true, false);
         listEventos.setAdapter(eventosAdapter);
     }
 
     private void iniciarVista() {
-        listEventos = (ListView)findViewById(R.id.listViewEventos);
+        listEventos = (ListView) findViewById(R.id.listViewEventos);
         toolbar = (Toolbar) findViewById(R.id.toolbar3);
         toolbar.inflateMenu(R.menu.miseventos_menu);
-        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_tune_black_24dp);
+        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_tune_black_24dp);
         toolbar.setOverflowIcon(drawable);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -71,13 +83,13 @@ public class misEventos extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         List<Evento> misEventos = perfil.getEventos();
         int id = item.getItemId();
-        if(id == R.id.menu_it_date){
+        if (id == R.id.menu_it_date) {
             Collections.sort(misEventos, new Evento.FechaSorter());
-        }else if(id == R.id.menu_it_name){
+        } else if (id == R.id.menu_it_name) {
             Collections.sort(misEventos, new Evento.NombreSorter());
-        }else  if(id == R.id.menu_it_pay){
+        } else if (id == R.id.menu_it_pay) {
             Collections.sort(misEventos, new Evento.PagoeSorter());
-        }else if(id == R.id.menu_it_sport){
+        } else if (id == R.id.menu_it_sport) {
             Collections.sort(misEventos, new Evento.DeporteSorter());
         }
         eventosAdapter = new EventosAdapter(this, misEventos, true, false);

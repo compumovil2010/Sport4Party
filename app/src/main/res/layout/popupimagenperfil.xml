@@ -43,7 +43,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/boton_general2"
             android:onClick="tomarFoto"
+            android:textColor="#FFFFFF"
             android:text="@string/camera" />
 
         <Button
@@ -51,7 +53,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/boton_general2"
             android:onClick="buscarGaleria"
+            android:textColor="#FFFFFF"
             android:text="@string/gallery" />
     </LinearLayout>
 
@@ -69,7 +73,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/boton_general2"
             android:onClick="aceptarImagenPerfil"
+            android:textColor="#FFFFFF"
             android:text="@string/accept" />
 
         <Button
@@ -77,7 +83,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/boton_general2"
             android:onClick="cancelarImagenPerfil"
+            android:textColor="#FFFFFF"
             android:text="@android:string/cancel" />
     </LinearLayout>
 
