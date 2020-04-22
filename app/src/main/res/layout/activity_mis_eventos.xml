@@ -7,7 +7,7 @@
     android:background="@drawable/background_gradient"
     android:fillViewport="true"
     android:orientation="vertical"
-    tools:context=".misEventos">
+    tools:context=".MisEventos">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar3"

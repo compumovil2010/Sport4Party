@@ -40,7 +40,7 @@
         <activity android:name=".Perfil" android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".Registro" />
         <activity android:name=".Mapa" />
-        <activity android:name=".misEventos" />
+        <activity android:name=".MisEventos" />
         <activity
             android:name=".InicioDeSesión"
             android:theme="@style/AppTheme.NoActionBar.Custom">

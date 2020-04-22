@@ -166,7 +166,7 @@ public class Registro extends AppCompatActivity {
     }
 
     public void buscarImagen(View v){
-        requestPermission(this, Manifest.permission.CAMERA, "Es necesario para usar la camamara", REQUEST_IMAGE_CAPTURE );
+        //requestPermission(this, Manifest.permission.CAMERA, "Es necesario para usar la camamara", REQUEST_IMAGE_CAPTURE );
 
 
         Intent pickImage = new Intent(Intent.ACTION_PICK);

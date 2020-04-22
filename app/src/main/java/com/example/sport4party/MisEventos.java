@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class misEventos extends AppCompatActivity {
+public class MisEventos extends AppCompatActivity {
     private EventosAdapter eventosAdapter;
     private ListView listEventos;
     private Jugador perfil;
@@ -39,6 +39,7 @@ public class misEventos extends AppCompatActivity {
         iniciarVista();
         Intent intent = getIntent();
         perfil = (Jugador) intent.getSerializableExtra("jugador");
+
         listEventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

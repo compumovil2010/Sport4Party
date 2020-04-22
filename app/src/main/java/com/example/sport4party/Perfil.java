@@ -155,7 +155,7 @@ public class Perfil extends AppCompatActivity {
     }
 
     private void actualizarEventosUsuario() {
-        eventosAdapter = new EventosAdapter(this, perfil.getEventos(), false, true);
+        eventosAdapter = new EventosAdapter(this, perfil.getEventosCreados(), false, true);
         listEventos.setAdapter(eventosAdapter);
     }
 

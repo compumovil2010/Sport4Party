@@ -12,6 +12,7 @@ public class Jugador extends Usuario {
     private List<Mensaje> enviados;
     private List<Opinion> opiniones;
     private List<Evento> eventos;
+    private List<Evento> eventosCreados;
     private Ubicacion ubicacionActual;
 
 
@@ -22,6 +23,7 @@ public class Jugador extends Usuario {
         enviados = new ArrayList<>();
         opiniones = new ArrayList<>();
         eventos = new ArrayList<>();
+        eventosCreados = new ArrayList<>();
     }
     public Jugador(String contraseña, String correo, Bitmap imagenPerfil, String nombreUsuario, String sexo) {
         super(contraseña, correo, imagenPerfil, nombreUsuario, sexo);
@@ -29,6 +31,7 @@ public class Jugador extends Usuario {
         enviados = new ArrayList<>();
         opiniones = new ArrayList<>();
         eventos = new ArrayList<>();
+        eventosCreados = new ArrayList<>();
     }
 
     //adders
@@ -44,8 +47,16 @@ public class Jugador extends Usuario {
     public void addEventos(Evento evento) {
         eventos.add(evento);
     }
+    public void addEventoCreado(Evento evento) {eventosCreados.add(evento);}
 
     //getters and setters
+
+    public List<Evento> getEventosCreados() {
+        return eventosCreados;
+    }
+    public void setEventosCreados(List<Evento> eventosCreados) {
+        this.eventosCreados = eventosCreados;
+    }
     public List<Jugador> getAmigos() {
         return amigos;
     }

@@ -11,7 +11,6 @@ import com.example.sport4party.Modelo.Evento;
 import com.example.sport4party.Modelo.Jugador;
 import com.example.sport4party.Modelo.Ubicacion;
 
-import android.util.EventLog;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -21,7 +20,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 
 import com.example.sport4party.Utils.LocationFinder;
 import com.example.sport4party.Utils.UbicationFinder;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,6 +38,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -57,10 +56,16 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     private LocationFinder gCoderHandler;
     private Marker myPosition;
     private Jugador jugador;
-     private FirebaseAuth mAuth;
+    NavigationView navigationView;
+    private FirebaseAuth mAuth;
     private List<Evento> eventos;
+    private SearchView buscarEnMapa;
+
     private void quemar()
     {
+
+        jugador = new Jugador("123456", "yolo@g.com", "yolo", "Masculino");
+
         Deporte deportePrueba1 = new Deporte(12, "futbol");
         Deporte deportePrueba2 = new Deporte(12, "baloncesto");
         Deporte deportePrueba3 = new Deporte(12, "volleyball");
@@ -81,11 +86,14 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         this.eventos.add(evento2);
         this.eventos.add(evento3);
         this.eventos.add(evento4);
-        jugador = new Jugador("123456", "yolo@g.com", "yolo", "Masculino");
+
         jugador.addEventos(evento1);
         jugador.addEventos(evento2);
         jugador.addEventos(evento3);
         jugador.addEventos(evento4);
+
+        jugador.addEventoCreado(evento2);
+        jugador.addEventoCreado(evento4);
 
         jugadores = new ArrayList<>();
         jugadores.add(new Jugador("asd","asd", "Juan Francisco Hamon", "Masculino"));
@@ -124,7 +132,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -133,6 +141,22 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.setNavigationItemSelectedListener(this);
 
         //MAPA
+        buscarEnMapa = findViewById(R.id.searchViewLocation);
+        buscarEnMapa.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Address ubicacion = gCoderHandler.searchFromLocationName(query, 1);
+                LatLng moverCamara = new LatLng(ubicacion.getLatitude(), ubicacion.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(moverCamara));
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -172,7 +196,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             change.putExtra("listaAmigos",info);
             startActivity(change);
         }else if(id == R.id.nav_mis_eventos){
-            Intent change = new Intent(this, misEventos.class);
+            Intent change = new Intent(this, MisEventos.class);
             //Jugador miPerfil = new Jugador("asd", "asd", "Mael", "Masculino");
 
             //Deporte futbol = new Deporte(10, "Futbol");
@@ -312,6 +336,8 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onResume() {
         super.onResume();
+        //navigationView.setNavigationItemSelectedListener(this);
+
         //sensorManager.registerListener(lightSensorListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
         if (ubicationFinder != null)
             ubicationFinder.startLocationUpdates();
@@ -344,4 +370,6 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
         }
     }
+
+
 }
