@@ -106,7 +106,7 @@ public class Evento implements Serializable {
         @Override
         public int compare(Evento o1, Evento o2) { return o1.getFecha().compareTo(o2.getFecha() );
         }};
-    public static class PagoeSorter implements Comparator<Evento> {
+    public static class PagoSorter implements Comparator<Evento> {
         @Override
         public int compare(Evento o1, Evento o2) { return o1.getPrecio().compareTo(o2.getPrecio() );
         }};

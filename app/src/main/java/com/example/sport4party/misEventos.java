@@ -88,7 +88,7 @@ public class misEventos extends AppCompatActivity {
         } else if (id == R.id.menu_it_name) {
             Collections.sort(misEventos, new Evento.NombreSorter());
         } else if (id == R.id.menu_it_pay) {
-            Collections.sort(misEventos, new Evento.PagoeSorter());
+            Collections.sort(misEventos, new Evento.PagoSorter());
         } else if (id == R.id.menu_it_sport) {
             Collections.sort(misEventos, new Evento.DeporteSorter());
         }
