@@ -31,6 +31,7 @@ public class MisEventos extends AppCompatActivity {
     private Jugador perfil;
     private int tipo;
     private Toolbar toolbar;
+    private List<Evento> misEventos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,10 @@ public class MisEventos extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent info = new Intent(view.getContext(), InformacionEvento.class);
-                info.putExtra("pantalla", 0);
+                if(perfil.getEventosCreados().contains(misEventos.get(position)))
+                    info.putExtra("pantalla", 0);
+                else
+                    info.putExtra("pantalla", 1);
                 startActivity(info);
             }
         });
@@ -60,7 +64,8 @@ public class MisEventos extends AppCompatActivity {
     }
 
     private void actualizarEventosUsuario() {
-        eventosAdapter = new EventosAdapter(this, perfil.getEventos(), true, false);
+        misEventos = perfil.getEventos();
+        eventosAdapter = new EventosAdapter(this, misEventos, true, false);
         listEventos.setAdapter(eventosAdapter);
     }
 
@@ -82,7 +87,7 @@ public class MisEventos extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        List<Evento> misEventos = perfil.getEventos();
+        misEventos = perfil.getEventos();
         int id = item.getItemId();
         if (id == R.id.menu_it_date) {
             Collections.sort(misEventos, new Evento.FechaSorter());
