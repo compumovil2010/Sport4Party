@@ -2,6 +2,7 @@ package com.example.sport4party;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -30,6 +31,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -59,17 +61,20 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     private List<Evento> eventos;
     private void quemar()
     {
-        Deporte deportePrueba = new Deporte(12, "futbol");
+        Deporte deportePrueba1 = new Deporte(12, "futbol");
+        Deporte deportePrueba2 = new Deporte(12, "baloncesto");
+        Deporte deportePrueba3 = new Deporte(12, "volleyball");
+        Deporte deportePrueba4 = new Deporte(12, "atletismo");
         Ubicacion ubicacion1 = new Ubicacion("Prueba 1", new Date(), new Double(4.618234), new Double(-74.069133), true);
         Ubicacion ubicacion2 = new Ubicacion("Prueba 2", new Date(), new Double(4.630430), new Double(-74.0822808), true);
         Ubicacion ubicacion3 = new Ubicacion("Prueba 3", new Date(), new Double(4.588268), new Double(-74.100860), true);
         Ubicacion ubicacion4 = new Ubicacion("Prueba 4", new Date(), new Double(4.638389), new Double(-74.141524), false);
 
 
-        Evento evento1 = new Evento(111, "evento 1", new Date(), "Bajo", "Evento 1", "0", false, false, deportePrueba, ubicacion1);
-        Evento evento2 = new Evento(111, "evento 2", new Date(), "Bajo", "Evento 2", "0", false, false, deportePrueba, ubicacion2);
-        Evento evento3 = new Evento(111, "evento 3", new Date(), "Bajo", "Evento 3", "0", false, false, deportePrueba, ubicacion2);
-        Evento evento4 = new Evento(111, "evento 4", new Date(), "Bajo", "Evento 4", "0", false, true, deportePrueba, ubicacion3);
+        Evento evento1 = new Evento(0, "evento 1", new Date(), "Bajo", "Evento 1", "8000", true, false, deportePrueba4, ubicacion1);
+        Evento evento2 = new Evento(1, "evento 2", new Date(), "Bajo", "Evento 2", "5000", true, false, deportePrueba3, ubicacion2);
+        Evento evento3 = new Evento(2, "evento 3", new Date(), "Bajo", "Evento 3", "0", false, false, deportePrueba2, ubicacion2);
+        Evento evento4 = new Evento(3, "evento 4", new Date(), "Bajo", "Evento 4", "0", false, true, deportePrueba1, ubicacion3);
 
         eventos = new ArrayList<>();
         this.eventos.add(evento1);
@@ -81,6 +86,17 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         jugador.addEventos(evento2);
         jugador.addEventos(evento3);
         jugador.addEventos(evento4);
+
+        jugadores = new ArrayList<>();
+        jugadores.add(new Jugador("asd","asd", "Juan Francisco Hamon", "Masculino"));
+        jugadores.add(new Jugador("asd","asd", "Diego Barajas", "Masculino"));
+        jugadores.add(new Jugador("asd","asd", "Brandonn Cruz", "Masculino"));
+        jugadores.add(new Jugador("asd","asd", "Santiago Chaparro", "Masculino"));
+        jugadores.add(new Jugador("asd","asd", "Pedro Fernandez", "Masculino"));
+        jugadores.add(new Jugador("asd","asd", "Santiago Herrera", "Masculino"));
+        jugadores.add(new Jugador("asd","asd", "Carlos Orduz", "Masculino"));
+        jugadores.add(new Jugador("asd","asd", "Diego Ignacio Martinez", "Masculino"));
+        jugador.setAmigos(jugadores);
     }
     Spinner hora;
     Spinner deportes;
@@ -150,15 +166,6 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(change);
         }
         else if (id == R.id.nav_mis_amigos){
-            jugadores = new ArrayList<>();
-            jugadores.add(new Jugador("asd","asd", "Juan Francisco Hamon", "Masculino"));
-            jugadores.add(new Jugador("asd","asd", "Diego Barajas", "Masculino"));
-            jugadores.add(new Jugador("asd","asd", "Brandonn Cruz", "Masculino"));
-            jugadores.add(new Jugador("asd","asd", "Santiago Chaparro", "Masculino"));
-            jugadores.add(new Jugador("asd","asd", "Pedro Fernandez", "Masculino"));
-            jugadores.add(new Jugador("asd","asd", "Santiago Herrera", "Masculino"));
-            jugadores.add(new Jugador("asd","asd", "Carlos Orduz", "Masculino"));
-            jugadores.add(new Jugador("asd","asd", "Diego Ignacio Martinez", "Masculino"));
             Intent change = new Intent(this, MisAmigos.class);
             Bundle info = new Bundle();
             info.putSerializable("amigos", jugadores);
@@ -184,16 +191,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
 
         }else if(id == R.id.nav_mi_perfil){
             Intent change = new Intent(this, Perfil.class);
-            Jugador miPerfil = new Jugador("asd", "asd", "Mael", "Masculino");
-
-            Deporte futbol = new Deporte(10, "Futbol");
-            Deporte patinaje = new Deporte(10,"Patinaje");
-            Ubicacion ubicacion = new Ubicacion("ubicacion de prueba", new Date(), new Double(0),new Double(0), true);
-            Evento evento = new Evento(1, "atletismo", new Date(),"bueno", "Evento 1", "2000 pesos", true, true, futbol, ubicacion);
-            miPerfil.addEventos(evento);
-            Evento evento2 = new Evento(2, "atletismo2", new Date(),"bueno", "Evento 2", "2000 pesos", false, false, patinaje, ubicacion);
-            miPerfil.addEventos(evento2);
-            change.putExtra("jugador", miPerfil);
+            change.putExtra("jugador", jugador);
             change.putExtra("tipo", "0");
             startActivity(change);
         }else if(id == R.id.nav_cerrar_sesion){
@@ -210,6 +208,19 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         return true;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        actualizarUsuario(currentUser);
+    }
+
+    public void actualizarUsuario(FirebaseUser currentUser){
+        if(currentUser != null) {
+            //jugador.setNombreUsuario(currentUser.getDisplayName());
+            jugador.setCorreo(currentUser.getEmail());
+        }
+    }
 
     public void toInformacionEvento(Marker marker, int pantalla){
             Intent intent = new Intent(this, InformacionLugar.class);
@@ -242,7 +253,9 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         else{
             myPosition.remove();
         }
-        myPosition = mMap.addMarker(new MarkerOptions().position(position).title(gCoderHandler.searchFromLocation(position, 1).getAddressLine(0)));
+        Address address = gCoderHandler.searchFromLocation(position, 1);
+        if(address != null)
+            myPosition = mMap.addMarker(new MarkerOptions().position(position).title(address.getAddressLine(0)));
     }
 
     public void loadMarkers(List<Evento> eventos){

@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.sport4party.Modelo.Evento;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class EventosAdapter extends BaseAdapter {
@@ -52,20 +53,18 @@ public class EventosAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.evento,parent,false);
             TextView idEvento = (TextView)convertView.findViewById(R.id.idEventoList);
             TextView nombreEvento = (TextView)convertView.findViewById(R.id.nombreEventoList);
-            ImageButton infoEvento = (ImageButton) convertView.findViewById(R.id.botonInfoEventoList);
+            ImageButton chatEvento = (ImageButton) convertView.findViewById(R.id.botonInfoEventoList);
             ImageButton rutaEvento = (ImageButton) convertView.findViewById(R.id.botonRuta);
 
+            Evento evento = eventos.get(position);
+            String formato = "dd-MM-yyyy";
+            SimpleDateFormat dateFormat = new SimpleDateFormat(formato);
+            idEvento.setText(dateFormat.format(evento.getFecha())+" - "+evento.getDeporte().getNombre()+" - $"+evento.getPrecio());
+            nombreEvento.setText(evento.getNombre());
 
-            //idEvento.setText(eventos.get(position).getID());
-            idEvento.setText(Integer.toString(eventos.get(position).getID()));
-            nombreEvento.setText(eventos.get(position).getDeporte().getNombre());
-
-            infoEvento.setOnClickListener(new View.OnClickListener() {
+            chatEvento.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent info = new Intent(v.getContext(), InformacionEvento.class);
-                    info.putExtra("pantalla",0);
-                    context.startActivity(info);
                 }
             });
 

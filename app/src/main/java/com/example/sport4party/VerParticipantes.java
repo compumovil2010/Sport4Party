@@ -21,6 +21,7 @@ public class VerParticipantes extends AppCompatActivity {
     ListView listaAsistentes;
     JugadorAdapter adapter;
     ArrayList<Jugador> participantes;
+    Jugador origin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class VerParticipantes extends AppCompatActivity {
         participantes = (ArrayList<Jugador>) info.getSerializable("participantes");
 
         //La idea es que este sea el perfil que se maneja en la aplicacion
-        final Jugador origin = new Jugador("asb", "asb", "Mael", "masculino");
+        origin = new Jugador("asb", "asb", "Mael", "masculino");
         origin.addAmigos(participantes.get(0));
         origin.addAmigos(participantes.get(3));
         origin.addAmigos(participantes.get(6));
@@ -63,9 +64,12 @@ public class VerParticipantes extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent infoPerfil = new Intent(view.getContext(), Perfil.class);
-                Jugador miPerfil = participantes.get(position);
-                infoPerfil.putExtra("jugador", miPerfil);
-                infoPerfil.putExtra("tipo", "2");
+                Jugador perfil = participantes.get(position);
+                infoPerfil.putExtra("jugador", perfil);
+                if(origin.getAmigos().contains(perfil))
+                    infoPerfil.putExtra("tipo", "1");
+                else
+                    infoPerfil.putExtra("tipo", "2");
                 startActivity(infoPerfil);
             }
         });

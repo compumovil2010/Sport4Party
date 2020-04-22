@@ -93,8 +93,8 @@ public class Perfil extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        actualizar();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        actualizar();
     }
 
     @Override
@@ -309,5 +309,9 @@ public class Perfil extends AppCompatActivity {
                 return;
             }
         }
+    }
+
+    public void regresar(View view) {
+        finish();
     }
 }
