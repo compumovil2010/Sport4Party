@@ -48,7 +48,7 @@ public class MisEventos extends AppCompatActivity {
                 if(perfil.getEventosCreados().contains(misEventos.get(position)))
                     info.putExtra("pantalla", 0);
                 else
-                    info.putExtra("pantalla", 1);
+                    info.putExtra("pantalla", 2);
                 startActivity(info);
             }
         });

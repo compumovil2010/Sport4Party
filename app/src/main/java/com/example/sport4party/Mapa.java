@@ -339,8 +339,15 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         //navigationView.setNavigationItemSelectedListener(this);
 
         //sensorManager.registerListener(lightSensorListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        if (ubicationFinder != null)
-            ubicationFinder.startLocationUpdates();
+        ubicationFinder = new UbicationFinder(this){
+            @Override
+            public void onLocation(Location location) {
+                if (location != null && mMap != null) {
+                    Mapa.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+                }
+            }
+        };
+         ubicationFinder.startLocationUpdates();
 
     }
 

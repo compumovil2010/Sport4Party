@@ -64,6 +64,8 @@ public class InformacionEvento extends AppCompatActivity {
     {
         editarEinscribir.setText("Editar");
         inscribirse.setImageResource(R.drawable.edit);
+        inscribirse.setVisibility(View.VISIBLE);
+        inscribirse.setClickable(true);
         chatB.setVisibility(View.VISIBLE);
         chatB.setClickable(true);
         chatT.setVisibility(View.VISIBLE);
@@ -82,6 +84,8 @@ public class InformacionEvento extends AppCompatActivity {
     {
         editarEinscribir.setText("Inscribirse");
         inscribirse.setImageResource(R.drawable.join);
+        inscribirse.setVisibility(View.VISIBLE);
+        inscribirse.setClickable(true);
         chatB.setVisibility(View.INVISIBLE);
         chatB.setClickable(false);
         chatT.setVisibility(View.INVISIBLE);
@@ -97,6 +101,27 @@ public class InformacionEvento extends AppCompatActivity {
         );
 
     }
+
+    public void mostrarParaInscrito()
+    {
+        editarEinscribir.setText("");
+        inscribirse.setVisibility(View.INVISIBLE);
+        inscribirse.setClickable(false);
+        chatB.setVisibility(View.INVISIBLE);
+        chatB.setClickable(false);
+        chatT.setVisibility(View.INVISIBLE);
+        inscribirse.setOnClickListener(new View.OnClickListener() {
+                                           @Override
+                                           public void onClick(View v) {
+
+                                               Intent intent=new Intent(v.getContext(), Mapa.class);
+                                               Toast.makeText(v.getContext(),"Inscripcion realizada",Toast.LENGTH_LONG).show();
+                                               startActivity(intent);
+                                           }
+                                       }
+        );
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +138,9 @@ public class InformacionEvento extends AppCompatActivity {
         if(opcion==0)
         {
             mostrarParaOrganizador();
+        }
+        if(opcion == 2){
+            mostrarParaInscrito();
         }
         participantes.setOnClickListener(new View.OnClickListener() {
                                            @Override
