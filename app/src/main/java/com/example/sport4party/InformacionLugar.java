@@ -81,7 +81,7 @@ public class InformacionLugar extends AppCompatActivity {
         {
             textoVariable.setText("Eventos disponibles en el Lugar");
             quemarEventos();
-            evAdapter=new EventosAdapter(this,eventos,false,true);
+            evAdapter=new EventosAdapter(this,eventos,false,false);
             opiniones.setAdapter(evAdapter);
 
         }

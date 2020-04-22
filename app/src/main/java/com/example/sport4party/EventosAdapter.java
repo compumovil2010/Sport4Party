@@ -101,6 +101,29 @@ public class EventosAdapter extends BaseAdapter {
                     context.startActivity(info);
                 }
             });
+        }else{
+            convertView = LayoutInflater.from(context).inflate(R.layout.evento_en_perfil,parent,false);
+            TextView idEvento = (TextView)convertView.findViewById(R.id.idEventoList);
+            TextView nombreEvento = (TextView)convertView.findViewById(R.id.nombreEventoList);
+            Button infoEvento = (Button) convertView.findViewById(R.id.botonInfoEventoList);
+
+            idEvento.setText(Integer.toString(eventos.get(position).getID()));
+            nombreEvento.setText(eventos.get(position).getDeporte().getNombre());
+
+            if(eventos.get(position).isPrivado()){
+                infoEvento.setBackgroundColor(ContextCompat.getColor(parent.getContext(), R.color.colorPrivateEvent));
+            }else{
+                infoEvento.setBackgroundColor(ContextCompat.getColor(parent.getContext(), R.color.colorPublicEvent));
+            }
+
+            infoEvento.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent info = new Intent(v.getContext(), InformacionEvento.class);
+                    info.putExtra("pantalla",1);
+                    context.startActivity(info);
+                }
+            });
         }
 
 
