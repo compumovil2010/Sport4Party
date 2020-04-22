@@ -310,4 +310,8 @@ public class Perfil extends AppCompatActivity {
             }
         }
     }
+
+    public void regresar(View view) {
+        finish();
+    }
 }

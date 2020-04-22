@@ -2,6 +2,7 @@ package com.example.sport4party;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -85,6 +86,17 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         jugador.addEventos(evento2);
         jugador.addEventos(evento3);
         jugador.addEventos(evento4);
+
+        jugadores = new ArrayList<>();
+        jugadores.add(new Jugador("asd","asd", "Juan Francisco Hamon", "Masculino"));
+        jugadores.add(new Jugador("asd","asd", "Diego Barajas", "Masculino"));
+        jugadores.add(new Jugador("asd","asd", "Brandonn Cruz", "Masculino"));
+        jugadores.add(new Jugador("asd","asd", "Santiago Chaparro", "Masculino"));
+        jugadores.add(new Jugador("asd","asd", "Pedro Fernandez", "Masculino"));
+        jugadores.add(new Jugador("asd","asd", "Santiago Herrera", "Masculino"));
+        jugadores.add(new Jugador("asd","asd", "Carlos Orduz", "Masculino"));
+        jugadores.add(new Jugador("asd","asd", "Diego Ignacio Martinez", "Masculino"));
+        jugador.setAmigos(jugadores);
     }
     Spinner hora;
     Spinner deportes;
@@ -154,15 +166,6 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(change);
         }
         else if (id == R.id.nav_mis_amigos){
-            jugadores = new ArrayList<>();
-            jugadores.add(new Jugador("asd","asd", "Juan Francisco Hamon", "Masculino"));
-            jugadores.add(new Jugador("asd","asd", "Diego Barajas", "Masculino"));
-            jugadores.add(new Jugador("asd","asd", "Brandonn Cruz", "Masculino"));
-            jugadores.add(new Jugador("asd","asd", "Santiago Chaparro", "Masculino"));
-            jugadores.add(new Jugador("asd","asd", "Pedro Fernandez", "Masculino"));
-            jugadores.add(new Jugador("asd","asd", "Santiago Herrera", "Masculino"));
-            jugadores.add(new Jugador("asd","asd", "Carlos Orduz", "Masculino"));
-            jugadores.add(new Jugador("asd","asd", "Diego Ignacio Martinez", "Masculino"));
             Intent change = new Intent(this, MisAmigos.class);
             Bundle info = new Bundle();
             info.putSerializable("amigos", jugadores);
@@ -250,7 +253,9 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         else{
             myPosition.remove();
         }
-        myPosition = mMap.addMarker(new MarkerOptions().position(position).title(gCoderHandler.searchFromLocation(position, 1).getAddressLine(0)));
+        Address address = gCoderHandler.searchFromLocation(position, 1);
+        if(address != null)
+            myPosition = mMap.addMarker(new MarkerOptions().position(position).title(address.getAddressLine(0)));
     }
 
     public void loadMarkers(List<Evento> eventos){

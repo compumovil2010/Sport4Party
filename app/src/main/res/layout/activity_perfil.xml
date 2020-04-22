@@ -153,6 +153,7 @@
         android:layout_height="wrap_content"
         android:background="#FF7C1E"
         android:padding="20dp"
+        android:onClick="regresar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/abc_vector_test" />
