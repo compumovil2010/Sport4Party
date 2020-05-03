@@ -224,6 +224,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             change.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             Toast.makeText(this,"Sesion cerrada",Toast.LENGTH_LONG).show();
             startActivity(change);
+            finish();
         }
         //Agregar todos los Intents
 

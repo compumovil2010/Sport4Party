@@ -25,6 +25,8 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.sport4party.Modelo.Jugador;
+import com.example.sport4party.Utils.Almacenamiento;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -69,6 +71,17 @@ public class Registro extends AppCompatActivity {
 
     private void updateUI(FirebaseUser currentUser){
         if(currentUser!=null){
+
+            Almacenamiento almacenamientoBase = new Almacenamiento("Jugadores/");
+            String nombreusuario = this.nombreUsuario.getText().toString().trim();
+            String correoElectronico = this.correo.getText().toString().trim();
+            String sexoUsuario = this.sexo.getSelectedItem().toString().trim();
+
+            Jugador jugador = new Jugador(correoElectronico, nombreusuario, sexoUsuario);
+
+            almacenamientoBase.push(jugador, mAuth.getUid());
+
+
             Intent change = new Intent(this, InicioDeSesión.class);
             change.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             change.putExtra("user", currentUser.getEmail());
@@ -94,6 +107,7 @@ public class Registro extends AppCompatActivity {
                     }
                 }
             });
+
         }
     }
 
