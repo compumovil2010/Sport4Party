@@ -1,16 +1,23 @@
 package com.example.sport4party.Utils;
 
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
+
+import com.example.sport4party.Modelo.Jugador;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
+
 
 public class Almacenamiento {
-    private String PATH;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     //@Override
@@ -19,35 +26,54 @@ public class Almacenamiento {
 
     }
     //@Override
-    public void onLoadUserError()
-    {
+    public void onLoadUserError() { }
 
-    }
-    public Almacenamiento(String PATH) {
-        this.PATH = PATH;
+    public Almacenamiento(){
         database=FirebaseDatabase.getInstance();
     }
 
-    public void push(Object objectoPush, String referencia) {
-        myRef=database.getReference(PATH+referencia);
+    public void addValueToReference(String path, String value){
+        myRef = database.getReference(path);
+        myRef.setValue(value);
+    }
+
+    public void push(Object objectoPush, String path) {
+        myRef=database.getReference(path);
         myRef.setValue(objectoPush);
     }
 
     public void erase(String referencia) {
-        myRef=database.getReference(PATH+referencia);
+        myRef=database.getReference(referencia);
         myRef.removeValue();
     }
 
-    public void loadOnce(final Class valueType) {
-        myRef=database.getReference(PATH);
+    //@Override
+    public void leerDatos(HashMap<String, Object> datos, DataSnapshot singleSnapShot){ }
+
+    public void loadOnce(String path) {
+        myRef=database.getReference(path);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleSnapShot: dataSnapshot.getChildren())
                 {
 
-                    Object entrada=singleSnapShot.getValue(valueType);
-                    onLoadUserResponse(entrada);
+                    HashMap<String, Object> datos = (HashMap<String,Object>) singleSnapShot.getValue();
+                    leerDatos(datos, singleSnapShot);
+
+                    /*
+                        HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
+                        for(String i : datos.keySet()){
+                            Log.i("DATOS", "KEY: " + i + " VALUE: " + datos.get(i));
+                        }
+                        if(datos.containsKey("amigos")){
+                            HashMap<String,String> amigitos= (HashMap<String,String>)datos.get("amigos");
+                            for(String i : amigitos.keySet()){
+                                Log.i("AMIGUITOS", "KEY: " + i + " VALUE: " + datos.get(i));
+                            }
+                        }
+                     */
+
                 }
             }
 
@@ -58,15 +84,18 @@ public class Almacenamiento {
         });
     }
 
-    public void loadSubscription(final Class valueType) {
-        myRef=database.getReference(PATH);
+    //nesesita Override
+    public void leerDatosSubscrito(HashMap<String, Object> datos, DataSnapshot singleSnapShot){ }
+
+    public void loadSubscription(String path) {
+        myRef=database.getReference(path);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleSnapShot: dataSnapshot.getChildren())
                 {
-                    Object entrada=singleSnapShot.getValue(valueType);
-                    onLoadUserResponse(entrada);
+                    HashMap<String, Object> datos = (HashMap<String,Object>) singleSnapShot.getValue();
+                    leerDatosSubscrito(datos, singleSnapShot);
                 }
             }
 

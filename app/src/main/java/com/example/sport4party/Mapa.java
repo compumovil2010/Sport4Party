@@ -18,6 +18,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.ui.AppBarConfiguration;
 
+import com.example.sport4party.Utils.Almacenamiento;
 import com.example.sport4party.Utils.LocationFinder;
 import com.example.sport4party.Utils.UbicationFinder;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -106,6 +107,11 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         jugadores.add(new Jugador("asd","asd", "Diego Ignacio Martinez", "Masculino"));
         jugador.setAmigos(jugadores);
     }
+
+    public void updateWhitDataBase(){
+        Almacenamiento almacenamiento = new Almacenamiento();
+    }
+
     Spinner hora;
     Spinner deportes;
 
@@ -114,6 +120,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         //FakeInformation-------------------------------------------------------
         opcion=getIntent();
         quemar();
+        //updateWhitDataBase();
         //----------------------------------------------------------------------
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);

@@ -35,6 +35,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,21 +73,27 @@ public class Registro extends AppCompatActivity {
     private void updateUI(FirebaseUser currentUser){
         if(currentUser!=null){
 
-            Almacenamiento almacenamientoBase = new Almacenamiento("Jugadores/");
+            Almacenamiento almacenamientoBase = new Almacenamiento();
             String nombreusuario = this.nombreUsuario.getText().toString().trim();
             String correoElectronico = this.correo.getText().toString().trim();
             String sexoUsuario = this.sexo.getSelectedItem().toString().trim();
 
             Jugador jugador = new Jugador(correoElectronico, nombreusuario, sexoUsuario);
 
-            almacenamientoBase.push(jugador, mAuth.getUid());
+            //almacenamientoBase.push(jugador, "Usuarios/"+mAuth.getUid());
+            //almacenamientoBase.addValueToReference("Jugadores/" + mAuth.getUid() + "/mundo", "hola");
 
+            HashMap<String, Object> datos = new HashMap<String, Object>();
+            datos.put("Correo", "asdad@g.com");
+            datos.put("Otro", "otraCosa");
+            almacenamientoBase.push(datos, "Jugadores/"+mAuth.getUid());
 
             Intent change = new Intent(this, InicioDeSesión.class);
             change.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             change.putExtra("user", currentUser.getEmail());
             startActivity(change);
             finish();
+
         } else {
             //email.setText("");
             //password.setText("");
@@ -107,7 +114,6 @@ public class Registro extends AppCompatActivity {
                     }
                 }
             });
-
         }
     }
 
