@@ -7,15 +7,21 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.sport4party.Modelo.Jugador;
+import com.example.sport4party.Utils.Almacenamiento;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,6 +54,34 @@ public class InicioDeSesión extends AppCompatActivity{
 
     private void updateUI(FirebaseUser currentUser){
         if(currentUser!=null){
+
+            //----------------- PRUEBAS FIREBASE
+
+
+            Almacenamiento almacenamientoBase = new Almacenamiento(){
+                @Override
+                public void leerDatos(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
+                    for(String i : datos.keySet()){
+                        Log.i("DATOS", "KEY: " + i + " VALUE: " + datos.get(i));
+                    }
+                    if(datos.containsKey("amigos")){
+                        HashMap<String,String> amigitos= (HashMap<String,String>)datos.get("amigos");
+                        for(String i : amigitos.keySet()){
+                            Log.i("AMIGUITOS", "KEY: " + i + " VALUE: " + datos.get(i));
+                        }
+                    }
+                }
+            };
+
+
+            almacenamientoBase.loadOnce("Jugadores/");
+
+            //HashMap<String, String> datos
+//            almacenamientoBase.leerDatos();
+
+            //----------------------------------
+
+
             Intent change = new Intent(this, Mapa.class);
             change.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             change.putExtra("user", currentUser.getEmail());

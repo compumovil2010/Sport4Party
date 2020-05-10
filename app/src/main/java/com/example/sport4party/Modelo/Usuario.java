@@ -5,17 +5,27 @@ import android.graphics.Bitmap;
 import java.io.Serializable;
 
 public class Usuario implements Serializable {
+
     private String contraseña;
     private String correo;
     private Bitmap imagenPerfil;
     private String nombreUsuario;
     private String sexo;
 
-
-
     //Constructores
+    public Usuario(){
+
+    }
+
     public Usuario(String contraseña, String correo, String nombreUsuario, String sexo) {
         this.contraseña = contraseña;
+        this.correo = correo;
+        this.nombreUsuario = nombreUsuario;
+        this.sexo = sexo;
+        this.imagenPerfil = null;
+    }
+    public Usuario(String correo, String nombreUsuario, String sexo) {
+        this.contraseña = null;
         this.correo = correo;
         this.nombreUsuario = nombreUsuario;
         this.sexo = sexo;
