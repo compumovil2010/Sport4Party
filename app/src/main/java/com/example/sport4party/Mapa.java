@@ -2,6 +2,7 @@ package com.example.sport4party;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Path;
 import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
@@ -9,8 +10,11 @@ import android.os.Bundle;
 import com.example.sport4party.Modelo.Deporte;
 import com.example.sport4party.Modelo.Evento;
 import com.example.sport4party.Modelo.Jugador;
+import com.example.sport4party.Modelo.Mensaje;
+import com.example.sport4party.Modelo.Opinion;
 import com.example.sport4party.Modelo.Ubicacion;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -31,6 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -45,6 +50,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class Mapa extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
@@ -65,22 +71,65 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     private void quemar()
     {
 
-        jugador = new Jugador("123456", "yolo@g.com", "yolo", "Masculino");
+        jugador = new Jugador(FirebaseAuth.getInstance().getUid(),"123456", "yolo@g.com", "yolo", "Masculino");
 
         Deporte deportePrueba1 = new Deporte(12, "futbol");
         Deporte deportePrueba2 = new Deporte(12, "baloncesto");
         Deporte deportePrueba3 = new Deporte(12, "volleyball");
         Deporte deportePrueba4 = new Deporte(12, "atletismo");
+        deportePrueba1.setId("1");
+        deportePrueba1.pushFireBaseBD();
+        deportePrueba2.setId("2");
+        deportePrueba2.pushFireBaseBD();
+        deportePrueba3.setId("3");
+        deportePrueba3.pushFireBaseBD();
+        deportePrueba4.setId("4");
+        deportePrueba4.pushFireBaseBD();
+
+
+        List<Deporte> deportes=new ArrayList<Deporte>();
+        deportes.add(deportePrueba1);
+        deportes.add(deportePrueba4);
         Ubicacion ubicacion1 = new Ubicacion("Prueba 1", new Date(), new Double(4.618234), new Double(-74.069133), true);
+        ubicacion1.setDeportesDisponibles(deportes);
+        ubicacion1.setId("69");
+        ubicacion1.pushFireBaseBD();
+
+        deportes.add(deportePrueba2);
         Ubicacion ubicacion2 = new Ubicacion("Prueba 2", new Date(), new Double(4.630430), new Double(-74.0822808), true);
+        ubicacion2.setDeportesDisponibles(deportes);
+        ubicacion2.setId("5");
+        ubicacion2.pushFireBaseBD();
+
         Ubicacion ubicacion3 = new Ubicacion("Prueba 3", new Date(), new Double(4.588268), new Double(-74.100860), true);
+        ubicacion3.setDeportesDisponibles(deportes);
+        ubicacion3.setId("6");
+        ubicacion3.pushFireBaseBD();
+
+        deportes.add(deportePrueba3);
+        deportes.add(deportePrueba4);
         Ubicacion ubicacion4 = new Ubicacion("Prueba 4", new Date(), new Double(4.638389), new Double(-74.141524), false);
+        ubicacion4.setDeportesDisponibles(deportes);
+        ubicacion4.setId("6");
+        ubicacion4.pushFireBaseBD();
+        //almacenamiento.push(ubicacion1.returnMap(),"Ubicacion/");
 
 
-        Evento evento1 = new Evento(0, "evento 1", new Date(), "Bajo", "Evento 1", "8000", true, false, deportePrueba4, ubicacion1);
-        Evento evento2 = new Evento(1, "evento 2", new Date(), "Bajo", "Evento 2", "5000", true, false, deportePrueba3, ubicacion2);
-        Evento evento3 = new Evento(2, "evento 3", new Date(), "Bajo", "Evento 3", "0", false, false, deportePrueba2, ubicacion2);
-        Evento evento4 = new Evento(3, "evento 4", new Date(), "Bajo", "Evento 4", "0", false, true, deportePrueba1, ubicacion3);
+
+
+        Evento evento1 = new Evento(0, "evento 1",4, new Date(), "Bajo", "Evento 1", "8000", true, false, deportePrueba4, ubicacion1);
+        Evento evento2 = new Evento(1, "evento 2",6, new Date(), "Bajo", "Evento 2", "5000", true, false, deportePrueba3, ubicacion1);
+        Evento evento3 = new Evento(2, "evento 3",10, new Date(), "Bajo", "Evento 3", "0", false, false, deportePrueba2, ubicacion3);
+        Evento evento4 = new Evento(3, "evento 4",20, new Date(), "Bajo", "Evento 4", "0", false, true, deportePrueba1, ubicacion3);
+        evento1.setId("7");
+        evento2.setId("8");
+        evento3.setId("9");
+        evento4.setId("10");
+
+        evento1.pushFireBaseBD();
+        evento2.pushFireBaseBD();
+        evento3.pushFireBaseBD();
+        evento4.pushFireBaseBD();
 
         eventos = new ArrayList<>();
         this.eventos.add(evento1);
@@ -97,15 +146,59 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         jugador.addEventoCreado(evento4);
 
         jugadores = new ArrayList<>();
-        jugadores.add(new Jugador("asd","asd", "Juan Francisco Hamon", "Masculino"));
-        jugadores.add(new Jugador("asd","asd", "Diego Barajas", "Masculino"));
-        jugadores.add(new Jugador("asd","asd", "Brandonn Cruz", "Masculino"));
-        jugadores.add(new Jugador("asd","asd", "Santiago Chaparro", "Masculino"));
-        jugadores.add(new Jugador("asd","asd", "Pedro Fernandez", "Masculino"));
-        jugadores.add(new Jugador("asd","asd", "Santiago Herrera", "Masculino"));
-        jugadores.add(new Jugador("asd","asd", "Carlos Orduz", "Masculino"));
-        jugadores.add(new Jugador("asd","asd", "Diego Ignacio Martinez", "Masculino"));
+        jugadores.add(new Jugador("666","asd","asd", "Juan Francisco Hamon", "Masculino"));
+        jugadores.add(new Jugador("33","asd","asd", "Diego Barajas", "Masculino"));
+        jugadores.add(new Jugador("88","asd","asd", "Brandonn Cruz", "Masculino"));
+        jugadores.add(new Jugador("99","asd","asd", "Santiago Chaparro", "Masculino"));
+        jugadores.add(new Jugador("77","asd","asd", "Pedro Fernandez", "Masculino"));
+        jugadores.add(new Jugador("88","asd","asd", "Santiago Herrera", "Masculino"));
+        jugadores.add(new Jugador("99","asd","asd", "Carlos Orduz", "Masculino"));
+        jugadores.add(new Jugador("33","asd","asd", "Diego Ignacio Martinez", "Masculino"));
         jugador.setAmigos(jugadores);
+
+        List<Opinion>opiniones=new ArrayList<Opinion>();
+        Opinion opinion1=new Opinion( 2.0,"lal",ubicacion1,jugador);
+        Opinion opinion2= new Opinion( (Double) 5.0,"lel",ubicacion1,jugador);
+        opinion1.setId("15");
+        opinion2.setId("14");
+        opinion1.pushFireBaseBD();
+        opinion2.pushFireBaseBD();
+
+        opiniones.add(opinion1);
+        opiniones.add(opinion2);
+        jugador.setOpiniones(opiniones);
+
+        final Mensaje mensaje1;
+        Mensaje mensaje2;
+        mensaje1=new  Mensaje("hola", new Date(), jugador);
+        mensaje2=new  Mensaje("adios", new Date(), jugador);
+        mensaje1.setId("11");
+        mensaje2.setId("12");
+        mensaje1.pushFireBaseBD();
+        mensaje2.pushFireBaseBD();
+        List<Mensaje> mensajes=new ArrayList<Mensaje>();
+        mensajes.add(mensaje1);
+        mensajes.add(mensaje2);
+        jugador.setEnviados(mensajes);
+
+        jugador.setId(FirebaseAuth.getInstance().getUid());
+        jugador.pushFireBaseBD();
+
+
+        Almacenamiento buscar=new Almacenamiento()
+        {
+            @Override
+            public void onBuscarResult(HashMap<String, Object> data, String key) {
+                super.onBuscarResult(data, key);
+
+                Log.i("mensaje: ",   (String)data.get("contenido")  )  ;
+            }
+
+        };
+
+
+
+
     }
 
     public void updateWhitDataBase(){
@@ -171,7 +264,9 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         gCoderHandler = new LocationFinder(Mapa.this);
         myPosition = null;
         CrearEventosNuevo();
+
     }
+
     private void CrearEventosNuevo()
     {
         opcion = getIntent();
@@ -261,12 +356,13 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             if(pantalla==1)
             {
                 intent.putExtra("pantalla",pantalla);
-
+                intent.putExtra("id", "iwdoiwhodqhwoidhwoi");
                 startActivity(intent);
             }
             if(pantalla==3)
             {
                 intent.putExtra("pantalla",pantalla);
+                intent.putExtra("id", "iwdoiwhodqhwoidhwoi");
                 startActivityForResult(intent,666);
             }
 

@@ -1,14 +1,18 @@
 package com.example.sport4party.Modelo;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import com.example.sport4party.Modelo.*;
+import com.example.sport4party.Utils.Almacenamiento;
 
 public class Jugador extends Usuario {
 
+    private String id;
     private List<Jugador> amigos;
     private List<Mensaje> enviados;
     private List<Opinion> opiniones;
@@ -22,14 +26,16 @@ public class Jugador extends Usuario {
         super();
     }
 
-    public Jugador(String contraseña, String correo, String nombreUsuario, String sexo) {
+    public Jugador(String id, String contraseña, String correo, String nombreUsuario, String sexo) {
         super(contraseña, correo, nombreUsuario, sexo);
         amigos = new ArrayList<>();
         enviados = new ArrayList<>();
         opiniones = new ArrayList<>();
         eventos = new ArrayList<>();
         eventosCreados = new ArrayList<>();
+        this.id=id;
     }
+
     public Jugador(String correo, String nombreUsuario, String sexo) {
         super(correo, nombreUsuario, sexo);
         amigos = new ArrayList<>();
@@ -38,13 +44,14 @@ public class Jugador extends Usuario {
         eventos = new ArrayList<>();
         eventosCreados = new ArrayList<>();
     }
-    public Jugador(String contraseña, String correo, Bitmap imagenPerfil, String nombreUsuario, String sexo) {
+    public Jugador( String contraseña, String correo, Bitmap imagenPerfil, String nombreUsuario, String sexo) {
         super(contraseña, correo, imagenPerfil, nombreUsuario, sexo);
         amigos = new ArrayList<>();
         enviados = new ArrayList<>();
         opiniones = new ArrayList<>();
         eventos = new ArrayList<>();
         eventosCreados = new ArrayList<>();
+
     }
 
     //adders
@@ -64,6 +71,12 @@ public class Jugador extends Usuario {
 
     //getters and setters
 
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
     public List<Evento> getEventosCreados() {
         return eventosCreados;
     }
@@ -100,4 +113,59 @@ public class Jugador extends Usuario {
     public void setUbicacionActual(Ubicacion ubicacionActual) {
         this.ubicacionActual = ubicacionActual;
     }
+    public void pushFireBaseBD() {
+        final HashMap<String, Object> retorno = new HashMap<String, Object>();
+
+        final HashMap<String, Object> amigos = new HashMap<String, Object>();
+        if (this.amigos != null) {
+            for (Jugador jugador : this.amigos) {
+                amigos.put(jugador.getId(), jugador.getId());
+            }
+            retorno.put("amigos", amigos);
+        }
+
+        final HashMap<String, Object> enviados = new HashMap<String, Object>();
+        if (this.enviados != null) ;
+        for (Mensaje mensaje : this.enviados) {
+            enviados.put(mensaje.getId(), mensaje.getId());
+        }
+        retorno.put("enviados", enviados);
+
+        final HashMap<String, Object> opiniones = new HashMap<String, Object>();
+        if (this.opiniones != null) {
+            for (Opinion opinion : this.getOpiniones()) {
+                opiniones.put(opinion.getId(),opinion.getId());
+            }
+            retorno.put("opiniones", opiniones);
+        }
+
+
+        final HashMap<String, Object>eventos= new HashMap<String,Object>();
+        if(this.eventos!=null) {
+            for (Evento evento : this.eventos) {
+                eventos.put(evento.getId(), evento.getId());
+            }
+            retorno.put("eventos", eventos);
+        }
+
+        final HashMap<String, Object>eventosCreados= new HashMap<String,Object>();
+        if(this.eventosCreados!=null) {
+            for (Evento evento : this.eventosCreados) {
+                eventosCreados.put(evento.getId(), evento.getId());
+            }
+            retorno.put("eventosCreados", eventosCreados);
+        }
+
+        if(ubicacionActual!=null)
+            retorno.put("ubicacionActual",ubicacionActual.getId());
+
+        retorno.put("correo",super.getCorreo());
+        retorno.put("nombreUsuario", super.getNombreUsuario());
+        retorno.put("sexo",super.getSexo());
+        //private String id;
+        Almacenamiento almacenamiento=new Almacenamiento();
+        //almacenamiento.push(retorno, "Jugador/",this.getId());///Si da error aca es por que no asignaron el id del usuario a la clase
+
+    }
+
 }
