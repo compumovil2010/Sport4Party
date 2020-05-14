@@ -39,7 +39,7 @@ public class VerParticipantes extends AppCompatActivity {
         participantes = (ArrayList<Jugador>) info.getSerializable("participantes");
 
         //La idea es que este sea el perfil que se maneja en la aplicacion
-        origin = new Jugador("asb", "asb", "Mael", "masculino");
+        origin = new Jugador("puf","asb", "asb", "Mael", "masculino");
         origin.addAmigos(participantes.get(0));
         origin.addAmigos(participantes.get(3));
         origin.addAmigos(participantes.get(6));

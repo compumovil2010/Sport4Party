@@ -3,6 +3,7 @@ package com.example.sport4party;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,7 +120,11 @@ public class EventosAdapter extends BaseAdapter {
             infoEvento.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     Intent info = new Intent(v.getContext(), InformacionEvento.class);
+                    info.putExtra("id",eventos.get(position).getId());
+                    Log.i("transposit",String.valueOf( position));
+                    Log.i("transposit", eventos.get(position).getId());
                     info.putExtra("pantalla",1);
                     context.startActivity(info);
                 }

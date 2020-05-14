@@ -31,7 +31,7 @@ public class MisAmigos extends AppCompatActivity {
         amigos = (ArrayList<Jugador>) info.getSerializable("amigos");
 
         //La idea es que este sea el perfil que se maneja en la aplicacion
-        Jugador origin = new Jugador("asb", "asb", "Mael", "masculino");
+        Jugador origin = new Jugador("po","asb", "asb", "Mael", "masculino");
         adapter = new JugadorAdapter(this, amigos, false, false, origin);
         misAmigos.setAdapter(adapter);
 

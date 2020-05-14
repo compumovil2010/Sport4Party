@@ -1,12 +1,16 @@
 package com.example.sport4party.Modelo;
 
+import com.example.sport4party.Utils.Almacenamiento;
+
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Evento implements Serializable {
 
     private int ID;
+    private String id=null;
     private String descripcion;
     private Date fecha;
     private String nivelHabilidad;
@@ -14,13 +18,19 @@ public class Evento implements Serializable {
     private String precio;
     private boolean pago;
     private boolean privado;
+    private long cupos;
     //relaciones
     private Deporte deporte;
     private Ubicacion ubicacion;
 
     //Constructor
-    public Evento(int ID, String descripcion, Date fecha, String nivelHabilidad, String nombre, String precio, boolean pago, boolean privado, Deporte deporte, Ubicacion ubicacion) {
+    public Evento()
+    {
+
+    }
+    public Evento(int ID, String descripcion,int cupos, Date fecha, String nivelHabilidad, String nombre, String precio, boolean pago, boolean privado, Deporte deporte, Ubicacion ubicacion) {
         this.ID = ID;
+        this.cupos=cupos;
         this.descripcion = descripcion;
         this.fecha = fecha;
         this.nivelHabilidad = nivelHabilidad;
@@ -33,6 +43,15 @@ public class Evento implements Serializable {
     }
 
     //Getters and setters
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public int getID() {
         return ID;
     }
@@ -110,4 +129,30 @@ public class Evento implements Serializable {
         @Override
         public int compare(Evento o1, Evento o2) { return o1.getPrecio().compareTo(o2.getPrecio() );
         }};
+    public void pushFireBaseBD()
+    {
+        final HashMap<String, Object> retorno= new HashMap<String,Object>();
+        retorno.put("ID", this.getID());
+        retorno.put("descripcion",this.descripcion);
+        retorno.put("fecha", this.fecha);
+        retorno.put("nivelHabilidad",this.nivelHabilidad);
+        retorno.put("nombre",this.nombre);
+        retorno.put("precio",this.precio);
+        retorno.put("pago",this.pago);
+        retorno.put("privado",this.privado);
+        retorno.put("cupos",this.cupos);
+        retorno.put("deporte",this.deporte.getId());
+        retorno.put("ubicacion", this.ubicacion.getId());
+        Almacenamiento almacenamiento=new Almacenamiento();
+        if(this.id==null)
+        {
+            this.id=almacenamiento.push(retorno, "Evento/");
+        }
+        else
+        {
+            almacenamiento.push(retorno,"Evento/",this.getId());
+        }
+
+    }
+
 }

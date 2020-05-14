@@ -20,11 +20,7 @@ import java.util.Objects;
 public class Almacenamiento {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
-    //@Override
-    public void onLoadUserResponse(Object entrada)
-    {
 
-    }
     //@Override
     public void onLoadUserError() { }
 
@@ -36,9 +32,18 @@ public class Almacenamiento {
         myRef = database.getReference(path);
         myRef.setValue(value);
     }
-
-    public void push(Object objectoPush, String path) {
+    ///Usar cuando se vaya a empujar un objeto nuevo
+    public String push(Object objectoPush, String path) {
         myRef=database.getReference(path);
+        String key= myRef.push().getKey();
+        myRef=database.getReference(path+key);
+        myRef.setValue(objectoPush);
+        return key;
+
+    }
+    ///usar cuando vaya a hacerle push a un objeto ya disponible siendo el id el objeto especifico
+    public void push(Object objectoPush, String path, String id) {
+        myRef=database.getReference(path+id);
         myRef.setValue(objectoPush);
     }
 
@@ -48,8 +53,44 @@ public class Almacenamiento {
     }
 
     //@Override
-    public void leerDatos(HashMap<String, Object> datos, DataSnapshot singleSnapShot){ }
+    public void onBuscarResult(HashMap<String,Object> data, String key)
+    {
 
+    }
+
+    public void buscarPorID(String path, final String id)
+    {
+        myRef=database.getReference(path);
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleSnapShot: dataSnapshot.getChildren())
+                {
+                    if(singleSnapShot.getKey().equals(id))
+                    {
+                        onBuscarResult((HashMap<String,Object>)singleSnapShot.getValue(), singleSnapShot.getKey());
+                    }
+                }
+                onComplete();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                onLoadUserError();
+            }
+        });
+
+
+
+    }
+
+    //@Override
+    public void leerDatos(HashMap<String, Object> datos, DataSnapshot singleSnapShot){ }
+    //@Override
+    public void onComplete()
+    {
+
+    }
     public void loadOnce(String path) {
         myRef=database.getReference(path);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -57,6 +98,7 @@ public class Almacenamiento {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleSnapShot: dataSnapshot.getChildren())
                 {
+
 
                     HashMap<String, Object> datos = (HashMap<String,Object>) singleSnapShot.getValue();
                     leerDatos(datos, singleSnapShot);
@@ -75,6 +117,7 @@ public class Almacenamiento {
                      */
 
                 }
+                onComplete();
             }
 
             @Override
@@ -97,6 +140,7 @@ public class Almacenamiento {
                     HashMap<String, Object> datos = (HashMap<String,Object>) singleSnapShot.getValue();
                     leerDatosSubscrito(datos, singleSnapShot);
                 }
+                onComplete();
             }
 
             @Override
