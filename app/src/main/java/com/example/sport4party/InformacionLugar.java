@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -39,6 +40,11 @@ public class InformacionLugar extends AppCompatActivity {
     TextView textoVariable;
     Ubicacion ubicacion;
     Double promedioCalificaciones=0.0;
+    ImageView star1;
+    ImageView star2;
+    ImageView star3;
+    ImageView star4;
+    ImageView star5;
     private void registrarLugarParaEvento()
     {
         miCalificacion.setText("Agregar Lugar Al Evento");
@@ -63,6 +69,12 @@ public class InformacionLugar extends AppCompatActivity {
         opiniones = findViewById(R.id.listViewParticipantes);
         miCalificacion = findViewById(R.id.botonSubirCalif);
         textoVariable=findViewById(R.id.textoVariable);
+        star1=findViewById(R.id.star1);
+        star2=findViewById(R.id.star2);
+        star3=findViewById(R.id.star3);
+        star4=findViewById(R.id.star4);
+        star5=findViewById(R.id.star5);
+
 
         //nombreLugar.setText("Centro deportivo de los andes");
         deportesDisp.setText("");
@@ -140,6 +152,48 @@ public  void actualizarCalificacion()
 {
     Double promedio=promedioCalificaciones/cantCalificaciones;
     Log.i("Calificacion actual",promedio.toString());
+
+    if(promedio<5)
+    {
+        star5.setImageResource(R.drawable.star_empty);
+        if(4< promedio)
+        {
+           star5.setImageResource(R.drawable.star_half);
+        }
+    }
+
+    if(promedio<4)
+    {
+        star4.setImageResource(R.drawable.star_empty);
+        if(3<promedio)
+        {
+            star4.setImageResource(R.drawable.star_half);
+        }
+    }
+    if(promedio<3)
+    {
+        star3.setImageResource(R.drawable.star_empty);
+        if(2<promedio)
+        {
+            star3.setImageResource(R.drawable.star_half);
+        }
+    }
+    if(promedio<2)
+    {
+        star2.setImageResource(R.drawable.star_empty);
+        if(1<promedio)
+        {
+            star2.setImageResource(R.drawable.star_half);
+        }
+    }
+    if (promedio<1)
+    {
+        star1.setImageResource(R.drawable.star_empty);
+        if(0<promedio)
+        {
+            star1.setImageResource(R.drawable.star_half);
+        }
+    }
 }
 
 private void buscarDeportes(HashMap<String, Object> data, final String key)

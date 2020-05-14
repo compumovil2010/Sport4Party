@@ -78,6 +78,10 @@ public class InformacionEvento extends AppCompatActivity {
                 descripcion.setText((String)data.get("descripcion"));
                 precio.setText("$"+(String)data.get("precio"));
                 habilidad.setText((String)data.get("nivelHabilidad"));
+                HashMap<String,Object>fechaAux=(HashMap<String, Object>) data.get("fecha");
+
+                fechaYHora.setText(((long)fechaAux.get("year")+1900)+"/"+
+                        ((long)fechaAux.get("month")+1)+"/"+((long)fechaAux.get("date")));
                 Almacenamiento buscarDeporte=new Almacenamiento()
                 {
                     @Override
