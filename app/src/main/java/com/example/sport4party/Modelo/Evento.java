@@ -141,8 +141,12 @@ public class Evento implements Serializable {
         retorno.put("pago",this.pago);
         retorno.put("privado",this.privado);
         retorno.put("cupos",this.cupos);
+        if(this.deporte!=null)
         retorno.put("deporte",this.deporte.getId());
+
+        if(this.ubicacion!=null)
         retorno.put("ubicacion", this.ubicacion.getId());
+
         Almacenamiento almacenamiento=new Almacenamiento();
         if(this.id==null)
         {

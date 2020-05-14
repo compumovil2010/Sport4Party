@@ -24,12 +24,25 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.example.sport4party.Modelo.Deporte;
+import com.example.sport4party.Modelo.Evento;
+import com.example.sport4party.Modelo.Ubicacion;
+import com.example.sport4party.Utils.Almacenamiento;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 
 import javax.microedition.khronos.egl.EGLDisplay;
 
 public class CrearEvento extends AppCompatActivity {
     private int idLugar=-1;
+
+    private Evento evento;
+    private Deporte deporteAux;
+    private Ubicacion ubicacionAux;
+
     Button editar;
     Button seleccionarUbicacion;
     EditText nombre;
@@ -43,6 +56,7 @@ public class CrearEvento extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener picker;
     TimePickerDialog timePickerDialog;
     TextView textViewTittle;
+    Date fechaAux;
     void editar()
     {
         //Aqui se extraerian los datos ya existentes
@@ -92,13 +106,13 @@ public class CrearEvento extends AppCompatActivity {
         int modo=getIntent().getIntExtra("pantalla",-1); //1 modo crear 0 modo editar
         if(modo==1)
         {
-            //editar
+
 
         }
         if(modo==0)
         {
             editar();
-            //crear
+
         }
     initFechaEvents();
     initHoras();
@@ -117,18 +131,72 @@ public class CrearEvento extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent back = new Intent(v.getContext(),Mapa.class);
-                Toast.makeText(v.getContext(),"Evento publicado",Toast.LENGTH_LONG).show();
-                startActivity(back);
+                if(extraerInformación())
+                {
+                    Toast.makeText(v.getContext(),"Evento publicado",Toast.LENGTH_LONG).show();
+                    startActivity(back);
+                }
+                else
+                {
+                    Toast.makeText(v.getContext(),"Información incorrecta o incompleta",Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
     }
+
+
+private boolean extraerInformación()
+{
+    evento=new Evento();
+    if(nombre.getText().length()>0)
+    {
+        evento.setNombre(nombre.getText().toString().trim());
+    }
+    else
+    {
+        return  false;
+    }
+
+    if(descripcion.getText().length()>0)
+    {
+        evento.setDescripcion(descripcion.getText().toString().trim());
+    }
+    else
+    {
+        return false;
+    }
+    evento.setNivelHabilidad(habilidad.getSelectedItem().toString());
+    evento.pushFireBaseBD();
+    Almacenamiento almacenamiento=new Almacenamiento()
+    {
+        @Override
+        public void onBuscarResult(HashMap<String, Object> data, String key) {
+            super.onBuscarResult(data, key);
+            HashMap<String,Object>mapAux=(HashMap<String, Object>) data.get("eventos");
+
+            if(mapAux==null)
+            {
+                mapAux=new HashMap<String, Object>();
+            }
+            mapAux.put(evento.getId(),evento.getId());
+            Almacenamiento almacenamiento1=new Almacenamiento();
+            almacenamiento1.push(mapAux,"Jugador/"+FirebaseAuth.getInstance().getUid()+"/","eventos");
+
+        }
+    };
+    almacenamiento.buscarPorID("Jugador/", FirebaseAuth.getInstance().getUid());
+    return true;
+}
     private  void initHoras()
     {
         timePickerDialog=new TimePickerDialog(CrearEvento.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 hora.setText("Hora ("+hourOfDay+":"+minute+")");
+                fechaAux.setHours(hourOfDay);
+                fechaAux.setMinutes(minute);
 
             }
         },0,0,false);
@@ -166,6 +234,9 @@ public class CrearEvento extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 String date= "Fecha ("+(month+1)+"/"+dayOfMonth+"/"+year+")";
+                fechaAux.setMonth(month);
+                fechaAux.setDate(dayOfMonth);
+                fechaAux.setYear(year-1990);
                 fecha.setText(date);
             }
         };
