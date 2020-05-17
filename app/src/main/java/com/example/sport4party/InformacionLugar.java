@@ -221,6 +221,7 @@ private void buscarDeportes(HashMap<String, Object> data, final String key)
             @Override
             public void leerDatos(final HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
                 super.leerDatos(datos, singleSnapShot);
+                if(datos.get("ubicacion")!=null)
                 if(datos.get("ubicacion").equals(idLocalizacion))
                 {
                     Log.i("eventos","Lol");
