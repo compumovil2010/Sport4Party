@@ -56,6 +56,7 @@ import java.util.HashMap;
 public class Perfil extends AppCompatActivity {
     //modelo
     private String perfilId;
+    private String usuarioId;
     private Jugador perfil;
     private int numAmigos;
     private ArrayList<String> idAmigos;
@@ -93,8 +94,10 @@ public class Perfil extends AppCompatActivity {
         perfil.setEventosCreados(new ArrayList<Evento>());
         idAmigos = new ArrayList<>();
         idEventosCreados = new ArrayList<>();
-        perfilId = "1GWxKsBvBVZzXetfglHDPDZqXxj1";
+        usuarioId = "1GWxKsBvBVZzXetfglHDPDZqXxj1";
+        perfilId = "uv8upyMvQIXL51Ci2dGArWWS1nc2";
         tipo = Integer.parseInt(intent.getStringExtra("tipo"));
+        //tipo = 2;
 
         Almacenamiento almacenamiento = new Almacenamiento() {
             @Override
@@ -104,12 +107,14 @@ public class Perfil extends AppCompatActivity {
                 }
                 if (datos.containsKey("amigos")) {
                     DataSnapshot amigos = singleSnapShot.child("amigos/");
+                    idAmigos.clear();
                     for (DataSnapshot i : amigos.getChildren()) {
                         idAmigos.add(i.getValue().toString());
                     }
                 }
                 if (datos.containsKey("eventosCreados")) {
                     DataSnapshot eventosCreados = singleSnapShot.child("eventosCreados/");
+                    idEventosCreados.clear();
                     for (DataSnapshot i : eventosCreados.getChildren()) {
                         idEventosCreados.add(i.getValue().toString());
                         toastmsg("evento: "+idEventosCreados.get(idEventosCreados.size()-1));
@@ -221,6 +226,21 @@ public class Perfil extends AppCompatActivity {
         toAdd.setBackgroundResource(R.drawable.boton_general3);
     }
 
+    public void agregarEliminar(View view) {
+        Almacenamiento almacenamiento = new Almacenamiento();
+        switch (tipo) {
+            case 1:{
+                almacenamiento.erase("Jugador/"+usuarioId+"/amigos/"+perfilId);
+                almacenamiento.erase("Jugador/"+perfilId+"/amigos/"+usuarioId);
+            }
+            break;
+            case 2:{
+                almacenamiento.push(perfilId, "Jugador/"+usuarioId+"/amigos/", perfilId);
+                almacenamiento.push(perfilId, "Jugador/"+perfilId+"/amigos/", usuarioId);
+            }
+        }
+    }
+
     private void actualizarEventosUsuario() {
         eventosAdapter = new EventosAdapter(this, perfil.getEventosCreados(), false, true);
         listEventos.setAdapter(eventosAdapter);
@@ -242,8 +262,9 @@ public class Perfil extends AppCompatActivity {
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                perfil.setNombreUsuario(input.getText().toString());
-                nombreUsuario.setText(perfil.getNombreUsuario());
+                //perfil.setNombreUsuario(input.getText().toString());
+                //nombreUsuario.setText(perfil.getNombreUsuario());
+                actualizarNombre(input.getText().toString());
             }
         });
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -254,6 +275,11 @@ public class Perfil extends AppCompatActivity {
         });
         builder.create();
         builder.show();
+    }
+
+    private void actualizarNombre(String nombre) {
+        Almacenamiento almacenamiento = new Almacenamiento();
+        almacenamiento.addValueToReference("Jugador/"+perfilId+"/nombreUsuario", nombre);
     }
 
     public Bitmap getBitmap(ImageView imageView) {
