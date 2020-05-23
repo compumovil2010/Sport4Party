@@ -57,6 +57,8 @@ public class CrearEvento extends AppCompatActivity {
     TimePickerDialog timePickerDialog;
     TextView textViewTittle;
     Date fechaAux;
+    boolean fechaPuesta=false;
+    boolean horaPuesta=false;
     void editar()
     {
         //Aqui se extraerian los datos ya existentes
@@ -167,6 +169,23 @@ private boolean extraerInformación()
     {
         return false;
     }
+    if(this.fechaPuesta && this.horaPuesta)
+    {
+        evento.setFecha(this.fechaAux);
+    }
+    else
+    {
+        return false;
+    }
+    if(this.cupos.getText().length()>0)
+    {
+        evento.setCupos(Long.parseLong(this.cupos.getText().toString().trim()));
+    }
+    else
+    {
+        return false;
+    }
+    evento.setPrecio(precio.getText().toString());
     evento.setNivelHabilidad(habilidad.getSelectedItem().toString());
     evento.pushFireBaseBD();
     Almacenamiento almacenamiento=new Almacenamiento()
@@ -182,7 +201,7 @@ private boolean extraerInformación()
             }
             mapAux.put(evento.getId(),evento.getId());
             Almacenamiento almacenamiento1=new Almacenamiento();
-            almacenamiento1.push(mapAux,"Jugador/"+FirebaseAuth.getInstance().getUid()+"/","eventos");
+            almacenamiento1.push(mapAux,"Jugador/"+FirebaseAuth.getInstance().getUid()+"/","eventosCreados");
 
         }
     };
@@ -197,6 +216,7 @@ private boolean extraerInformación()
                 hora.setText("Hora ("+hourOfDay+":"+minute+")");
                 fechaAux.setHours(hourOfDay);
                 fechaAux.setMinutes(minute);
+                horaPuesta=true;
 
             }
         },0,0,false);
@@ -234,10 +254,12 @@ private boolean extraerInformación()
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 String date= "Fecha ("+(month+1)+"/"+dayOfMonth+"/"+year+")";
+
                 fechaAux.setMonth(month);
                 fechaAux.setDate(dayOfMonth);
                 fechaAux.setYear(year-1990);
                 fecha.setText(date);
+                fechaPuesta=true;
             }
         };
     }
@@ -255,6 +277,7 @@ private boolean extraerInformación()
         habilidad=(Spinner)findViewById(R.id.habilidad);
         precio=(EditText) findViewById(R.id.precio);
         textViewTittle=(TextView) findViewById(R.id.toolbar_title);
+        fechaAux=new Date();
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch(requestCode) {
