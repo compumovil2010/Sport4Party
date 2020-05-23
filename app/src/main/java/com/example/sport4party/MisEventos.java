@@ -18,14 +18,22 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
+import com.example.sport4party.Modelo.Deporte;
 import com.example.sport4party.Modelo.Evento;
 import com.example.sport4party.Modelo.Jugador;
+import com.example.sport4party.Utils.Almacenamiento;
+import com.google.firebase.database.DataSnapshot;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class MisEventos extends AppCompatActivity {
+    private String perfilId;
+    private ArrayList<String> idEventos;
     private EventosAdapter eventosAdapter;
     private ListView listEventos;
     private Jugador perfil;
@@ -39,13 +47,45 @@ public class MisEventos extends AppCompatActivity {
         setContentView(R.layout.activity_mis_eventos);
         iniciarVista();
         Intent intent = getIntent();
-        perfil = (Jugador) intent.getSerializableExtra("jugador");
+        //perfil = (Jugador) intent.getSerializableExtra("jugador");
+        perfil = new Jugador();
+        perfil.setEventos(new ArrayList<Evento>());
+        //perfilId = "1GWxKsBvBVZzXetfglHDPDZqXxj1";
+        perfilId = "uv8upyMvQIXL51Ci2dGArWWS1nc2";
+        idEventos = new ArrayList<>();
+
+        Almacenamiento almacenamiento = new Almacenamiento() {
+            @Override
+            public void leerDatosSubscrito(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
+                if (datos.containsKey("eventos")) {
+                    DataSnapshot eventos = singleSnapShot.child("eventos/");
+                    idEventos.clear();
+                    for (DataSnapshot i : eventos.getChildren()) {
+                        idEventos.add(i.getValue().toString());
+                    }
+                }
+            }
+        };
+        almacenamiento.obtenerPorID("Jugador/", perfilId);
+
+        Almacenamiento almacenamiento2 = new Almacenamiento() {
+            @Override
+            public void leerDatosSubscrito(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
+                String eventoId = singleSnapShot.getKey();
+                if (idEventos.contains(eventoId)) {
+                    perfil.addEventos(obtenerEvento(singleSnapShot));
+                    idEventos.remove(eventoId);
+                }
+                actualizarEventosUsuario();
+            }
+        };
+        almacenamiento2.loadSubscription("Evento/");
 
         listEventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent info = new Intent(view.getContext(), InformacionEvento.class);
-                if(perfil.getEventosCreados().contains(misEventos.get(position)))
+                if (perfil.getEventosCreados().contains(misEventos.get(position)))
                     info.putExtra("pantalla", 0);
                 else
                     info.putExtra("pantalla", 2);
@@ -54,9 +94,48 @@ public class MisEventos extends AppCompatActivity {
         });
     }
 
+    private void toastmsg(String msg) {
+        Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
+    }
+
     protected void onResume() {
         super.onResume();
         actualizar();
+    }
+
+    private Evento obtenerEvento(DataSnapshot singleSnapShot) {
+        HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
+
+        String id = singleSnapShot.getKey();
+        String nombre = datos.get("nombre").toString();
+        String precio = datos.get("precio").toString();
+        DataSnapshot dsFecha = singleSnapShot.child("fecha/");
+        Date fecha = dsFecha.getValue(Date.class);
+        String deporteId = datos.get("deporte").toString();
+        toastmsg(deporteId);
+        Evento evento = new Evento();
+        evento.setId(id);
+        evento.setNombre(nombre);
+        evento.setPrecio(precio);
+        evento.setFecha(fecha);
+        evento.setDeporte(obtenerDeporte(deporteId));
+        return evento;
+    }
+
+    private Deporte obtenerDeporte(final String deporteId) {
+        final Deporte deporte = new Deporte();
+        Almacenamiento almacenamiento = new Almacenamiento() {
+            @Override
+            public void leerDatos(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
+                if (deporteId.equals(singleSnapShot.getKey())) {
+                    deporte.setNombre(datos.get("nombre").toString());
+                    toastmsg("encontrado: "+datos.get("nombre").toString());
+                }
+                actualizarEventosUsuario();
+            }
+        };
+        almacenamiento.loadOnce("Deporte/");
+        return deporte;
     }
 
     private void actualizar() {

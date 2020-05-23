@@ -94,8 +94,8 @@ public class Perfil extends AppCompatActivity {
         perfil.setEventosCreados(new ArrayList<Evento>());
         idAmigos = new ArrayList<>();
         idEventosCreados = new ArrayList<>();
-        usuarioId = "1GWxKsBvBVZzXetfglHDPDZqXxj1";
-        perfilId = "uv8upyMvQIXL51Ci2dGArWWS1nc2";
+        perfilId = "1GWxKsBvBVZzXetfglHDPDZqXxj1";
+        usuarioId = "uv8upyMvQIXL51Ci2dGArWWS1nc2";
         tipo = Integer.parseInt(intent.getStringExtra("tipo"));
         //tipo = 2;
 
