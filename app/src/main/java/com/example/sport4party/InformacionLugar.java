@@ -1,6 +1,5 @@
 package com.example.sport4party;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -21,7 +20,6 @@ import com.example.sport4party.Modelo.Ubicacion;
 import com.example.sport4party.Utils.Almacenamiento;
 import com.google.firebase.database.DataSnapshot;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -66,7 +64,7 @@ public class InformacionLugar extends AppCompatActivity {
         nombreLugar = findViewById(R.id.placeName);
         deportesDisp = findViewById(R.id.resultDeportDisp);
         horario = findViewById(R.id.resultHorario);
-        opiniones = findViewById(R.id.listViewParticipantes);
+        opiniones = findViewById(R.id.listaamigos);
         miCalificacion = findViewById(R.id.botonSubirCalif);
         textoVariable=findViewById(R.id.textoVariable);
         star1=findViewById(R.id.star1);

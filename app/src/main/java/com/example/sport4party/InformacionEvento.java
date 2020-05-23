@@ -247,6 +247,8 @@ public class InformacionEvento extends AppCompatActivity {
                                                Bundle info = new Bundle();
                                                info.putSerializable("participantes", jugadores);
                                                participantes.putExtra("listaParticipantes",info);
+                                               idEvento = "-M7HGJzL8MayFwf68Xzj";
+                                               participantes.putExtra("idEvento",idEvento );
                                                startActivity(participantes);
                                            }
                                        }

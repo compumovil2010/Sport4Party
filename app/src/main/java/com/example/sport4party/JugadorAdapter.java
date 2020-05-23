@@ -8,7 +8,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sport4party.Modelo.Evento;
 import com.example.sport4party.Modelo.Jugador;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -24,13 +26,16 @@ public class JugadorAdapter extends BaseAdapter {
     private boolean invitarAmigos;
     //Perfil del usuario que esta usando la aplicacion
     private Jugador perfilApp;
+    //Evento sobre el cual se va a verficar (unicamnete necesario en InvitarAmigos)
+    private Evento eventoAct;
 
-    public JugadorAdapter(Context nContext, ArrayList<Jugador>nDeports, boolean nparticipantes, boolean ninvitar, Jugador nPerfil){
+    public JugadorAdapter(Context nContext, ArrayList<Jugador>nDeports, boolean nparticipantes, boolean ninvitar, Jugador nPerfil, Evento nEvent){
         this.aContext = nContext;
         this.deports = nDeports;
         this.enParticipantes = nparticipantes;
         this.invitarAmigos = ninvitar;
         this.perfilApp = nPerfil;
+        this.eventoAct = nEvent;
     }
 
     @Override
@@ -49,15 +54,15 @@ public class JugadorAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View vista = View.inflate(aContext, R.layout.casilla_participante,null);
 
         TextView userName = vista.findViewById(R.id.userName);
         TextView lastTime = vista.findViewById(R.id.lastTimeCon);
-        Button add = vista.findViewById(R.id.addButton);
+        final Button add = vista.findViewById(R.id.addButton);
 
         userName.setText(deports.get(position).getNombreUsuario());
-        lastTime.setText("Ultima vez conectado \n 02/04/2020");
+        lastTime.setText(deports.get(position).getCorreo());
 
         if(enParticipantes){
             if(esAmigo(deports.get(position))){
@@ -76,6 +81,9 @@ public class JugadorAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(v.getContext(),"Participante agregado a la lista de amigos",Toast.LENGTH_LONG).show();
+                        //agregarAMisAmigos(deports.get(position));
+                        add.setText("Ya eres amigo de este usuario");
+                        add.setBackgroundResource(R.drawable.boton_general);
                     }
                 });
             }
@@ -85,7 +93,15 @@ public class JugadorAdapter extends BaseAdapter {
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(),"Amigo agregado al evento",Toast.LENGTH_LONG).show();
+                    //if(cantidadDeGenteInscrita + 1 <= eventoAct.getCupos()){
+                        //agregarAmigoAEvento(deports.get(position));
+                        Toast.makeText(v.getContext(),"Amigo agregado al evento",Toast.LENGTH_LONG).show();
+                        add.setText("Agregado");
+                        add.setBackgroundResource(R.drawable.boton_general2);
+                        add.setClickable(false);
+                    //}else{
+                        //Toast.makeText(v.getContext(),"No se pueden agregar mas personas",Toast.LENGTH_LONG).show();
+                    //}
                 }
             });
         }else if(!enParticipantes && !invitarAmigos){
@@ -102,6 +118,18 @@ public class JugadorAdapter extends BaseAdapter {
         }else{
             return perfilApp.getAmigos().contains(aBuscar);
         }
+    }
+
+    void agregarAMisAmigos(Jugador aAgregar){
+        perfilApp.getAmigos().add(aAgregar);
+        perfilApp.pushFireBaseBD();
+    }
+
+    void agregarAmigoAEvento(Jugador aAgregar){
+        aAgregar.addEventos(eventoAct);
+        aAgregar.pushFireBaseBD();
+        eventoAct.setCupos(eventoAct.getCupos()+1);
+        eventoAct.pushFireBaseBD();
     }
 
 

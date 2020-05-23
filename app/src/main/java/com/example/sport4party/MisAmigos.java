@@ -22,7 +22,7 @@ public class MisAmigos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mis_amigos);
 
-        misAmigos = findViewById(R.id.Amigos);
+        misAmigos = findViewById(R.id.listaamigos);
 
 
         //Extraigo el Bundle con la información de los amigos del usuario actual
@@ -32,7 +32,7 @@ public class MisAmigos extends AppCompatActivity {
 
         //La idea es que este sea el perfil que se maneja en la aplicacion
         Jugador origin = new Jugador("po","asb", "asb", "Mael", "masculino");
-        adapter = new JugadorAdapter(this, amigos, false, false, origin);
+        adapter = new JugadorAdapter(this, amigos, false, false, origin, null);
         misAmigos.setAdapter(adapter);
 
         misAmigos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
