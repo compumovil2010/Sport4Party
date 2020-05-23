@@ -86,7 +86,7 @@ public class EventosAdapter extends BaseAdapter {
             Button infoEvento = (Button) convertView.findViewById(R.id.botonInfoEventoList);
 
             idEvento.setText(Integer.toString(eventos.get(position).getID()));
-            nombreEvento.setText(eventos.get(position).getDeporte().getNombre());
+            nombreEvento.setText(eventos.get(position).getNombre());
 
             if(eventos.get(position).isPrivado()){
                 infoEvento.setBackgroundColor(ContextCompat.getColor(parent.getContext(), R.color.colorPrivateEvent));

@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.IntentService;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -33,18 +35,31 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.sport4party.Modelo.Deporte;
+import com.example.sport4party.Modelo.Evento;
 import com.example.sport4party.Modelo.Jugador;
+import com.example.sport4party.Modelo.Ubicacion;
+import com.example.sport4party.Utils.Almacenamiento;
 import com.example.sport4party.Utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class Perfil extends AppCompatActivity {
     //modelo
+    private String perfilId;
     private Jugador perfil;
+    private int numAmigos;
+    private ArrayList<String> idAmigos;
+    private ArrayList<String> idEventosCreados;
     private int tipo;
     //UI
     private ImageView usrImage;
@@ -58,11 +73,6 @@ public class Perfil extends AppCompatActivity {
     //Popup de la imagen de perfil
     private Dialog imgPopup;
     private ImageView imgPopProf;
-    private Button aceptarImg;
-    private Button cancelarImg;
-    private Button camera;
-    private Button gallery;
-    private ImageButton cerrarPopup;
     //Autenticación
     private FirebaseAuth mAuth;
     //Funcionalidad
@@ -77,8 +87,49 @@ public class Perfil extends AppCompatActivity {
         iniciarVista();
         Intent intent = getIntent();
         mAuth = FirebaseAuth.getInstance();
-        perfil = (Jugador) intent.getSerializableExtra("jugador");
+        //perfil = (Jugador) intent.getSerializableExtra("jugador");
+        //perfilId = intent.getStringExtra("jugador");
+        perfil = new Jugador();
+        perfil.setEventosCreados(new ArrayList<Evento>());
+        idAmigos = new ArrayList<>();
+        idEventosCreados = new ArrayList<>();
+        perfilId = "1GWxKsBvBVZzXetfglHDPDZqXxj1";
         tipo = Integer.parseInt(intent.getStringExtra("tipo"));
+
+        Almacenamiento almacenamiento = new Almacenamiento() {
+            @Override
+            public void leerDatosSubscrito(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
+                if (datos.containsKey("nombreUsuario")) {
+                    perfil.setNombreUsuario(datos.get("nombreUsuario").toString());
+                }
+                if (datos.containsKey("amigos")) {
+                    DataSnapshot amigos = singleSnapShot.child("amigos/");
+                    for (DataSnapshot i : amigos.getChildren()) {
+                        idAmigos.add(i.getValue().toString());
+                    }
+                }
+                if (datos.containsKey("eventosCreados")) {
+                    DataSnapshot eventosCreados = singleSnapShot.child("eventosCreados/");
+                    for (DataSnapshot i : eventosCreados.getChildren()) {
+                        idEventosCreados.add(i.getValue().toString());
+                        toastmsg("evento: "+idEventosCreados.get(idEventosCreados.size()-1));
+                    }
+                }
+                actualizar();
+            }
+        };
+        almacenamiento.obtenerPorID("Jugador/", perfilId);
+
+        Almacenamiento almacenamiento2 = new Almacenamiento(){
+            @Override
+            public void leerDatosSubscrito(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
+                if(idEventosCreados.contains(singleSnapShot.getKey())){
+                    perfil.addEventoCreado(obtenerEvento(singleSnapShot));
+                }
+                actualizarEventosUsuario();
+            }
+        };
+        almacenamiento2.loadSubscription("Evento/");
 
         buttonEventos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +139,22 @@ public class Perfil extends AppCompatActivity {
                 startActivity(nuevoEvento);
             }
         });
+    }
+
+    private Evento obtenerEvento(DataSnapshot singleSnapShot) {
+        HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
+        int ID = Integer.parseInt(datos.get("ID").toString());
+        String nombre = datos.get("nombre").toString();
+        boolean privado = (boolean) datos.get("privado");
+        Evento evento = new Evento();
+        evento.setID(ID);
+        evento.setNombre(nombre);
+        evento.setPrivado(privado);
+        return evento;
+    }
+
+    private void toastmsg(String msg) {
+        Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -113,14 +180,14 @@ public class Perfil extends AppCompatActivity {
     }
 
     private void actualizar() {
-        if (perfil.getImagenPerfil() != null)
-            usrImage.setImageBitmap(perfil.getImagenPerfil());
+        //if (perfil.getImagenPerfil() != null)
+        //usrImage.setImageBitmap(perfil.getImagenPerfil());
         nombreUsuario.setText(perfil.getNombreUsuario());
-        amigos.setText(Integer.toString(perfil.getAmigos().size()));
+        amigos.setText(Integer.toString(idAmigos.size()));
         switch (tipo) {
             case 0: {
                 miPerfilVista();
-                actualizarEventosUsuario();
+                //actualizarEventosUsuario();
             }
             break;
             case 1: {
@@ -202,15 +269,10 @@ public class Perfil extends AppCompatActivity {
 
         imgPopProf = (ImageView) ll.findViewById(R.id.imageViewPopImgPerfil);
         imgPopProf.setImageBitmap(getBitmap(usrImage));
-        cerrarPopup = (ImageButton) ll.findViewById(R.id.imageButtonCloseImg);
-        aceptarImg = (Button) ll.findViewById(R.id.buttonImgOk);
-        cancelarImg = (Button) ll.findViewById(R.id.buttonImgCancel);
-        camera = (Button) ll.findViewById(R.id.buttonCamera);
-        gallery = (Button) ll.findViewById(R.id.buttonGallery);
     }
 
     public void popupImagen(View view) {
-        if(tipo == 0){
+        if (tipo == 0) {
             crearPopUp();
             imgPopup.show();
         }

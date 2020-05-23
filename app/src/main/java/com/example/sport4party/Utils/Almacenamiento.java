@@ -156,4 +156,21 @@ public class Almacenamiento {
         }
     }
 
+    public void obtenerPorID(String path, final String id)
+    {
+        myRef=database.getReference(path+id);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                leerDatosSubscrito((HashMap<String,Object>) dataSnapshot.getValue(), dataSnapshot);
+                onComplete();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                onLoadUserError();
+            }
+        });
+    }
+
 }
