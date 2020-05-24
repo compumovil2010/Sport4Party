@@ -22,6 +22,7 @@ import com.example.sport4party.Modelo.Deporte;
 import com.example.sport4party.Modelo.Evento;
 import com.example.sport4party.Modelo.Jugador;
 import com.example.sport4party.Utils.Almacenamiento;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
@@ -40,19 +41,26 @@ public class MisEventos extends AppCompatActivity {
     private int tipo;
     private Toolbar toolbar;
     private List<Evento> misEventos;
+    //Autenticación
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mis_eventos);
+
         iniciarVista();
-        Intent intent = getIntent();
-        //perfil = (Jugador) intent.getSerializableExtra("jugador");
+        mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() == null)
+            finish();
+
         perfil = new Jugador();
         perfil.setEventos(new ArrayList<Evento>());
-        //perfilId = "1GWxKsBvBVZzXetfglHDPDZqXxj1";
-        perfilId = "uv8upyMvQIXL51Ci2dGArWWS1nc2";
         idEventos = new ArrayList<>();
+
+        perfilId = mAuth.getCurrentUser().getUid();
+        //perfilId = "1GWxKsBvBVZzXetfglHDPDZqXxj1";
+        //perfilId = "uv8upyMvQIXL51Ci2dGArWWS1nc2";
 
         Almacenamiento almacenamiento = new Almacenamiento() {
             @Override
@@ -60,6 +68,7 @@ public class MisEventos extends AppCompatActivity {
                 if (datos.containsKey("eventos")) {
                     DataSnapshot eventos = singleSnapShot.child("eventos/");
                     idEventos.clear();
+                    perfil.setEventos(new ArrayList<Evento>());
                     for (DataSnapshot i : eventos.getChildren()) {
                         idEventos.add(i.getValue().toString());
                     }
@@ -94,10 +103,6 @@ public class MisEventos extends AppCompatActivity {
         });
     }
 
-    private void toastmsg(String msg) {
-        Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
-    }
-
     protected void onResume() {
         super.onResume();
         actualizar();
@@ -105,19 +110,13 @@ public class MisEventos extends AppCompatActivity {
 
     private Evento obtenerEvento(DataSnapshot singleSnapShot) {
         HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
-
-        String id = singleSnapShot.getKey();
-        String nombre = datos.get("nombre").toString();
-        String precio = datos.get("precio").toString();
         DataSnapshot dsFecha = singleSnapShot.child("fecha/");
-        Date fecha = dsFecha.getValue(Date.class);
         String deporteId = datos.get("deporte").toString();
-        toastmsg(deporteId);
         Evento evento = new Evento();
-        evento.setId(id);
-        evento.setNombre(nombre);
-        evento.setPrecio(precio);
-        evento.setFecha(fecha);
+        evento.setId(singleSnapShot.getKey());
+        evento.setNombre(datos.get("nombre").toString());
+        evento.setPrecio(datos.get("precio").toString());
+        evento.setFecha(dsFecha.getValue(Date.class));
         evento.setDeporte(obtenerDeporte(deporteId));
         return evento;
     }
@@ -129,7 +128,6 @@ public class MisEventos extends AppCompatActivity {
             public void leerDatos(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
                 if (deporteId.equals(singleSnapShot.getKey())) {
                     deporte.setNombre(datos.get("nombre").toString());
-                    toastmsg("encontrado: "+datos.get("nombre").toString());
                 }
                 actualizarEventosUsuario();
             }

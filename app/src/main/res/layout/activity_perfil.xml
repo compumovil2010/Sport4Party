@@ -118,6 +118,7 @@
                 android:background="@color/buttonThird"
                 android:text="Nuevo evento"
                 android:textColor="#FFFFFF"
+                android:onClick="crearEvento"
                 app:layout_constraintStart_toEndOf="parent" />
 
         </LinearLayout>

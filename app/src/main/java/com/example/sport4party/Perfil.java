@@ -58,7 +58,6 @@ public class Perfil extends AppCompatActivity {
     private String perfilId;
     private String usuarioId;
     private Jugador perfil;
-    private int numAmigos;
     private ArrayList<String> idAmigos;
     private ArrayList<String> idEventosCreados;
     private int tipo;
@@ -69,7 +68,6 @@ public class Perfil extends AppCompatActivity {
     private TextView editEvent;
     private Button buttonEventos;
     private Button toAdd;
-    private EventosAdapter eventosAdapter;
     private ListView listEventos;
     //Popup de la imagen de perfil
     private Dialog imgPopup;
@@ -86,17 +84,27 @@ public class Perfil extends AppCompatActivity {
         setContentView(R.layout.activity_perfil);
 
         iniciarVista();
-        Intent intent = getIntent();
         mAuth = FirebaseAuth.getInstance();
-        //perfil = (Jugador) intent.getSerializableExtra("jugador");
+        if (mAuth.getCurrentUser() == null)
+            finish();
+
+        Intent intent = getIntent();
         //perfilId = intent.getStringExtra("jugador");
+        tipo = Integer.parseInt(intent.getStringExtra("tipo"));
+
         perfil = new Jugador();
         perfil.setEventosCreados(new ArrayList<Evento>());
         idAmigos = new ArrayList<>();
         idEventosCreados = new ArrayList<>();
-        perfilId = "1GWxKsBvBVZzXetfglHDPDZqXxj1";
-        usuarioId = "uv8upyMvQIXL51Ci2dGArWWS1nc2";
-        tipo = Integer.parseInt(intent.getStringExtra("tipo"));
+
+        if (tipo > 0) {
+            usuarioId = mAuth.getCurrentUser().getUid();
+        } else {
+            perfilId = mAuth.getCurrentUser().getUid();
+        }
+
+        //perfilId = "1GWxKsBvBVZzXetfglHDPDZqXxj1";
+        //perfilId = "uv8upyMvQIXL51Ci2dGArWWS1nc2";
         //tipo = 2;
 
         Almacenamiento almacenamiento = new Almacenamiento() {
@@ -115,9 +123,9 @@ public class Perfil extends AppCompatActivity {
                 if (datos.containsKey("eventosCreados")) {
                     DataSnapshot eventosCreados = singleSnapShot.child("eventosCreados/");
                     idEventosCreados.clear();
+                    perfil.setEventosCreados(new ArrayList<Evento>());
                     for (DataSnapshot i : eventosCreados.getChildren()) {
                         idEventosCreados.add(i.getValue().toString());
-                        toastmsg("evento: "+idEventosCreados.get(idEventosCreados.size()-1));
                     }
                 }
                 actualizar();
@@ -125,53 +133,47 @@ public class Perfil extends AppCompatActivity {
         };
         almacenamiento.obtenerPorID("Jugador/", perfilId);
 
-        Almacenamiento almacenamiento2 = new Almacenamiento(){
+        Almacenamiento almacenamiento2 = new Almacenamiento() {
             @Override
             public void leerDatosSubscrito(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
-                if(idEventosCreados.contains(singleSnapShot.getKey())){
+                String eventoCreadoId = singleSnapShot.getKey();
+                if (idEventosCreados.contains(eventoCreadoId)) {
                     perfil.addEventoCreado(obtenerEvento(singleSnapShot));
+                    idEventosCreados.remove(eventoCreadoId);
                 }
                 actualizarEventosUsuario();
             }
         };
         almacenamiento2.loadSubscription("Evento/");
-
-        buttonEventos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent nuevoEvento = new Intent(v.getContext(), CrearEvento.class);
-                nuevoEvento.putExtra("pantalla", 1);
-                startActivity(nuevoEvento);
-            }
-        });
-    }
-
-    private Evento obtenerEvento(DataSnapshot singleSnapShot) {
-        HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
-        int ID = Integer.parseInt(datos.get("ID").toString());
-        String nombre = datos.get("nombre").toString();
-        boolean privado = (boolean) datos.get("privado");
-        Evento evento = new Evento();
-        evento.setID(ID);
-        evento.setNombre(nombre);
-        evento.setPrivado(privado);
-        return evento;
-    }
-
-    private void toastmsg(String msg) {
-        Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        //if(currentUser.getUid() != perfilId || currentUser.getUid() != usuarioId)
+            //finish();
         actualizar();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    public void crearEvento(View view) {
+        Intent nuevoEvento = new Intent(view.getContext(), CrearEvento.class);
+        nuevoEvento.putExtra("pantalla", 1);
+        startActivity(nuevoEvento);
+    }
+
+    private Evento obtenerEvento(DataSnapshot singleSnapShot) {
+        HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
+        Evento evento = new Evento();
+        evento.setID(Integer.parseInt(datos.get("ID").toString()));
+        evento.setNombre(datos.get("nombre").toString());
+        evento.setPrivado((boolean) datos.get("privado"));
+        return evento;
     }
 
     private void iniciarVista() {
@@ -190,18 +192,14 @@ public class Perfil extends AppCompatActivity {
         nombreUsuario.setText(perfil.getNombreUsuario());
         amigos.setText(Integer.toString(idAmigos.size()));
         switch (tipo) {
-            case 0: {
+            case 0:
                 miPerfilVista();
-                //actualizarEventosUsuario();
-            }
-            break;
-            case 1: {
+                break;
+            case 1:
                 amigoVista();
-            }
-            break;
-            case 2: {
+                break;
+            case 2:
                 otherVista();
-            }
         }
     }
 
@@ -229,20 +227,20 @@ public class Perfil extends AppCompatActivity {
     public void agregarEliminar(View view) {
         Almacenamiento almacenamiento = new Almacenamiento();
         switch (tipo) {
-            case 1:{
-                almacenamiento.erase("Jugador/"+usuarioId+"/amigos/"+perfilId);
-                almacenamiento.erase("Jugador/"+perfilId+"/amigos/"+usuarioId);
+            case 1: {
+                almacenamiento.erase("Jugador/" + usuarioId + "/amigos/" + perfilId);
+                almacenamiento.erase("Jugador/" + perfilId + "/amigos/" + usuarioId);
             }
             break;
-            case 2:{
-                almacenamiento.push(perfilId, "Jugador/"+usuarioId+"/amigos/", perfilId);
-                almacenamiento.push(perfilId, "Jugador/"+perfilId+"/amigos/", usuarioId);
+            case 2: {
+                almacenamiento.push(perfilId, "Jugador/" + usuarioId + "/amigos/", perfilId);
+                almacenamiento.push(perfilId, "Jugador/" + perfilId + "/amigos/", usuarioId);
             }
         }
     }
 
     private void actualizarEventosUsuario() {
-        eventosAdapter = new EventosAdapter(this, perfil.getEventosCreados(), false, true);
+        EventosAdapter eventosAdapter = new EventosAdapter(this, perfil.getEventosCreados(), false, true);
         listEventos.setAdapter(eventosAdapter);
     }
 
@@ -262,8 +260,6 @@ public class Perfil extends AppCompatActivity {
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //perfil.setNombreUsuario(input.getText().toString());
-                //nombreUsuario.setText(perfil.getNombreUsuario());
                 actualizarNombre(input.getText().toString());
             }
         });
@@ -279,7 +275,7 @@ public class Perfil extends AppCompatActivity {
 
     private void actualizarNombre(String nombre) {
         Almacenamiento almacenamiento = new Almacenamiento();
-        almacenamiento.addValueToReference("Jugador/"+perfilId+"/nombreUsuario", nombre);
+        almacenamiento.addValueToReference("Jugador/" + perfilId + "/nombreUsuario", nombre);
     }
 
     public Bitmap getBitmap(ImageView imageView) {
