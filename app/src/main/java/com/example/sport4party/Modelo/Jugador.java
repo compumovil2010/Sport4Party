@@ -26,25 +26,16 @@ public class Jugador extends Usuario {
         super();
     }
 
-    public Jugador(String id, String contraseña, String correo, String nombreUsuario, String sexo) {
-        super(contraseña, correo, nombreUsuario, sexo);
+    public Jugador(String correo, String nombreUsuario, String sexo, String tipo) {
+        super(correo, nombreUsuario, sexo, tipo);
         amigos = new ArrayList<>();
         enviados = new ArrayList<>();
         opiniones = new ArrayList<>();
         eventos = new ArrayList<>();
         eventosCreados = new ArrayList<>();
-        this.id=id;
     }
 
-    public Jugador(String correo, String nombreUsuario, String sexo) {
-        super(correo, nombreUsuario, sexo);
-        amigos = new ArrayList<>();
-        enviados = new ArrayList<>();
-        opiniones = new ArrayList<>();
-        eventos = new ArrayList<>();
-        eventosCreados = new ArrayList<>();
-    }
-    public Jugador( String contraseña, String correo, Bitmap imagenPerfil, String nombreUsuario, String sexo) {
+    public Jugador( String contraseña, String correo, String imagenPerfil, String nombreUsuario, String sexo) {
         super(contraseña, correo, imagenPerfil, nombreUsuario, sexo);
         amigos = new ArrayList<>();
         enviados = new ArrayList<>();

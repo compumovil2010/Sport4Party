@@ -234,22 +234,22 @@ public class InformacionEvento extends AppCompatActivity {
         participantes.setOnClickListener(new View.OnClickListener() {
                                            @Override
                                            public void onClick(View v) {
-                                               jugadores = new ArrayList<>();
-                                               jugadores.add(new Jugador("666","asd","asd", "Juan Francisco Hamon", "Masculino"));
-                                               jugadores.add(new Jugador("33","asd","asd", "Diego Barajas", "Masculino"));
-                                               jugadores.add(new Jugador("88","asd","asd", "Brandonn Cruz", "Masculino"));
-                                               jugadores.add(new Jugador("99","asd","asd", "Santiago Chaparro", "Masculino"));
-                                               jugadores.add(new Jugador("77","asd","asd", "Pedro Fernandez", "Masculino"));
-                                               jugadores.add(new Jugador("88","asd","asd", "Santiago Herrera", "Masculino"));
-                                               jugadores.add(new Jugador("99","asd","asd", "Carlos Orduz", "Masculino"));
-                                               jugadores.add(new Jugador("33","asd","asd", "Diego Ignacio Martinez", "Masculino"));
-                                               Intent participantes =new Intent(v.getContext(), VerParticipantes.class);
-                                               Bundle info = new Bundle();
-                                               info.putSerializable("participantes", jugadores);
-                                               participantes.putExtra("listaParticipantes",info);
-                                               startActivity(participantes);
+                   jugadores = new ArrayList<>();
+                   jugadores.add(new Jugador("666","asd","asd", "Juan Francisco Hamon", "Masculino"));
+                   jugadores.add(new Jugador("33","asd","asd", "Diego Barajas", "Masculino"));
+                   jugadores.add(new Jugador("88","asd","asd", "Brandonn Cruz", "Masculino"));
+                   jugadores.add(new Jugador("99","asd","asd", "Santiago Chaparro", "Masculino"));
+                   jugadores.add(new Jugador("77","asd","asd", "Pedro Fernandez", "Masculino"));
+                   jugadores.add(new Jugador("88","asd","asd", "Santiago Herrera", "Masculino"));
+                   jugadores.add(new Jugador("99","asd","asd", "Carlos Orduz", "Masculino"));
+                   jugadores.add(new Jugador("33","asd","asd", "Diego Ignacio Martinez", "Masculino"));
+                   Intent participantes =new Intent(v.getContext(), VerParticipantes.class);
+                   Bundle info = new Bundle();
+                   info.putSerializable("participantes", jugadores);
+                   participantes.putExtra("listaParticipantes",info);
+                   startActivity(participantes);
                                            }
-                                       }
+           }
         );
     }
 

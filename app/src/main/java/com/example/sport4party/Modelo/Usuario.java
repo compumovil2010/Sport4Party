@@ -8,31 +8,26 @@ public class Usuario implements Serializable {
 
     private String contraseña;
     private String correo;
-    private Bitmap imagenPerfil;
+    private String imagenPerfil;
     private String nombreUsuario;
     private String sexo;
+    private String tipo;
 
     //Constructores
     public Usuario(){
 
     }
 
-    public Usuario(String contraseña, String correo, String nombreUsuario, String sexo) {
-        this.contraseña = contraseña;
-        this.correo = correo;
-        this.nombreUsuario = nombreUsuario;
-        this.sexo = sexo;
-        this.imagenPerfil = null;
-    }
-    public Usuario(String correo, String nombreUsuario, String sexo) {
+    public Usuario(String correo, String nombreUsuario, String sexo, String tipo){
         this.contraseña = null;
         this.correo = correo;
         this.nombreUsuario = nombreUsuario;
         this.sexo = sexo;
         this.imagenPerfil = null;
+        this.tipo = tipo;
     }
 
-    public Usuario(String contraseña, String correo, Bitmap imagenPerfil, String nombreUsuario, String sexo) {
+    public Usuario(String contraseña, String correo, String imagenPerfil, String nombreUsuario, String sexo) {
         this.contraseña = contraseña;
         this.correo = correo;
         this.imagenPerfil = imagenPerfil;
@@ -49,7 +44,7 @@ public class Usuario implements Serializable {
         return correo;
     }
 
-    public Bitmap getImagenPerfil() {
+    public String getImagenPerfil() {
         return imagenPerfil;
     }
 
@@ -69,7 +64,7 @@ public class Usuario implements Serializable {
         this.correo = correo;
     }
 
-    public void setImagenPerfil(Bitmap imagenPerfil) {
+    public void setImagenPerfil(String imagenPerfil) {
         this.imagenPerfil = imagenPerfil;
     }
 

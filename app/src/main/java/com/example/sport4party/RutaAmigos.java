@@ -21,7 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
+public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
     private LocationFinder gCoderHandler;
     private Marker myPosition;
@@ -40,7 +40,7 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
                 .findFragmentById(R.id.mapRuta);
         mapFragment.getMapAsync(this);
         nombreEvento = "por definir";
-        gCoderHandler = new LocationFinder(RutaEvento.this);
+        gCoderHandler = new LocationFinder(RutaAmigos.this);
         myPosition = null;
 
         Bundle parametros = this.getIntent().getExtras();
@@ -51,14 +51,13 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
             if(latitud != null && longitud != null){
                 posicionEvento = new LatLng(latitud, longitud);
             }
-            //Manejo de excepciones
-            //else{
-            //    posicionEvento = new LatLng(4.57, -74.13);
-            //}
+            else{
+                posicionEvento = new LatLng(4.57, -74.13);
+            }
         }
-        //else{
-        //    posicionEvento = new LatLng(4.57, -74.13);
-        //}
+        else{
+            posicionEvento = new LatLng(4.57, -74.13);
+        }
     }
 
 
@@ -77,13 +76,13 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
 
     public void markRoute(Marker a, Marker b) {
         String url = getUrl(a.getPosition(), b.getPosition(), "driving");
-        new TraceRute(RutaEvento.this).execute(url, "driving");
+        new TraceRute(RutaAmigos.this).execute(url, "driving");
     }
 
     public void markerRoute(LatLng a, LatLng b){
         String url = getUrl(a, b, "driving");
         Log.i("TAG", url);
-        new TraceRute(RutaEvento.this).execute(url, "driving");
+        new TraceRute(RutaAmigos.this).execute(url, "driving");
 
     }
 
@@ -106,7 +105,7 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+//Obtener por el intent un ID event y lanzarlos todos
         ubicationFinder = new UbicationFinder(this){
             @Override
             public void onLocation(Location location) {
@@ -115,13 +114,13 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
                     Marker marker2 = mMap.addMarker(new MarkerOptions().position(posicionEvento).title("Evento"));//gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
 
                     if(posicionEvento == null){
-                        Toast.makeText(RutaEvento.this, "Ubicación no encontrada", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RutaAmigos.this, "Ubicación no encontrada", Toast.LENGTH_LONG).show();
                     }
                     else{
                         //mMap.clear();
                         LatLng actual = new LatLng(location.getLatitude(), location.getLongitude());
-                        markerRoute(actual, RutaEvento.this.posicionEvento);
-                        RutaEvento.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+                        markerRoute(actual, RutaAmigos.this.posicionEvento);
+                        RutaAmigos.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
                     }
                 }
             }
@@ -142,7 +141,7 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
         //sensorManager.unregisterListener(lightSensorListener);
         if (ubicationFinder != null)
             ubicationFinder.stopLocationUpdates();
-    //myPosition = null;
+        //myPosition = null;
     }
 
     @Override
