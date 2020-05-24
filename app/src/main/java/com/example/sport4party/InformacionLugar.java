@@ -45,6 +45,7 @@ public class InformacionLugar extends AppCompatActivity {
     ImageView star3;
     ImageView star4;
     ImageView star5;
+    String idLocalizacion;
     private void registrarLugarParaEvento()
     {
         miCalificacion.setText("Agregar Lugar Al Evento");
@@ -52,7 +53,8 @@ public class InformacionLugar extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent();
-                intent.putExtra("nombreLugar", "Centro deportivo internacional");
+                intent.putExtra("nombreLugar", nombreLugar.getText().toString().trim());
+                intent.putExtra("id",idLocalizacion);
                 setResult(Activity.RESULT_OK,intent);
                 finish();
             }
@@ -81,14 +83,13 @@ public class InformacionLugar extends AppCompatActivity {
         //horario.setText("Lunes a Sabado 8 a.m - 7 p.m");
 
 
-        String idLocalizacion=getIntent().getStringExtra("id");
+        idLocalizacion=getIntent().getStringExtra("id");
         idLocalizacion="69";
         Almacenamiento buscarLocalizacion=new Almacenamiento()
         {
             @Override
             public void onBuscarResult(HashMap<String, Object> data, String key) {
                 nombreLugar.setText((String)data.get("descripcion"));
-
                 buscarCalificaciones(data, key);
                 buscarDeportes(data,key);
             }
