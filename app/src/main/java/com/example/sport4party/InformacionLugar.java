@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.example.sport4party.Modelo.Jugador;
 import com.example.sport4party.Modelo.Opinion;
 import com.example.sport4party.Modelo.Ubicacion;
 import com.example.sport4party.Utils.Almacenamiento;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 
 import java.lang.reflect.Array;
@@ -71,11 +73,21 @@ public class InformacionLugar extends AppCompatActivity {
         opiniones = findViewById(R.id.listViewParticipantes);
         miCalificacion = findViewById(R.id.botonSubirCalif);
         textoVariable=findViewById(R.id.textoVariable);
+        miCalificacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(v.getContext(),popupCalificaciones.class);
+                intent.putExtra("idLugar",idLocalizacion);
+                startActivity(intent);
+                finish();
+            }
+        });
         star1=findViewById(R.id.star1);
         star2=findViewById(R.id.star2);
         star3=findViewById(R.id.star3);
         star4=findViewById(R.id.star4);
         star5=findViewById(R.id.star5);
+
 
 
         //nombreLugar.setText("Centro deportivo de los andes");
@@ -90,14 +102,13 @@ public class InformacionLugar extends AppCompatActivity {
             @Override
             public void onBuscarResult(HashMap<String, Object> data, String key) {
                 nombreLugar.setText((String)data.get("descripcion"));
+                opiniones.setAdapter(opnAdapter);
                 buscarCalificaciones(data, key);
                 buscarDeportes(data,key);
             }
         };
+        opnAdapter = new OpinionesAdapter(this, opns);
         buscarLocalizacion.buscarPorID("Ubicacion/",idLocalizacion);
-
-
-
         if(getIntent().getIntExtra("pantalla",-1)==3)
         {
             Ubicacion ubicacionPa = new Ubicacion("ubicacion de prueba", new Date(), new Double(0), new Double(0), true);
@@ -105,12 +116,6 @@ public class InformacionLugar extends AppCompatActivity {
             Jugador remitente2 = new Jugador("lal","asd", "asd", "Santiago Chaparro", "Masculino");
             Opinion opinion1 = new Opinion(5.3, "Que emocionate", ubicacionPa, remitente);
             Opinion opinion2 = new Opinion(4.5, "Un lugar excelente", ubicacionPa, remitente2);
-
-            opns.add(opinion1);
-            opns.add(opinion2);
-
-            opnAdapter = new OpinionesAdapter(this, opns);
-            opiniones.setAdapter(opnAdapter);
             registrarLugarParaEvento();
         }
         else
@@ -123,14 +128,43 @@ public class InformacionLugar extends AppCompatActivity {
 
             eventos=new ArrayList<Evento>();
             buscarEventosBD(eventos, idLocalizacion);
-
+            verSiYaVoto();
 
         }
 
 
 }
 
+private void verSiYaVoto()
+    {
+        Almacenamiento almacenamiento= new Almacenamiento()
+        {
+            @Override
+            public void onBuscarResult(HashMap<String, Object> data, String key) {
+                super.onBuscarResult(data, key);
+                HashMap<String, Object>mapa= (HashMap<String,Object>)data.get("opiniones");
+                for(String lal: mapa.keySet())
+                {
+                    Almacenamiento almacenamiento1=new Almacenamiento()
+                    {
+                        @Override
+                        public void onBuscarResult(HashMap<String, Object> data, String key) {
+                            super.onBuscarResult(data, key);
 
+                            if(   ((String)(data.get("detalles"))).trim().equals(idLocalizacion)   )
+                            {
+                                miCalificacion.setVisibility(View.INVISIBLE);
+                                miCalificacion.setClickable(false);
+                            }
+                        }
+                    };
+                    almacenamiento1.buscarPorID("Opinion/",lal);
+                }
+
+            }
+        };
+        almacenamiento.buscarPorID("Jugador/", FirebaseAuth.getInstance().getUid());
+    }
 
     private  void buscarCalificaciones(HashMap<String, Object> data, final String key)
 {
@@ -144,7 +178,30 @@ public class InformacionLugar extends AppCompatActivity {
                 promedioCalificaciones=promedioCalificaciones+ (Long) datos.get("calificacion");
                 cantCalificaciones++;
                 actualizarCalificacion();
+
+                final Opinion opinion=new Opinion();
+                opinion.setCalificacion(((Long) datos.get("calificacion")).doubleValue());
+                opinion.setDescripcion((String)datos.get("descripcion"));
+                Almacenamiento buscarRemitente=new Almacenamiento()
+                {
+                    @Override
+                    public void onBuscarResult(HashMap<String, Object> data, String key) {
+                        super.onBuscarResult(data, key);
+                        Jugador jugador=new Jugador();
+                        jugador.setNombreUsuario((String)data.get("nombreUsuario"));
+                        jugador.setId(key);
+                        opinion.setRemitente(jugador);
+                        opns.add(opinion);
+                        actualizarLista();
+                        Log.i("lul","lul");
+                        actualizaOpiniones();
+                    }
+                };
+                Log.i("lal","lal");
+                buscarRemitente.buscarPorID("Jugador/",(String)datos.get("remitente"));
+
             }
+
         }
     };
     buscarCalificaciones.loadOnce("Opinion/");
@@ -257,6 +314,12 @@ private void buscarDeportes(HashMap<String, Object> data, final String key)
         evAdapter=new EventosAdapter(this,eventos,false,false);
         opiniones.setAdapter(evAdapter);
     }
+    private void actualizaOpiniones()
+    {
+        opnAdapter = new OpinionesAdapter(this, opns);
+        opiniones.setAdapter(opnAdapter);
+    }
+
     private void quemarEventos()
     {
         /*
