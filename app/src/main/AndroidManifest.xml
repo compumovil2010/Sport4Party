@@ -9,10 +9,14 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -37,7 +41,12 @@
         <activity android:name=".InformacionLugar" />
         <activity android:name=".InformacionEvento" />
         <activity android:name=".CrearEvento" />
-        <activity android:name=".Perfil" android:windowSoftInputMode="adjustNothing"/>
+        <activity
+            android:name=".Perfil"
+            android:windowSoftInputMode="adjustNothing"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true" />
         <activity android:name=".Registro" />
         <activity android:name=".Mapa" />
         <activity android:name=".MisEventos" />
@@ -59,6 +68,8 @@
         <activity
             android:name=".MisAmigos"
             android:parentActivityName=".Mapa" />
+
+        <service android:name=".Utils.ServiceAmigos" />
     </application>
 
 </manifest>

@@ -88,9 +88,9 @@ public class Perfil extends AppCompatActivity {
         if (mAuth.getCurrentUser() == null)
             finish();
 
-        Intent intent = getIntent();
+        //Intent intent = getIntent();
         //perfilId = intent.getStringExtra("jugador");
-        tipo = Integer.parseInt(intent.getStringExtra("tipo"));
+        //tipo = Integer.parseInt(intent.getStringExtra("tipo"));
 
         perfil = new Jugador();
         perfil.setEventosCreados(new ArrayList<Evento>());
@@ -105,7 +105,7 @@ public class Perfil extends AppCompatActivity {
 
         //perfilId = "1GWxKsBvBVZzXetfglHDPDZqXxj1";
         //perfilId = "uv8upyMvQIXL51Ci2dGArWWS1nc2";
-        //tipo = 2;
+        tipo = 2;
 
         Almacenamiento almacenamiento = new Almacenamiento() {
             @Override

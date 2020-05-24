@@ -24,6 +24,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 
 import com.example.sport4party.Utils.Almacenamiento;
 import com.example.sport4party.Utils.LocationFinder;
+import com.example.sport4party.Utils.ServiceAmigos;
 import com.example.sport4party.Utils.UbicationFinder;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -256,6 +257,9 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
                 return false;
             }
         });
+
+        Intent serviceAmigos = new Intent(getBaseContext(), ServiceAmigos.class);
+        startService(serviceAmigos);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
