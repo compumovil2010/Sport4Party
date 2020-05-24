@@ -59,7 +59,7 @@ public class InvitarAmigos extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent infoPerfil = new Intent(view.getContext(), Perfil.class);
                 Jugador miPerfil = friends.get(position);
-                infoPerfil.putExtra("jugador", miPerfil);
+                infoPerfil.putExtra("jugador", miPerfil.getId());
                 infoPerfil.putExtra("tipo", "1");
                 startActivity(infoPerfil);
             }
@@ -70,6 +70,7 @@ public class InvitarAmigos extends AppCompatActivity {
 
 
     private void obtenerJugadorActual(final Jugador actual){
+        final int[] conta = {0};
         Almacenamiento almJugador = new Almacenamiento(){
             @Override
             public void leerDatosSubscrito(final HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
@@ -80,33 +81,40 @@ public class InvitarAmigos extends AppCompatActivity {
                     actual.setId(singleSnapShot.getKey());
 
                     if(datos.get("amigos") != null){
-                        HashMap<String,String> amigos= (HashMap<String,String>)datos.get("amigos");
+                        final HashMap<String,String> amigos= (HashMap<String,String>)datos.get("amigos");
                         final ArrayList<Jugador> listAmigos = new ArrayList<>();
                         for (String j: amigos.keySet()) {
                             Almacenamiento almacenamientoAmigos = new Almacenamiento(){
                                 @Override
                                 public void leerDatosSubscrito(final HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
                                     super.leerDatosSubscrito(datos, singleSnapShot);
-                                    Jugador amigo = new Jugador();
-                                    amigo.setNombreUsuario(datos.get("nombreUsuario").toString());
-                                    amigo.setCorreo(datos.get("Correo").toString());
-                                    amigo.setId(singleSnapShot.getKey());
-                                    amigo.setSexo(datos.get("sexo").toString());
-                                    listAmigos.add(amigo);
+                                    if(datos != null){
+                                        Jugador amigo = new Jugador();
+                                        amigo.setNombreUsuario(datos.get("nombreUsuario").toString());
+                                        amigo.setCorreo(datos.get("correo").toString());
+                                        amigo.setId(singleSnapShot.getKey());
+                                        amigo.setSexo(datos.get("sexo").toString());
+                                        listAmigos.add(amigo);
+                                    }
+                                    if(conta[0] == amigos.size()){
+                                        //pintar(listAmigos, actual);
+                                        //Evento nuevo = new Evento();
+                                        //actual.setAmigos(listAmigos);
+                                        //obtenerEventoSobre(actual, nuevo);
+                                    }
+
                                 }
                             };
-                            almacenamientoAmigos.loadSubscription(rutaJugadores+amigos.get(j));
+                            almacenamientoAmigos.obtenerPorID(rutaJugadores, j);
+                            conta[0] += 1;
                         }
-                        actual.setAmigos(listAmigos);
                     }
-
                 }
-                //Evento aVer = new Evento();
-                //obtenerEventoSobre(actual, aVer);
             }
         };
-        almJugador.loadSubscription(rutaJugadores+mAuth.getUid());
+        almJugador.obtenerPorID(rutaJugadores, mAuth.getUid());
     }
+
 
     private void obtenerEventoSobre(final Jugador actual, final Evento actualE){
         Almacenamiento almEvento = new Almacenamiento(){
@@ -122,6 +130,7 @@ public class InvitarAmigos extends AppCompatActivity {
                 //inivitarAmigos.setAdapter(adapter);
             }
         };
+        //Acá toca cambiar al de obtenerPorID
         almEvento.loadSubscription(rutaEventos+idEvento);
     }
 }

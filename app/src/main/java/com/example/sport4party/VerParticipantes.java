@@ -77,7 +77,7 @@ public class VerParticipantes extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent infoPerfil = new Intent(view.getContext(), Perfil.class);
                 Jugador perfil = participantes.get(position);
-                infoPerfil.putExtra("jugador", perfil);
+                infoPerfil.putExtra("jugador", perfil.getId());
                 if(origin.getAmigos().contains(perfil))
                     infoPerfil.putExtra("tipo", "1");
                 else
@@ -140,6 +140,7 @@ public class VerParticipantes extends AppCompatActivity {
     }
 
     private void obtenerJugadorActual(final Jugador actual){
+        final int[] conta = {0};
         Almacenamiento almJugador = new Almacenamiento(){
             @Override
             public void leerDatosSubscrito(final HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
@@ -150,32 +151,38 @@ public class VerParticipantes extends AppCompatActivity {
                     actual.setId(singleSnapShot.getKey());
 
                     if(datos.get("amigos") != null){
-                        HashMap<String,String> amigos= (HashMap<String,String>)datos.get("amigos");
+                        final HashMap<String,String> amigos= (HashMap<String,String>)datos.get("amigos");
                         final ArrayList<Jugador> listAmigos = new ArrayList<>();
                         for (String j: amigos.keySet()) {
                             Almacenamiento almacenamientoAmigos = new Almacenamiento(){
                                 @Override
                                 public void leerDatosSubscrito(final HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
                                     super.leerDatosSubscrito(datos, singleSnapShot);
-                                    Jugador amigo = new Jugador();
-                                    amigo.setNombreUsuario(datos.get("nombreUsuario").toString());
-                                    amigo.setCorreo(datos.get("Correo").toString());
-                                    amigo.setId(singleSnapShot.getKey());
-                                    amigo.setSexo(datos.get("sexo").toString());
-                                    listAmigos.add(amigo);
+                                    if(datos != null){
+                                        Jugador amigo = new Jugador();
+                                        amigo.setNombreUsuario(datos.get("nombreUsuario").toString());
+                                        amigo.setCorreo(datos.get("correo").toString());
+                                        amigo.setId(singleSnapShot.getKey());
+                                        amigo.setSexo(datos.get("sexo").toString());
+                                        listAmigos.add(amigo);
+                                    }
+                                    if(conta[0] == amigos.size()){
+                                        //ArrayList<Jugador> participantes = new ArrayList<>();
+                                        //buscarJugadoresBD(participantes, rutaEvento);
+                                        //falta poner a actual en el metodo para ponerle los amigos...
+                                    }
+
                                 }
                             };
-                            almacenamientoAmigos.loadSubscription(rutaJugadores+amigos.get(j));
+                            almacenamientoAmigos.obtenerPorID(rutaJugadores, j);
+                            conta[0] += 1;
                         }
-                        actual.setAmigos(listAmigos);
                     }
-
                 }
-                /*ArrayList<Jugador> listaParticipantes = new ArrayList<>();
-                //Saca a cada jugador que este registrado en el evento, con sus amigos
-                buscarJugadoresBD(listaParticipantes, rutaEvento);*/
             }
         };
-        almJugador.loadSubscription(rutaJugadores+mAuth.getUid());
+        almJugador.obtenerPorID(rutaJugadores, mAuth.getUid());
     }
 }
+
+
