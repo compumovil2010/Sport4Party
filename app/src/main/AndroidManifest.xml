@@ -25,9 +25,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".ChatEvento"></activity>
+
+
         <activity android:name=".popupCalificaciones"></activity>
 
         <activity android:name=".RutaAmigos"></activity>
+
 
         <activity android:name=".RutaEvento" />
         <!--
@@ -47,6 +51,11 @@
         <activity android:name=".CrearEvento" />
         <activity
             android:name=".Perfil"
+
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+
             android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".Registro" />
         <activity android:name=".Mapa" />
@@ -69,6 +78,8 @@
         <activity
             android:name=".MisAmigos"
             android:parentActivityName=".Mapa" />
+
+        <service android:name=".Utils.ServiceAmigos" />
     </application>
 
 </manifest>

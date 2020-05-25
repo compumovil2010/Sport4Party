@@ -13,6 +13,8 @@ public class Mensaje implements Serializable {
     //relaciones
     private Jugador remitente;
 
+    public Mensaje () {};
+
     //Constructor
     public Mensaje(String contenido, Date fecha, Jugador remitente) {
         this.contenido = contenido;

@@ -57,7 +57,7 @@ public class EventosAdapter extends BaseAdapter {
             ImageButton chatEvento = (ImageButton) convertView.findViewById(R.id.botonInfoEventoList);
             ImageButton rutaEvento = (ImageButton) convertView.findViewById(R.id.botonRuta);
 
-            Evento evento = eventos.get(position);
+            final Evento evento = eventos.get(position);
             String formato = "dd-MM-yyyy";
             SimpleDateFormat dateFormat = new SimpleDateFormat(formato);
             idEvento.setText(dateFormat.format(evento.getFecha())+" - "+evento.getDeporte().getNombre()+" - $"+evento.getPrecio());
@@ -66,6 +66,9 @@ public class EventosAdapter extends BaseAdapter {
             chatEvento.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent chat = new Intent(v.getContext(), ChatEvento.class);
+                    chat.putExtra("eventoId",eventos.get(position).getId());
+                    context.startActivity(chat);
                 }
             });
 
@@ -86,7 +89,7 @@ public class EventosAdapter extends BaseAdapter {
             Button infoEvento = (Button) convertView.findViewById(R.id.botonInfoEventoList);
 
             idEvento.setText(Integer.toString(eventos.get(position).getID()));
-            nombreEvento.setText(eventos.get(position).getDeporte().getNombre());
+            nombreEvento.setText(eventos.get(position).getNombre());
 
             if(eventos.get(position).isPrivado()){
                 infoEvento.setBackgroundColor(ContextCompat.getColor(parent.getContext(), R.color.colorPrivateEvent));
@@ -99,6 +102,7 @@ public class EventosAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     Intent info = new Intent(v.getContext(), InformacionEvento.class);
                     info.putExtra("pantalla",0);
+                    info.putExtra("id", eventos.get(position).getId());
                     context.startActivity(info);
                 }
             });
