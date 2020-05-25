@@ -13,8 +13,8 @@ import com.example.sport4party.Utils.Almacenamiento;
 public class Jugador extends Usuario {
 
     private String id;
-    private String latitud;
-    private String longitud;
+    private String latitud=null;
+    private String longitud=null;
 
     private List<Jugador> amigos;
     private List<Mensaje> enviados;
