@@ -32,6 +32,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
     private LocationFinder gCoderHandler;
@@ -44,6 +46,7 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private SensorManager sensorManager;
+    private String idUbicacion;
     Sensor lightSensor;
     SensorEventListener lightSensorListener;
 
@@ -65,13 +68,25 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
         Bundle parametros = this.getIntent().getExtras();
 
         if(parametros != null){
-            Integer id = parametros.getInt("id");
+            final String id = parametros.getString("id");
 
-            myRef=database.getReference("Jugador");
+            myRef=database.getReference("Evento");
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                  @Override
                  public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                     RutaEvento.this.idUbicacion = "0";
+                     for(DataSnapshot singleSnapShot: dataSnapshot.getChildren()) {
+                         //
+                         if(singleSnapShot.getKey().equals(id)){
+                             HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
+                             if(datos.containsKey("ubicacion")){
+                                 String dato = (String) datos.get("ubicacion");
+                                 RutaEvento.this.idUbicacion = dato.trim();
+                                 Log.i("VALOR ASIGNADO", RutaEvento.this.idUbicacion);
+                             }
+                         }
 
+                     }
                  }
 
                  @Override
@@ -79,6 +94,22 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
                  }
             });
 
+            myRef=database.getReference("Ubicacion");
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot singleSnapShot : dataSnapshot.getChildren()) {
+                        if(singleSnapShot.getKey().equals(RutaEvento.this.idUbicacion)){
+                            HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
+                            posicionEvento = new LatLng((Double) datos.get("latitud"), (Double) datos.get("Longitud"));
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
 
             //generarMarkets();
 
@@ -145,11 +176,6 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        LatLng ubicacionAux = new LatLng(4.572, -74.1337);
-        Marker marker3 = mMap.addMarker(new MarkerOptions().position(ubicacionAux).title("OTRO EVENTO"));
-        LatLng ubicacionAux2 = new LatLng(4.5927,-74.1379);
-        Marker marker4 = mMap.addMarker(new MarkerOptions().position(ubicacionAux2).title("OTRO EVENTO MAS"));
 
         //LatLng actual = new LatLng(location.getLatitude(), location.getLongitude());
         //markerRoute2(ubicacionAux, ubicacionAux2);
