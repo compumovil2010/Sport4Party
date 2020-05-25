@@ -20,6 +20,10 @@ public class Opinion implements Serializable {
         this.detalles = detalles;
         this.remitente = remitente;
     }
+    public Opinion()
+    {
+
+    }
 
     //Getters and setters
 
