@@ -336,9 +336,16 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             change.putExtra("tipo", "0");
             startActivity(change);
         }else if(id == R.id.nav_cerrar_sesion){
+            if(ubicationFinder!=null)
+                ubicationFinder.stopLocationUpdates();
+
+            new Almacenamiento().erase("Jugador/"+FirebaseAuth.getInstance().getUid()+"/latitud/");
+            new Almacenamiento().erase("Jugador/"+FirebaseAuth.getInstance().getUid()+"/longitud/");
             mAuth.signOut();
             Intent change = new Intent(this, InicioDeSesión.class);
             change.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+
             Toast.makeText(this,"Sesion cerrada",Toast.LENGTH_LONG).show();
             startActivity(change);
             finish();
