@@ -1,17 +1,25 @@
 package com.example.sport4party.Utils;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.sport4party.Modelo.Jugador;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -20,12 +28,15 @@ import java.util.Objects;
 public class Almacenamiento{
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private StorageReference mStorageRef;
+    private Bitmap bitMapRecovery;
 
     //@Override
     public void onLoadUserError() { }
 
     public Almacenamiento(){
         database=FirebaseDatabase.getInstance();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
     public void addValueToReference(String path, String value){
@@ -168,6 +179,46 @@ public class Almacenamiento{
                 onLoadUserError();
             }
         });
+    }
+
+
+    public void addStorage(Bitmap imagen, String name){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        imagen.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+        StorageReference imageRef = mStorageRef.child("/imagenes/" + name);
+
+        UploadTask uploadTask = imageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i("CARGA EN EL STORAGE", "hubo un error pero lo intente");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.i("CARGA EN EL STORAGE", "Se cargo");
+            }
+        });
+    }
+
+    public Bitmap GetStorage(String name){
+        Almacenamiento.this.bitMapRecovery = null;
+        StorageReference imageRef = mStorageRef.child("/imagenes/" + name);
+        final long ONE_MEGABYTE = 1024*1024;
+        imageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Almacenamiento.this.bitMapRecovery = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Almacenamiento.this.bitMapRecovery = null;
+                Log.i("Error", "No se encontro la imagen de usuario");
+            }
+        });
+        return Almacenamiento.this.bitMapRecovery;
     }
 
 }
