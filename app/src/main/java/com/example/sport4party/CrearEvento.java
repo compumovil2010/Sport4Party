@@ -251,7 +251,14 @@ private boolean extraerInformación()
     }
     if(this.fechaPuesta && this.horaPuesta)
     {
-        evento.setFecha(this.fechaAux);
+        Date today=new Date();
+        if(today.before(fechaAux)) {
+            evento.setFecha(this.fechaAux);
+        }
+        else
+        {
+            return false;
+        }
     }
     else
     {
@@ -370,7 +377,7 @@ private boolean extraerInformación()
 
                 fechaAux.setMonth(month);
                 fechaAux.setDate(dayOfMonth);
-                fechaAux.setYear(year-1990);
+                fechaAux.setYear(year-1900);
                 fecha.setText(date);
                 fechaPuesta=true;
             }
