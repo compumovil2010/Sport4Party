@@ -1,5 +1,6 @@
 package com.example.sport4party;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.hardware.Sensor;
@@ -25,6 +26,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
@@ -35,6 +41,8 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
     private Polyline currentPolyline;
     private LatLng posicionEvento;
     private String nombreEvento;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
     private SensorManager sensorManager;
     Sensor lightSensor;
     SensorEventListener lightSensorListener;
@@ -50,17 +58,31 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
         nombreEvento = "por definir";
         gCoderHandler = new LocationFinder(RutaEvento.this);
         myPosition = null;
+        database=FirebaseDatabase.getInstance();
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         Bundle parametros = this.getIntent().getExtras();
 
         if(parametros != null){
-            Double latitud = parametros.getDouble("latitud");
-            Double longitud = parametros.getDouble("longitud");
-            if(latitud != null && longitud != null){
-                posicionEvento = new LatLng(latitud, longitud);
-            }
+            Integer id = parametros.getInt("id");
+
+            myRef=database.getReference("Jugador");
+            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                 @Override
+                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                 }
+
+                 @Override
+                 public void onCancelled(@NonNull DatabaseError databaseError) {
+                 }
+            });
+
+
+            //generarMarkets();
+
+
             //Manejo de excepciones
             //else{
             //    posicionEvento = new LatLng(4.57, -74.13);

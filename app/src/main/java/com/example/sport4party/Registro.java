@@ -81,7 +81,7 @@ public class Registro extends AppCompatActivity {
             //Jugador jugador = new Jugador(correoElectronico, nombreusuario, sexoUsuario, "0");
 
             //almacenamientoBase.push(jugador, "Usuarios/"+mAuth.getUid());
-            //almacenamientoBase.addValueToReference("Jugadores/" + mAuth.getUid() + "/mundo", "hola");
+            //almacenamientoBase.push(datos,"Jugadores/", mAuth.getUid());
 
             HashMap<String, Object> datos = new HashMap<String, Object>();
             datos.put("correo", correoElectronico);
