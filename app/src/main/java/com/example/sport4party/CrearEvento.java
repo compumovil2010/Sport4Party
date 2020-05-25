@@ -257,6 +257,7 @@ private boolean extraerInformación()
         }
         else
         {
+            Toast.makeText(this,"Fecha u hora invalida",Toast.LENGTH_LONG).show();
             return false;
         }
     }
@@ -264,9 +265,23 @@ private boolean extraerInformación()
     {
         return false;
     }
-    if(this.cupos.getText().length()>0)
+    if(this.cupos.getText().length()>0) {
+        if(Long.parseLong(this.cupos.getText().toString().trim())>1) {
+            evento.setCupos(Long.parseLong(this.cupos.getText().toString().trim()));
+        }
+        else
+        {
+            Toast.makeText(this,"Debe haber por lo menos 2 cupos",Toast.LENGTH_LONG).show();
+            return false;
+        }
+    }
+    else
     {
-        evento.setCupos(Long.parseLong(this.cupos.getText().toString().trim()));
+        return false;
+    }
+    if(this.precio.getText().length()>0)
+    {
+        evento.setPrecio(precio.getText().toString());
     }
     else
     {
@@ -280,7 +295,7 @@ private boolean extraerInformación()
     {
         return  false;
     }
-    evento.setPrecio(precio.getText().toString());
+
     evento.setNivelHabilidad(habilidad.getSelectedItem().toString());
 
 
