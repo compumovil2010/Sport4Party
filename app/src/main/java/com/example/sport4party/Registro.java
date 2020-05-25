@@ -88,7 +88,7 @@ public class Registro extends AppCompatActivity {
             datos.put("nombreUsuario", nombreusuario);
             datos.put("sexo", sexoUsuario);
             datos.put("tipo", "0");
-            almacenamientoBase.push(datos, "Jugador/"+mAuth.getUid());
+            almacenamientoBase.push(datos, "Jugador/", mAuth.getUid());
             //jugador.pushFireBaseBD();
 
 
