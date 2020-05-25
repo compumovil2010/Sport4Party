@@ -85,12 +85,12 @@ public class Perfil extends AppCompatActivity {
 
         iniciarVista();
         mAuth = FirebaseAuth.getInstance();
-        if (mAuth.getCurrentUser() == null)
-            finish();
 
-        //Intent intent = getIntent();
-        //perfilId = intent.getStringExtra("jugador");
-        //tipo = Integer.parseInt(intent.getStringExtra("tipo"));
+        Intent intent = getIntent();
+        if (intent.getStringExtra("jugador") != null) {
+            perfilId = intent.getStringExtra("jugador");
+        }
+        tipo = Integer.parseInt(intent.getStringExtra("tipo"));
 
         perfil = new Jugador();
         perfil.setEventosCreados(new ArrayList<Evento>());
@@ -103,32 +103,31 @@ public class Perfil extends AppCompatActivity {
             perfilId = mAuth.getCurrentUser().getUid();
         }
 
-        //perfilId = "1GWxKsBvBVZzXetfglHDPDZqXxj1";
-        //perfilId = "uv8upyMvQIXL51Ci2dGArWWS1nc2";
-        tipo = 2;
-
         Almacenamiento almacenamiento = new Almacenamiento() {
             @Override
             public void leerDatosSubscrito(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
-                if (datos.containsKey("nombreUsuario")) {
-                    perfil.setNombreUsuario(datos.get("nombreUsuario").toString());
-                }
-                if (datos.containsKey("amigos")) {
-                    DataSnapshot amigos = singleSnapShot.child("amigos/");
-                    idAmigos.clear();
-                    for (DataSnapshot i : amigos.getChildren()) {
-                        idAmigos.add(i.getValue().toString());
+                if (datos != null) {
+                    if (datos.containsKey("nombreUsuario")) {
+                        perfil.setNombreUsuario(datos.get("nombreUsuario").toString());
                     }
-                }
-                if (datos.containsKey("eventosCreados")) {
-                    DataSnapshot eventosCreados = singleSnapShot.child("eventosCreados/");
-                    idEventosCreados.clear();
-                    perfil.setEventosCreados(new ArrayList<Evento>());
-                    for (DataSnapshot i : eventosCreados.getChildren()) {
-                        idEventosCreados.add(i.getValue().toString());
+                    if (datos.containsKey("amigos")) {
+                        DataSnapshot amigos = singleSnapShot.child("amigos/");
+                        idAmigos.clear();
+                        for (DataSnapshot i : amigos.getChildren()) {
+                            idAmigos.add(i.getValue().toString());
+                        }
                     }
-                }
-                actualizar();
+                    if (datos.containsKey("eventosCreados")) {
+                        DataSnapshot eventosCreados = singleSnapShot.child("eventosCreados/");
+                        idEventosCreados.clear();
+                        perfil.setEventosCreados(new ArrayList<Evento>());
+                        for (DataSnapshot i : eventosCreados.getChildren()) {
+                            idEventosCreados.add(i.getValue().toString());
+                        }
+                    }
+                    actualizar();
+                }else
+                    finish();
             }
         };
         almacenamiento.obtenerPorID("Jugador/", perfilId);
@@ -136,6 +135,8 @@ public class Perfil extends AppCompatActivity {
         Almacenamiento almacenamiento2 = new Almacenamiento() {
             @Override
             public void leerDatosSubscrito(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
+                if (singleSnapShot == null)
+                    return;
                 String eventoCreadoId = singleSnapShot.getKey();
                 if (idEventosCreados.contains(eventoCreadoId)) {
                     perfil.addEventoCreado(obtenerEvento(singleSnapShot));
@@ -150,9 +151,6 @@ public class Perfil extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        //if(currentUser.getUid() != perfilId || currentUser.getUid() != usuarioId)
-            //finish();
         actualizar();
     }
 
@@ -170,6 +168,7 @@ public class Perfil extends AppCompatActivity {
     private Evento obtenerEvento(DataSnapshot singleSnapShot) {
         HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
         Evento evento = new Evento();
+        evento.setId(singleSnapShot.getKey());
         evento.setID(Integer.parseInt(datos.get("ID").toString()));
         evento.setNombre(datos.get("nombre").toString());
         evento.setPrivado((boolean) datos.get("privado"));
@@ -240,8 +239,10 @@ public class Perfil extends AppCompatActivity {
     }
 
     private void actualizarEventosUsuario() {
-        EventosAdapter eventosAdapter = new EventosAdapter(this, perfil.getEventosCreados(), false, true);
-        listEventos.setAdapter(eventosAdapter);
+        if (perfil.getEventosCreados() != null) {
+            EventosAdapter eventosAdapter = new EventosAdapter(this, perfil.getEventosCreados(), false, true);
+            listEventos.setAdapter(eventosAdapter);
+        }
     }
 
     public void cambiarNombre(View view) {

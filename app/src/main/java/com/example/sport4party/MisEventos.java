@@ -51,8 +51,6 @@ public class MisEventos extends AppCompatActivity {
 
         iniciarVista();
         mAuth = FirebaseAuth.getInstance();
-        if (mAuth.getCurrentUser() == null)
-            finish();
 
         perfil = new Jugador();
         perfil.setEventos(new ArrayList<Evento>());
@@ -65,14 +63,17 @@ public class MisEventos extends AppCompatActivity {
         Almacenamiento almacenamiento = new Almacenamiento() {
             @Override
             public void leerDatosSubscrito(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
-                if (datos.containsKey("eventos")) {
-                    DataSnapshot eventos = singleSnapShot.child("eventos/");
-                    idEventos.clear();
-                    perfil.setEventos(new ArrayList<Evento>());
-                    for (DataSnapshot i : eventos.getChildren()) {
-                        idEventos.add(i.getValue().toString());
+                if(datos != null) {
+                    if (datos.containsKey("eventos")) {
+                        DataSnapshot eventos = singleSnapShot.child("eventos/");
+                        idEventos.clear();
+                        perfil.setEventos(new ArrayList<Evento>());
+                        for (DataSnapshot i : eventos.getChildren()) {
+                            idEventos.add(i.getValue().toString());
+                        }
                     }
-                }
+                }else
+                    finish();
             }
         };
         almacenamiento.obtenerPorID("Jugador/", perfilId);
@@ -80,6 +81,8 @@ public class MisEventos extends AppCompatActivity {
         Almacenamiento almacenamiento2 = new Almacenamiento() {
             @Override
             public void leerDatosSubscrito(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
+                if(singleSnapShot == null)
+                    return;
                 String eventoId = singleSnapShot.getKey();
                 if (idEventos.contains(eventoId)) {
                     perfil.addEventos(obtenerEvento(singleSnapShot));
@@ -142,8 +145,10 @@ public class MisEventos extends AppCompatActivity {
 
     private void actualizarEventosUsuario() {
         misEventos = perfil.getEventos();
-        eventosAdapter = new EventosAdapter(this, misEventos, true, false);
-        listEventos.setAdapter(eventosAdapter);
+        if(misEventos != null) {
+            eventosAdapter = new EventosAdapter(this, misEventos, true, false);
+            listEventos.setAdapter(eventosAdapter);
+        }
     }
 
     private void iniciarVista() {

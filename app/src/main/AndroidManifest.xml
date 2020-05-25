@@ -8,7 +8,6 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-feature
@@ -25,7 +24,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RutaEvento"></activity>
+        <activity android:name=".ChatEvento"></activity>
+        <activity android:name=".RutaEvento" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -43,10 +43,10 @@
         <activity android:name=".CrearEvento" />
         <activity
             android:name=".Perfil"
-            android:windowSoftInputMode="adjustNothing"
+            android:excludeFromRecents="true"
             android:launchMode="singleTask"
             android:taskAffinity=""
-            android:excludeFromRecents="true" />
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".Registro" />
         <activity android:name=".Mapa" />
         <activity android:name=".MisEventos" />

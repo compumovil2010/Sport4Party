@@ -45,23 +45,25 @@ public class ServiceAmigos extends IntentService {
         Almacenamiento almacenamiento = new Almacenamiento() {
             @Override
             public void leerDatosSubscrito(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
-                if (datos.containsKey("amigos")) {
-                    DataSnapshot amigos = singleSnapShot.child("amigos/");
-                    idAmigosUltimo.clear();
-                    for (DataSnapshot i : amigos.getChildren()) {
-                        idAmigosUltimo.add(i.getKey());
-                        if (!idAmigos.contains(i.getKey())) {
-                            idAmigos.add(i.getKey());
-                            if (!esPrimero)
-                                launchNotification("Nuevo amigo");
+                if (datos != null) {
+                    if (datos.containsKey("amigos")) {
+                        DataSnapshot amigos = singleSnapShot.child("amigos/");
+                        idAmigosUltimo.clear();
+                        for (DataSnapshot i : amigos.getChildren()) {
+                            idAmigosUltimo.add(i.getKey());
+                            if (!idAmigos.contains(i.getKey())) {
+                                idAmigos.add(i.getKey());
+                                if (!esPrimero)
+                                    launchNotification("Nuevo amigo");
+                            }
                         }
-                    }
-                    esPrimero = false;
-                    for (int i = 0; i<idAmigos.size(); i++) {
-                        String idAmigo = idAmigos.get(i);
-                        if(!idAmigosUltimo.contains(idAmigo)){
-                            launchNotification("Amigo eliminado");
-                            idAmigos.remove(idAmigo);
+                        esPrimero = false;
+                        for (int i = 0; i < idAmigos.size(); i++) {
+                            String idAmigo = idAmigos.get(i);
+                            if (!idAmigosUltimo.contains(idAmigo)) {
+                                launchNotification("Amigo eliminado");
+                                idAmigos.remove(idAmigo);
+                            }
                         }
                     }
                 }
@@ -86,7 +88,9 @@ public class ServiceAmigos extends IntentService {
 
         Intent intent = new Intent(this, Perfil.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        intent.putExtra("tipo", "0");
+        //El flag es 0 si no se debe enviar algo
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(pendingIntent);
         mBuilder.setAutoCancel(true);
     }

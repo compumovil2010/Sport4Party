@@ -57,7 +57,7 @@ public class EventosAdapter extends BaseAdapter {
             ImageButton chatEvento = (ImageButton) convertView.findViewById(R.id.botonInfoEventoList);
             ImageButton rutaEvento = (ImageButton) convertView.findViewById(R.id.botonRuta);
 
-            Evento evento = eventos.get(position);
+            final Evento evento = eventos.get(position);
             String formato = "dd-MM-yyyy";
             SimpleDateFormat dateFormat = new SimpleDateFormat(formato);
             idEvento.setText(dateFormat.format(evento.getFecha())+" - "+evento.getDeporte().getNombre()+" - $"+evento.getPrecio());
@@ -66,6 +66,9 @@ public class EventosAdapter extends BaseAdapter {
             chatEvento.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent chat = new Intent(v.getContext(), ChatEvento.class);
+                    chat.putExtra("eventoId",eventos.get(position).getId());
+                    context.startActivity(chat);
                 }
             });
 
@@ -73,8 +76,9 @@ public class EventosAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Intent change = new Intent(v.getContext(), RutaEvento.class);
-                    change.putExtra("latitud", eventos.get(position).getUbicacion().getLatitud().doubleValue());
-                    change.putExtra("longitud", eventos.get(position).getUbicacion().getLongitud().doubleValue());
+                    //change.putExtra("latitud", eventos.get(position).getUbicacion().getLatitud().doubleValue());
+                    //change.putExtra("longitud", eventos.get(position).getUbicacion().getLongitud().doubleValue());
+                    change.putExtra("eventoId",eventos.get(position).getId());
                     context.startActivity(change);
                 }
             });
@@ -99,6 +103,7 @@ public class EventosAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     Intent info = new Intent(v.getContext(), InformacionEvento.class);
                     info.putExtra("pantalla",0);
+                    info.putExtra("id", eventos.get(position).getId());
                     context.startActivity(info);
                 }
             });
