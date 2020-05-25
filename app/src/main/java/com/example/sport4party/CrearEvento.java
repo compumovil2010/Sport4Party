@@ -181,8 +181,8 @@ public class CrearEvento extends AppCompatActivity {
         inflate();
         int modo=getIntent().getIntExtra("pantalla",-1); //1 modo crear 0 modo editar
         String idEvento=getIntent().getStringExtra("id");
-        modo=0;
-        idEvento="11";
+        //modo=0;
+        //idEvento="11";
 
 
         if(modo==1)
