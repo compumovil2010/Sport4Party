@@ -13,7 +13,7 @@ public class Administrador extends Usuario {
     public Administrador(String contraseña, String correo, String nombreUsuario, String sexo) {
         super(contraseña, correo, nombreUsuario, sexo);
     }
-    public Administrador(String contraseña, String correo, Bitmap imagenPerfil, String nombreUsuario, String sexo) {
+    public Administrador(String contraseña, String correo, String imagenPerfil, String nombreUsuario, String sexo) {
         super(contraseña, correo, imagenPerfil, nombreUsuario, sexo);
     }
 

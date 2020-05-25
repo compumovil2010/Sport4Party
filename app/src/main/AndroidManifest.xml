@@ -24,7 +24,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".ChatEvento"></activity>
+
+
+        <activity android:name=".popupCalificaciones"></activity>
+
+        <activity android:name=".RutaAmigos"></activity>
+
+
         <activity android:name=".RutaEvento" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -43,9 +51,11 @@
         <activity android:name=".CrearEvento" />
         <activity
             android:name=".Perfil"
+
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
             android:taskAffinity=""
+
             android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".Registro" />
         <activity android:name=".Mapa" />

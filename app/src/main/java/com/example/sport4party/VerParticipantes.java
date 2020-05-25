@@ -2,6 +2,7 @@ package com.example.sport4party;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -10,9 +11,13 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sport4party.Modelo.Jugador;
+import com.example.sport4party.Utils.Almacenamiento;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class VerParticipantes extends AppCompatActivity {
 
@@ -21,6 +26,11 @@ public class VerParticipantes extends AppCompatActivity {
     ListView listaAsistentes;
     JugadorAdapter adapter;
     ArrayList<Jugador> participantes;
+    Almacenamiento almacenamiento;
+    final String rutaJugadores = "Jugador/";
+    //final String pathEventos = "Eventos/";
+    String rutaEvento;
+    private FirebaseAuth mAuth;
     Jugador origin;
 
     @Override
@@ -30,11 +40,12 @@ public class VerParticipantes extends AppCompatActivity {
 
         invitarAmigos = findViewById(R.id.botonInvitarAmigos);
         localizar = findViewById(R.id.botonLocalizar);
-        listaAsistentes = findViewById(R.id.listViewParticipantes);
+        listaAsistentes = findViewById(R.id.listaamigos);
 
         //Extraigo el Bundle con la información de los participantes del envento
         final Bundle info = getIntent().getBundleExtra("listaParticipantes");
-
+        rutaEvento = getIntent().getStringExtra("idEvento");
+        Log.i("Ruta evento", rutaEvento);
         //Asigno la lista de participantes al ArrayList que va a manejar el adaptador
         participantes = (ArrayList<Jugador>) info.getSerializable("participantes");
 
@@ -43,7 +54,7 @@ public class VerParticipantes extends AppCompatActivity {
         origin.addAmigos(participantes.get(0));
         origin.addAmigos(participantes.get(3));
         origin.addAmigos(participantes.get(6));
-        adapter = new JugadorAdapter(getApplicationContext(), participantes,true, false, origin);
+        adapter = new JugadorAdapter(getApplicationContext(), participantes,true, false, origin, null);
         listaAsistentes.setAdapter(adapter);
 
         invitarAmigos.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +66,7 @@ public class VerParticipantes extends AppCompatActivity {
                 //Amigos debería ser la lista de Jugador que tiene el usuario actual
                 extaInfo.putSerializable("amigos", (Serializable) participantes);
                 extaInfo.putSerializable("perfilActual",(Serializable) origin);
+                extaInfo.putString("idEvento", rutaEvento);
                 intentInvitarAmigos.putExtra("listaDeAmigos",extaInfo);
                 startActivity(intentInvitarAmigos);
             }
@@ -65,7 +77,7 @@ public class VerParticipantes extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent infoPerfil = new Intent(view.getContext(), Perfil.class);
                 Jugador perfil = participantes.get(position);
-                infoPerfil.putExtra("jugador", perfil);
+                infoPerfil.putExtra("jugador", perfil.getId());
                 if(origin.getAmigos().contains(perfil))
                     infoPerfil.putExtra("tipo", "1");
                 else
@@ -73,5 +85,104 @@ public class VerParticipantes extends AppCompatActivity {
                 startActivity(infoPerfil);
             }
         });
+
+        mAuth = FirebaseAuth.getInstance();
+        //obtenerJugadorActual(origin);
+        ArrayList<Jugador> listaParticipantes = new ArrayList<>();
+        //Saca a cada jugador que este registrado en el evento, con sus amigos
+        buscarJugadoresBD(listaParticipantes, rutaEvento);
+
+    }
+
+
+
+    //Aqui toca poner los jugadores de una vez en el list view
+    private void buscarJugadoresBD(final ArrayList<Jugador> jugadores, final String idLocalizacion){
+        final Jugador jugadorEnEvento = new Jugador();
+        almacenamiento = new Almacenamiento(){
+          @Override
+          public void leerDatosSubscrito(final HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
+              super.leerDatosSubscrito(datos, singleSnapShot);
+              if(datos.get("eventos") != null){
+                  HashMap<String,String> eventos= (HashMap<String,String>)datos.get("eventos");
+                  for (String i: eventos.keySet() ) {
+                      Log.i("Evento actual ",eventos.get(i).toString());
+                      if(eventos.get(i).toString().equals(idLocalizacion)){
+                          jugadorEnEvento.setNombreUsuario(datos.get("nombreUsuario").toString());
+                          jugadorEnEvento.setCorreo(datos.get("correo").toString());
+                          jugadorEnEvento.setId(singleSnapShot.getKey());
+                          jugadores.add(jugadorEnEvento);
+                      }
+                  }
+
+              }else if(datos.get("eventosCreados") != null){
+                  HashMap<String,String> eventos= (HashMap<String,String>)datos.get("eventosCreados");
+                  for (String i: eventos.keySet() ) {
+                      if(eventos.get(i).equals(idLocalizacion)){
+                          jugadorEnEvento.setNombreUsuario(datos.get("nombreUsuario").toString());
+                          jugadorEnEvento.setCorreo(datos.get("Correo").toString());
+                          jugadorEnEvento.setId(singleSnapShot.getKey());
+                          jugadores.add(jugadorEnEvento);
+                      }
+
+                  }
+              }
+              Log.i("Respuesta: ","Cantidad de jugadores en el evento: "+jugadores.size());
+              //Log.i("Nombre: ","SE LLAMA: "+jugadores.get(jugadores.size()-1).getNombreUsuario().toString());
+              /*
+                adapter = new JugadorAdapter(getApplicationContext(), jugadores, true, false, origin, null);
+                listaAsistentes.setAdapter(adapter);
+              */
+          }
+        };
+        almacenamiento.loadSubscription(rutaJugadores);
+
+    }
+
+    private void obtenerJugadorActual(final Jugador actual){
+        final int[] conta = {0};
+        Almacenamiento almJugador = new Almacenamiento(){
+            @Override
+            public void leerDatosSubscrito(final HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
+                super.leerDatosSubscrito(datos, singleSnapShot);
+                if(datos != null){
+                    actual.setNombreUsuario(datos.get("nombreUsuario").toString());
+                    actual.setCorreo(datos.get("correo").toString());
+                    actual.setId(singleSnapShot.getKey());
+
+                    if(datos.get("amigos") != null){
+                        final HashMap<String,String> amigos= (HashMap<String,String>)datos.get("amigos");
+                        final ArrayList<Jugador> listAmigos = new ArrayList<>();
+                        for (String j: amigos.keySet()) {
+                            Almacenamiento almacenamientoAmigos = new Almacenamiento(){
+                                @Override
+                                public void leerDatosSubscrito(final HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
+                                    super.leerDatosSubscrito(datos, singleSnapShot);
+                                    if(datos != null){
+                                        Jugador amigo = new Jugador();
+                                        amigo.setNombreUsuario(datos.get("nombreUsuario").toString());
+                                        amigo.setCorreo(datos.get("correo").toString());
+                                        amigo.setId(singleSnapShot.getKey());
+                                        amigo.setSexo(datos.get("sexo").toString());
+                                        listAmigos.add(amigo);
+                                    }
+                                    if(conta[0] == amigos.size()){
+                                        //ArrayList<Jugador> participantes = new ArrayList<>();
+                                        //buscarJugadoresBD(participantes, rutaEvento);
+                                        //falta poner a actual en el metodo para ponerle los amigos...
+                                    }
+
+                                }
+                            };
+                            almacenamientoAmigos.obtenerPorID(rutaJugadores, j);
+                            conta[0] += 1;
+                        }
+                    }
+                }
+            }
+        };
+        almJugador.obtenerPorID(rutaJugadores, mAuth.getUid());
     }
 }
+
+

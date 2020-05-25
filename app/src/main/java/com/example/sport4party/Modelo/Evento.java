@@ -27,7 +27,13 @@ public class Evento implements Serializable {
     public Evento()
     {
 
+
     }
+    public void setCupos(long cupos)
+    {
+        this.cupos=cupos;
+    }
+
     public Evento(int ID, String descripcion,int cupos, Date fecha, String nivelHabilidad, String nombre, String precio, boolean pago, boolean privado, Deporte deporte, Ubicacion ubicacion) {
         this.ID = ID;
         this.cupos=cupos;
@@ -111,6 +117,13 @@ public class Evento implements Serializable {
     }
     public void setUbicacion(Ubicacion ubicacion) {
         this.ubicacion = ubicacion;
+    }
+    public long getCupos() {
+        return cupos;
+    }
+
+    public void setCupos(long cupos) {
+        this.cupos = cupos;
     }
 
     public static class NombreSorter implements Comparator<Evento> {

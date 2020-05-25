@@ -3,6 +3,10 @@ package com.example.sport4party;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Path;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
@@ -31,6 +35,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
@@ -68,6 +73,9 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     private FirebaseAuth mAuth;
     private List<Evento> eventos;
     private SearchView buscarEnMapa;
+    private SensorManager sensorManager;
+    Sensor lightSensor;
+    SensorEventListener lightSensorListener;
 
     private void quemar()
     {
@@ -191,8 +199,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onBuscarResult(HashMap<String, Object> data, String key) {
                 super.onBuscarResult(data, key);
-
-                Log.i("mensaje: ",   (String)data.get("contenido")  )  ;
+                Log.i("mensaje: ",   (String)data.get("contenido"));
             }
 
         };
@@ -216,11 +223,14 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         quemar();
         //updateWhitDataBase();
         //----------------------------------------------------------------------
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);
 
         mAuth = FirebaseAuth.getInstance();
         hora = findViewById(R.id.spinnerHour);
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.hours, R.layout.text_color_spinner_deportes);
         adapter.setDropDownViewResource(R.layout.deportes_dropdown);
@@ -268,6 +278,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         gCoderHandler = new LocationFinder(Mapa.this);
         myPosition = null;
         CrearEventosNuevo();
+        activarSensorDeLuz();
 
     }
 
@@ -445,8 +456,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onResume() {
         super.onResume();
         //navigationView.setNavigationItemSelectedListener(this);
-
-        //sensorManager.registerListener(lightSensorListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(lightSensorListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
         ubicationFinder = new UbicationFinder(this){
             @Override
             public void onLocation(Location location) {
@@ -462,13 +472,14 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onPause() {
         super.onPause();
-        //sensorManager.unregisterListener(lightSensorListener);
+        sensorManager.unregisterListener(lightSensorListener);
         if(myPosition!=null)
             myPosition.remove();
         if (ubicationFinder != null)
             ubicationFinder.stopLocationUpdates();
             myPosition = null;
     }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch(requestCode) {
             case 666:
@@ -484,6 +495,28 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
                 //use data.getExtra(...) to retrieve the returned data
                 break;
         }
+    }
+
+    private void activarSensorDeLuz(){
+        lightSensorListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (mMap != null) {
+                    if (event.values[0] < 300) {
+                        Log.i("MAPS", "DARK MAP " + event.values[0]);
+                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(Mapa.this, R.raw.style1));
+                    }else{
+                        Log.i("MAPS", "LIGHT MAP " + event.values[0]);
+                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(Mapa.this, R.raw.style2));
+                    }
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
     }
 
 

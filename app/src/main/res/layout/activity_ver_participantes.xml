@@ -24,7 +24,7 @@
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#FF7C1E"
+        android:background="#00FFFFFF"
         android:padding="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -81,7 +81,7 @@
                 android:orientation="vertical">
 
                 <ListView
-                    android:id="@+id/listViewParticipantes"
+                    android:id="@+id/listaamigos"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
