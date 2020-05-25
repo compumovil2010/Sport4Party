@@ -50,13 +50,7 @@
         <activity android:name=".InformacionEvento" />
         <activity android:name=".CrearEvento" />
         <activity
-            android:name=".Perfil"
-
-            android:excludeFromRecents="true"
-            android:launchMode="singleTask"
-            android:taskAffinity=""
-
-            android:windowSoftInputMode="adjustNothing" />
+            android:name=".Perfil" />
         <activity android:name=".Registro" />
         <activity android:name=".Mapa" />
         <activity android:name=".MisEventos" />
@@ -77,7 +71,13 @@
             android:parentActivityName=".VerParticipantes" />
         <activity
             android:name=".MisAmigos"
-            android:parentActivityName=".Mapa" />
+            android:parentActivityName=".Mapa"
+
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+
+            android:windowSoftInputMode="adjustNothing" />
 
         <service android:name=".Utils.ServiceAmigos" />
     </application>

@@ -57,8 +57,6 @@ public class MisEventos extends AppCompatActivity {
         idEventos = new ArrayList<>();
 
         perfilId = mAuth.getCurrentUser().getUid();
-        //perfilId = "1GWxKsBvBVZzXetfglHDPDZqXxj1";
-        //perfilId = "uv8upyMvQIXL51Ci2dGArWWS1nc2";
 
         Almacenamiento almacenamiento = new Almacenamiento() {
             @Override
@@ -72,8 +70,7 @@ public class MisEventos extends AppCompatActivity {
                             idEventos.add(i.getValue().toString());
                         }
                     }
-                }else
-                    finish();
+                }
             }
         };
         almacenamiento.obtenerPorID("Jugador/", perfilId);
@@ -97,10 +94,7 @@ public class MisEventos extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent info = new Intent(view.getContext(), InformacionEvento.class);
-                if (perfil.getEventosCreados().contains(misEventos.get(position)))
-                    info.putExtra("pantalla", 0);
-                else
-                    info.putExtra("pantalla", 2);
+                info.putExtra("pantalla", 2);
                 startActivity(info);
             }
         });

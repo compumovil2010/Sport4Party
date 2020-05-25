@@ -86,11 +86,10 @@ public class ServiceAmigos extends IntentService {
                         R.drawable.ic_stat_notifications_active))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-        Intent intent = new Intent(this, Perfil.class);
+        Intent intent = new Intent(this, MisAmigos.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra("tipo", "0");
-        //El flag es 0 si no se debe enviar algo
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //El flag es 0 si no se debe enviar algo: PendingIntent.FLAG_UPDATE_CURRENT
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         mBuilder.setContentIntent(pendingIntent);
         mBuilder.setAutoCancel(true);
     }
