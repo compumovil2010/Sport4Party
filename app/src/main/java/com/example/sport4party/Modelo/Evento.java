@@ -118,6 +118,13 @@ public class Evento implements Serializable {
     public void setUbicacion(Ubicacion ubicacion) {
         this.ubicacion = ubicacion;
     }
+    public long getCupos() {
+        return cupos;
+    }
+
+    public void setCupos(long cupos) {
+        this.cupos = cupos;
+    }
 
     public static class NombreSorter implements Comparator<Evento> {
         @Override
