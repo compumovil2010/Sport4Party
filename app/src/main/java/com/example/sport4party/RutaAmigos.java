@@ -1,5 +1,6 @@
 package com.example.sport4party;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.hardware.Sensor;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.sport4party.Modelo.Evento;
+import com.example.sport4party.Utils.Almacenamiento;
 import com.example.sport4party.Utils.LocationFinder;
 import com.example.sport4party.Utils.TaskLoadedCallback;
 import com.example.sport4party.Utils.TraceRute;
@@ -25,8 +28,15 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
+import java.util.HashMap;
+
+public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
     private LocationFinder gCoderHandler;
     private Marker myPosition;
@@ -35,6 +45,9 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
     private Polyline currentPolyline;
     private LatLng posicionEvento;
     private String nombreEvento;
+    private HashMap<String, String> eventoAsignado;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
     private SensorManager sensorManager;
     Sensor lightSensor;
     SensorEventListener lightSensorListener;
@@ -48,29 +61,62 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
                 .findFragmentById(R.id.mapRuta);
         mapFragment.getMapAsync(this);
         nombreEvento = "por definir";
-        gCoderHandler = new LocationFinder(RutaEvento.this);
+        gCoderHandler = new LocationFinder(RutaAmigos.this);
         myPosition = null;
+        database=FirebaseDatabase.getInstance();
+        eventoAsignado = new HashMap<String, String>();
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         Bundle parametros = this.getIntent().getExtras();
 
+        posicionEvento = new LatLng(4.5927,-74.1379);
+        Integer eventoId = 7;
         if(parametros != null){
-            Double latitud = parametros.getDouble("latitud");
-            Double longitud = parametros.getDouble("longitud");
-            if(latitud != null && longitud != null){
-                posicionEvento = new LatLng(latitud, longitud);
-            }
-            //Manejo de excepciones
-            //else{
-            //    posicionEvento = new LatLng(4.57, -74.13);
-            //}
+            eventoId = parametros.getInt("id");
         }
-        //else{
-        //    posicionEvento = new LatLng(4.57, -74.13);
-        //}
+
+        generarMarkets(7);
         activarSensorDeLuz();
+
     }
+
+
+    //_----------------------------------------------------------------------------------------
+    private void generarMarkets(final Integer numEvento){
+        myRef=database.getReference("Jugador");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleSnapShot: dataSnapshot.getChildren()) {
+                    HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
+                    if(datos.containsKey("eventos")){
+                        HashMap<String, String> eventos = (HashMap<String, String>) datos.get("eventos");
+                        for (String i : eventos.keySet()) {
+                            if(eventos.containsKey(numEvento.toString())){
+                                RutaAmigos.this.eventoAsignado.put(singleSnapShot.getKey(), singleSnapShot.getKey()); //cambiar esto por un hashmap <STRING, LATLONG> y almacenar las ubiacaciones y un <String, String> con el nombre para facilitar las cosas
+                            }
+                        }
+                    }
+                }
+
+                //PRUEBA
+                for(String i: RutaAmigos.this.eventoAsignado.keySet()){  //Cambiar este recorrido por inserciones de markerts
+                    Log.i("PRUEBA DE USUARIOS", i);
+                }
+                Marker marker3 = RutaAmigos.this.mMap.addMarker(new MarkerOptions().position(new LatLng(4.572, -74.1337)).title("Evento"));//gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    //_----------------------------------------------------------------------------------------
 
 
     //MAPA
@@ -88,19 +134,14 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
 
     public void markRoute(Marker a, Marker b) {
         String url = getUrl(a.getPosition(), b.getPosition(), "driving");
-        new TraceRute(RutaEvento.this).execute(url, "driving");
+        new TraceRute(RutaAmigos.this).execute(url, "driving");
     }
 
     public void markerRoute(LatLng a, LatLng b){
         String url = getUrl(a, b, "driving");
         Log.i("TAG", url);
-        new TraceRute(RutaEvento.this).execute(url, "driving");
-    }
+        new TraceRute(RutaAmigos.this).execute(url, "driving");
 
-    public void markerRoute2(LatLng a, LatLng b){
-        String url = getUrl(a, b, "driving");
-        Log.i("TAG", url);
-        new TraceRute(RutaEvento.this).execute(url, "driving");
     }
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {
@@ -119,19 +160,10 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
         return url;
     }
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        LatLng ubicacionAux = new LatLng(4.572, -74.1337);
-        Marker marker3 = mMap.addMarker(new MarkerOptions().position(ubicacionAux).title("OTRO EVENTO"));
-        LatLng ubicacionAux2 = new LatLng(4.5927,-74.1379);
-        Marker marker4 = mMap.addMarker(new MarkerOptions().position(ubicacionAux2).title("OTRO EVENTO MAS"));
-
-        //LatLng actual = new LatLng(location.getLatitude(), location.getLongitude());
-        //markerRoute2(ubicacionAux, ubicacionAux2);
-
+//Obtener por el intent un ID event y lanzarlos todos
         ubicationFinder = new UbicationFinder(this){
             @Override
             public void onLocation(Location location) {
@@ -140,13 +172,13 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
                     Marker marker2 = mMap.addMarker(new MarkerOptions().position(posicionEvento).title("Evento"));//gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
 
                     if(posicionEvento == null){
-                        Toast.makeText(RutaEvento.this, "Ubicación no encontrada", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RutaAmigos.this, "Ubicación no encontrada", Toast.LENGTH_LONG).show();
                     }
                     else{
                         //mMap.clear();
                         LatLng actual = new LatLng(location.getLatitude(), location.getLongitude());
-                        markerRoute(actual, RutaEvento.this.posicionEvento);
-                        RutaEvento.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+                        markerRoute(actual, RutaAmigos.this.posicionEvento);
+                        RutaAmigos.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
                     }
                 }
             }
@@ -167,7 +199,7 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
         sensorManager.unregisterListener(lightSensorListener);
         if (ubicationFinder != null)
             ubicationFinder.stopLocationUpdates();
-    //myPosition = null;
+        //myPosition = null;
     }
 
     @Override
@@ -177,6 +209,7 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
 
+
     private void activarSensorDeLuz(){
         lightSensorListener = new SensorEventListener() {
             @Override
@@ -184,10 +217,10 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
                 if (mMap != null) {
                     if (event.values[0] < 300) {
                         Log.i("MAPS", "DARK MAP " + event.values[0]);
-                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(RutaEvento.this, R.raw.style1));
+                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(RutaAmigos.this, R.raw.style1));
                     }else{
                         Log.i("MAPS", "LIGHT MAP " + event.values[0]);
-                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(RutaEvento.this, R.raw.style2));
+                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(RutaAmigos.this, R.raw.style2));
                     }
                 }
             }
@@ -198,5 +231,4 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
             }
         };
     }
-
 }

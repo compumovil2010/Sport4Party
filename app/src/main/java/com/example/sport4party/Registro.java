@@ -78,15 +78,19 @@ public class Registro extends AppCompatActivity {
             String correoElectronico = this.correo.getText().toString().trim();
             String sexoUsuario = this.sexo.getSelectedItem().toString().trim();
 
-            Jugador jugador = new Jugador(correoElectronico, nombreusuario, sexoUsuario);
+            //Jugador jugador = new Jugador(correoElectronico, nombreusuario, sexoUsuario, "0");
 
             //almacenamientoBase.push(jugador, "Usuarios/"+mAuth.getUid());
             //almacenamientoBase.addValueToReference("Jugadores/" + mAuth.getUid() + "/mundo", "hola");
 
             HashMap<String, Object> datos = new HashMap<String, Object>();
-            datos.put("Correo", "asdad@g.com");
-            datos.put("Otro", "otraCosa");
-            almacenamientoBase.push(datos, "Jugadores/"+mAuth.getUid());
+            datos.put("correo", correoElectronico);
+            datos.put("nombreUsuario", nombreusuario);
+            datos.put("sexo", sexoUsuario);
+            datos.put("tipo", "0");
+            almacenamientoBase.push(datos, "Jugador/"+mAuth.getUid());
+            //jugador.pushFireBaseBD();
+
 
             Intent change = new Intent(this, InicioDeSesión.class);
             change.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
