@@ -72,9 +72,9 @@ public class EventosAdapter extends BaseAdapter {
             rutaEvento.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent change = new Intent(v.getContext(), RutaEvento.class);
-                    change.putExtra("latitud", eventos.get(position).getUbicacion().getLatitud().doubleValue());
-                    change.putExtra("longitud", eventos.get(position).getUbicacion().getLongitud().doubleValue());
+                    Intent change = new Intent(v.getContext(), RutaAmigos.class);
+                    //change.putExtra("latitud", eventos.get(position).getUbicacion().getLatitud().doubleValue());
+                    //change.putExtra("longitud", eventos.get(position).getUbicacion().getLongitud().doubleValue());
                     context.startActivity(change);
                 }
             });

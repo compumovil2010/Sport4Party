@@ -114,7 +114,7 @@ public class Perfil extends AppCompatActivity {
 
     private void actualizar() {
         if (perfil.getImagenPerfil() != null)
-            usrImage.setImageBitmap(perfil.getImagenPerfil());
+            //usrImage.setImageBitmap(perfil.getImagenPerfil());
         nombreUsuario.setText(perfil.getNombreUsuario());
         amigos.setText(Integer.toString(perfil.getAmigos().size()));
         switch (tipo) {
@@ -221,7 +221,7 @@ public class Perfil extends AppCompatActivity {
     }
 
     public void aceptarImagenPerfil(View view) {
-        perfil.setImagenPerfil(getBitmap(imgPopProf));
+        //perfil.setImagenPerfil(getBitmap(imgPopProf));
         actualizar();
         imgPopup.dismiss();
     }

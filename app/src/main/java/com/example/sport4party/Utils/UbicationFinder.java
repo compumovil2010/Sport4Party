@@ -81,8 +81,8 @@ public class UbicationFinder {
 
     protected LocationRequest createLocationRequest() {
         LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000); //tasa de refresco en milisegundos
-        mLocationRequest.setFastestInterval(1000); //mÃ¡xima tasa de refresco
+        mLocationRequest.setInterval(5000); //tasa de refresco en milisegundos
+        mLocationRequest.setFastestInterval(5000); //mÃ¡xima tasa de refresco
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         return mLocationRequest;
     }
