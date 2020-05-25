@@ -2,6 +2,10 @@ package com.example.sport4party;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -30,6 +35,9 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
     private Polyline currentPolyline;
     private LatLng posicionEvento;
     private String nombreEvento;
+    private SensorManager sensorManager;
+    Sensor lightSensor;
+    SensorEventListener lightSensorListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +50,8 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
         nombreEvento = "por definir";
         gCoderHandler = new LocationFinder(RutaEvento.this);
         myPosition = null;
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         Bundle parametros = this.getIntent().getExtras();
 
@@ -59,6 +69,7 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
         //else{
         //    posicionEvento = new LatLng(4.57, -74.13);
         //}
+        activarSensorDeLuz();
     }
 
 
@@ -145,7 +156,7 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
     @Override
     protected void onResume() {
         super.onResume();
-        //sensorManager.registerListener(lightSensorListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(lightSensorListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
         if (ubicationFinder != null)
             ubicationFinder.startLocationUpdates();
     }
@@ -153,7 +164,7 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
     @Override
     protected void onPause() {
         super.onPause();
-        //sensorManager.unregisterListener(lightSensorListener);
+        sensorManager.unregisterListener(lightSensorListener);
         if (ubicationFinder != null)
             ubicationFinder.stopLocationUpdates();
     //myPosition = null;
@@ -164,6 +175,28 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
         if (currentPolyline != null)
             currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+    }
+
+    private void activarSensorDeLuz(){
+        lightSensorListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (mMap != null) {
+                    if (event.values[0] < 300) {
+                        Log.i("MAPS", "DARK MAP " + event.values[0]);
+                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(RutaEvento.this, R.raw.style1));
+                    }else{
+                        Log.i("MAPS", "LIGHT MAP " + event.values[0]);
+                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(RutaEvento.this, R.raw.style2));
+                    }
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
     }
 
 }

@@ -3,6 +3,10 @@ package com.example.sport4party;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -30,7 +35,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 
 public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
@@ -44,6 +48,9 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
     private HashMap<String, String> eventoAsignado;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private SensorManager sensorManager;
+    Sensor lightSensor;
+    SensorEventListener lightSensorListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,8 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
         myPosition = null;
         database=FirebaseDatabase.getInstance();
         eventoAsignado = new HashMap<String, String>();
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         Bundle parametros = this.getIntent().getExtras();
 
@@ -68,7 +77,7 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
         }
 
         generarMarkets(7);
-
+        activarSensorDeLuz();
 
     }
 
@@ -85,16 +94,18 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
                         HashMap<String, String> eventos = (HashMap<String, String>) datos.get("eventos");
                         for (String i : eventos.keySet()) {
                             if(eventos.containsKey(numEvento.toString())){
-                                RutaAmigos.this.eventoAsignado.put(singleSnapShot.getKey(), singleSnapShot.getKey());
+                                RutaAmigos.this.eventoAsignado.put(singleSnapShot.getKey(), singleSnapShot.getKey()); //cambiar esto por un hashmap <STRING, LATLONG> y almacenar las ubiacaciones y un <String, String> con el nombre para facilitar las cosas
                             }
                         }
                     }
                 }
 
                 //PRUEBA
-                for(String i: RutaAmigos.this.eventoAsignado.keySet()){
+                for(String i: RutaAmigos.this.eventoAsignado.keySet()){  //Cambiar este recorrido por inserciones de markerts
                     Log.i("PRUEBA DE USUARIOS", i);
                 }
+                Marker marker3 = RutaAmigos.this.mMap.addMarker(new MarkerOptions().position(new LatLng(4.572, -74.1337)).title("Evento"));//gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
+
 
             }
 
@@ -104,34 +115,6 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
             }
         });
     }
-         /*   @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot singleSnapShot: dataSnapshot.getChildren())
-                {
-                    HashMap<String, Object> datos = (HashMap<String,Object>) singleSnapShot.getValue();
-                    for(String i : datos.keySet()){
-                        Log.i("DATOSAMIGOS", "KEY: " + i + " VALUE: " + datos.get(i));
-                    }
-
-
-                        HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
-                        for(String i : datos.keySet()){
-                            Log.i("DATOS", "KEY: " + i + " VALUE: " + datos.get(i));
-                        }
-                        if(datos.containsKey("amigos")){
-                            HashMap<String,String> amigitos= (HashMap<String,String>)datos.get("amigos");
-                            for(String i : amigitos.keySet()){
-                                Log.i("AMIGUITOS", "KEY: " + i + " VALUE: " + datos.get(i));
-                            }
-                        }
-
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });  */
 
     //_----------------------------------------------------------------------------------------
 
@@ -205,7 +188,7 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
     @Override
     protected void onResume() {
         super.onResume();
-        //sensorManager.registerListener(lightSensorListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(lightSensorListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
         if (ubicationFinder != null)
             ubicationFinder.startLocationUpdates();
     }
@@ -213,7 +196,7 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
     @Override
     protected void onPause() {
         super.onPause();
-        //sensorManager.unregisterListener(lightSensorListener);
+        sensorManager.unregisterListener(lightSensorListener);
         if (ubicationFinder != null)
             ubicationFinder.stopLocationUpdates();
         //myPosition = null;
@@ -226,4 +209,26 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
 
+
+    private void activarSensorDeLuz(){
+        lightSensorListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (mMap != null) {
+                    if (event.values[0] < 300) {
+                        Log.i("MAPS", "DARK MAP " + event.values[0]);
+                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(RutaAmigos.this, R.raw.style1));
+                    }else{
+                        Log.i("MAPS", "LIGHT MAP " + event.values[0]);
+                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(RutaAmigos.this, R.raw.style2));
+                    }
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
+    }
 }
