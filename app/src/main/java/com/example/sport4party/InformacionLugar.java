@@ -141,6 +141,7 @@ private void verSiYaVoto()
             public void onBuscarResult(HashMap<String, Object> data, String key) {
                 super.onBuscarResult(data, key);
                 HashMap<String, Object>mapa= (HashMap<String,Object>)data.get("opiniones");
+                if(mapa!=null)
                 for(String lal: mapa.keySet())
                 {
                     Almacenamiento almacenamiento1=new Almacenamiento()

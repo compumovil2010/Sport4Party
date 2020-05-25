@@ -45,7 +45,7 @@ public class VerParticipantes extends AppCompatActivity {
         //Extraigo el Bundle con la información de los participantes del envento
         final Bundle info = getIntent().getBundleExtra("listaParticipantes");
         rutaEvento = getIntent().getStringExtra("idEvento");
-        Log.i("Ruta evento", rutaEvento);
+        //Log.i("Ruta evento", rutaEvento);
         //Asigno la lista de participantes al ArrayList que va a manejar el adaptador
         participantes = (ArrayList<Jugador>) info.getSerializable("participantes");
 

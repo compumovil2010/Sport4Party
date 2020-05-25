@@ -246,7 +246,9 @@ public class InformacionEvento extends AppCompatActivity {
                    Intent participantes =new Intent(v.getContext(), VerParticipantes.class);
                    Bundle info = new Bundle();
                    info.putSerializable("participantes", jugadores);
+
                    participantes.putExtra("listaParticipantes",info);
+                   participantes.putExtra("idEvento",idEvento);
                    startActivity(participantes);
                                            }
            }
