@@ -84,7 +84,12 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
         String url = getUrl(a, b, "driving");
         Log.i("TAG", url);
         new TraceRute(RutaEvento.this).execute(url, "driving");
+    }
 
+    public void markerRoute2(LatLng a, LatLng b){
+        String url = getUrl(a, b, "driving");
+        Log.i("TAG", url);
+        new TraceRute(RutaEvento.this).execute(url, "driving");
     }
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {
@@ -103,9 +108,18 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
         return url;
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        LatLng ubicacionAux = new LatLng(4.572, -74.1337);
+        Marker marker3 = mMap.addMarker(new MarkerOptions().position(ubicacionAux).title("OTRO EVENTO"));
+        LatLng ubicacionAux2 = new LatLng(4.5927,-74.1379);
+        Marker marker4 = mMap.addMarker(new MarkerOptions().position(ubicacionAux2).title("OTRO EVENTO MAS"));
+
+        //LatLng actual = new LatLng(location.getLatitude(), location.getLongitude());
+        //markerRoute2(ubicacionAux, ubicacionAux2);
 
         ubicationFinder = new UbicationFinder(this){
             @Override

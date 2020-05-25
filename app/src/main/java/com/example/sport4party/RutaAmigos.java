@@ -1,5 +1,6 @@
 package com.example.sport4party;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.location.Location;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.sport4party.Modelo.Evento;
+import com.example.sport4party.Utils.Almacenamiento;
 import com.example.sport4party.Utils.LocationFinder;
 import com.example.sport4party.Utils.TaskLoadedCallback;
 import com.example.sport4party.Utils.TraceRute;
@@ -20,6 +23,14 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Hashtable;
 
 public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
@@ -30,6 +41,9 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
     private Polyline currentPolyline;
     private LatLng posicionEvento;
     private String nombreEvento;
+    private HashMap<String, String> eventoAsignado;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,23 +56,84 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
         nombreEvento = "por definir";
         gCoderHandler = new LocationFinder(RutaAmigos.this);
         myPosition = null;
+        database=FirebaseDatabase.getInstance();
+        eventoAsignado = new HashMap<String, String>();
 
         Bundle parametros = this.getIntent().getExtras();
 
+        posicionEvento = new LatLng(4.5927,-74.1379);
+        Integer eventoId = 7;
         if(parametros != null){
-            Double latitud = parametros.getDouble("latitud");
-            Double longitud = parametros.getDouble("longitud");
-            if(latitud != null && longitud != null){
-                posicionEvento = new LatLng(latitud, longitud);
-            }
-            else{
-                posicionEvento = new LatLng(4.57, -74.13);
-            }
+            eventoId = parametros.getInt("id");
         }
-        else{
-            posicionEvento = new LatLng(4.57, -74.13);
-        }
+
+        generarMarkets(7);
+
+
     }
+
+
+    //_----------------------------------------------------------------------------------------
+    private void generarMarkets(final Integer numEvento){
+        myRef=database.getReference("Jugador");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleSnapShot: dataSnapshot.getChildren()) {
+                    HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
+                    if(datos.containsKey("eventos")){
+                        HashMap<String, String> eventos = (HashMap<String, String>) datos.get("eventos");
+                        for (String i : eventos.keySet()) {
+                            if(eventos.containsKey(numEvento.toString())){
+                                RutaAmigos.this.eventoAsignado.put(singleSnapShot.getKey(), singleSnapShot.getKey());
+                            }
+                        }
+                    }
+                }
+
+                //PRUEBA
+                for(String i: RutaAmigos.this.eventoAsignado.keySet()){
+                    Log.i("PRUEBA DE USUARIOS", i);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+         /*   @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleSnapShot: dataSnapshot.getChildren())
+                {
+                    HashMap<String, Object> datos = (HashMap<String,Object>) singleSnapShot.getValue();
+                    for(String i : datos.keySet()){
+                        Log.i("DATOSAMIGOS", "KEY: " + i + " VALUE: " + datos.get(i));
+                    }
+
+
+                        HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
+                        for(String i : datos.keySet()){
+                            Log.i("DATOS", "KEY: " + i + " VALUE: " + datos.get(i));
+                        }
+                        if(datos.containsKey("amigos")){
+                            HashMap<String,String> amigitos= (HashMap<String,String>)datos.get("amigos");
+                            for(String i : amigitos.keySet()){
+                                Log.i("AMIGUITOS", "KEY: " + i + " VALUE: " + datos.get(i));
+                            }
+                        }
+
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });  */
+
+    //_----------------------------------------------------------------------------------------
 
 
     //MAPA

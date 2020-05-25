@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 
-public class Almacenamiento {
+public class Almacenamiento{
     private FirebaseDatabase database;
     private DatabaseReference myRef;
 
@@ -79,9 +79,6 @@ public class Almacenamiento {
                 onLoadUserError();
             }
         });
-
-
-
     }
 
     //@Override
