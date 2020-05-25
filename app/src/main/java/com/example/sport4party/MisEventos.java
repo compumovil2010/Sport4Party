@@ -95,6 +95,7 @@ public class MisEventos extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent info = new Intent(view.getContext(), InformacionEvento.class);
                 info.putExtra("pantalla", 2);
+                info.putExtra("id",misEventos.get(position).getId());
                 startActivity(info);
             }
         });

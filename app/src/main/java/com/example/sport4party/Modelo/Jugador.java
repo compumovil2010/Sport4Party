@@ -13,6 +13,9 @@ import com.example.sport4party.Utils.Almacenamiento;
 public class Jugador extends Usuario {
 
     private String id;
+    private String latitud;
+    private String longitud;
+
     private List<Jugador> amigos;
     private List<Mensaje> enviados;
     private List<Opinion> opiniones;
@@ -61,6 +64,22 @@ public class Jugador extends Usuario {
     public void addEventoCreado(Evento evento) {eventosCreados.add(evento);}
 
     //getters and setters
+
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(String latitud) {
+        this.latitud = latitud;
+    }
+
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
+    }
 
     public String getId() {
         return id;
@@ -153,6 +172,11 @@ public class Jugador extends Usuario {
         retorno.put("correo",super.getCorreo());
         retorno.put("nombreUsuario", super.getNombreUsuario());
         retorno.put("sexo",super.getSexo());
+        if(this.latitud!=null)
+            retorno.put("latitud",this.latitud);
+        if(this.longitud!=null)
+            retorno.put("longitud", this.longitud);
+
         //private String id;
         Almacenamiento almacenamiento=new Almacenamiento();
         //almacenamiento.push(retorno, "Jugador/",this.getId());///Si da error aca es por que no asignaron el id del usuario a la clase

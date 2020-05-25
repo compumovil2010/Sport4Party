@@ -446,6 +446,9 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             public void onLocation(Location location) {
                 if (location != null && mMap != null) {
                     Mapa.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+                    Almacenamiento aux=new Almacenamiento();
+                    aux.push(location.getLatitude(),"Jugador/"+FirebaseAuth.getInstance().getUid(),"/latitud/");
+                    aux.push(location.getLongitude(),"Jugador/"+FirebaseAuth.getInstance().getUid(),"/longitud/");
                 }
             }
         };
@@ -462,6 +465,9 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             public void onLocation(Location location) {
                 if (location != null && mMap != null) {
                     Mapa.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+                    Almacenamiento aux=new Almacenamiento();
+                    aux.push(location.getLatitude(),"Jugador/"+FirebaseAuth.getInstance().getUid(),"/latitud/");
+                    aux.push(location.getLongitude(),"Jugador/"+FirebaseAuth.getInstance().getUid(),"/longitud/");
                 }
             }
         };
@@ -477,6 +483,8 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             myPosition.remove();
         if (ubicationFinder != null)
             ubicationFinder.stopLocationUpdates();
+            new Almacenamiento().erase("Jugador/"+FirebaseAuth.getInstance().getUid()+"/latitud/");
+            new Almacenamiento().erase("Jugador/"+FirebaseAuth.getInstance().getUid()+"/longitud/");
             myPosition = null;
     }
 

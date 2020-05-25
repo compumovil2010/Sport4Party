@@ -57,6 +57,14 @@ public class VerParticipantes extends AppCompatActivity {
         adapter = new JugadorAdapter(getApplicationContext(), participantes,true, false, origin, null);
         listaAsistentes.setAdapter(adapter);
 
+        localizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(v.getContext(),RutaAmigos.class);
+                intent.putExtra("id",rutaEvento);
+                startActivity(intent);
+            }
+        });
         invitarAmigos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

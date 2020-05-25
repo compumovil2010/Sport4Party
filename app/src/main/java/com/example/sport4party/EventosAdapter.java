@@ -52,7 +52,7 @@ public class EventosAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         if(enMisEventos){
             convertView = LayoutInflater.from(context).inflate(R.layout.evento,parent,false);
-            TextView idEvento = (TextView)convertView.findViewById(R.id.idEventoList);
+            final TextView idEvento = (TextView)convertView.findViewById(R.id.idEventoList);
             TextView nombreEvento = (TextView)convertView.findViewById(R.id.nombreEventoList);
             ImageButton chatEvento = (ImageButton) convertView.findViewById(R.id.botonInfoEventoList);
             ImageButton rutaEvento = (ImageButton) convertView.findViewById(R.id.botonRuta);
@@ -75,7 +75,8 @@ public class EventosAdapter extends BaseAdapter {
             rutaEvento.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent change = new Intent(v.getContext(), RutaAmigos.class);
+                    Intent change = new Intent(v.getContext(), RutaEvento.class);
+                    change.putExtra("id",eventos.get(position).getId());
                     //change.putExtra("latitud", eventos.get(position).getUbicacion().getLatitud().doubleValue());
                     //change.putExtra("longitud", eventos.get(position).getUbicacion().getLongitud().doubleValue());
                     context.startActivity(change);
