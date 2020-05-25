@@ -29,10 +29,6 @@ public class Evento implements Serializable {
 
 
     }
-    public void setCupos(long cupos)
-    {
-        this.cupos=cupos;
-    }
 
     public Evento(int ID, String descripcion,int cupos, Date fecha, String nivelHabilidad, String nombre, String precio, boolean pago, boolean privado, Deporte deporte, Ubicacion ubicacion) {
         this.ID = ID;
