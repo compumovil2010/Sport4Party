@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
             app:srcCompat="@drawable/emptystar" />
 
         <ImageButton
@@ -35,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
             app:srcCompat="@drawable/emptystar" />
 
         <ImageButton
@@ -42,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
             app:srcCompat="@drawable/emptystar" />
 
         <ImageButton
@@ -49,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
             app:srcCompat="@drawable/emptystar" />
 
         <ImageButton
@@ -56,6 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
             app:srcCompat="@drawable/emptystar" />
     </LinearLayout>
 
