@@ -145,6 +145,7 @@ public class Perfil extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         actualizar();
+        actualizarImg();
     }
 
     @Override
@@ -196,7 +197,6 @@ public class Perfil extends AppCompatActivity {
     }
 
     private void actualizar() {
-        imgStorage.GetStorage(perfilId);
         nombreUsuario.setText(perfil.getNombreUsuario());
         amigos.setText(Integer.toString(idAmigos.size()));
         switch (tipo) {
@@ -209,6 +209,10 @@ public class Perfil extends AppCompatActivity {
             case 2:
                 otherVista();
         }
+    }
+
+    private void actualizarImg() {
+        imgStorage.GetStorage(perfilId);
     }
 
     private void miPerfilVista() {
