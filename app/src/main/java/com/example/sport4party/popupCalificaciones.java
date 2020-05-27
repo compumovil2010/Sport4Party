@@ -113,6 +113,8 @@ return true;
                 if(subirCalificacion())
                 {
                     Intent intent=new Intent(v.getContext(), InformacionLugar.class);
+                    intent.putExtra("id",idLugar);
+                    intent.putExtra("parchado",1);
                     startActivity(intent);
                     finish();
                 }
@@ -123,6 +125,8 @@ return true;
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(v.getContext(), InformacionLugar.class);
+                intent.putExtra("id",idLugar);
+                intent.putExtra("parchado",1);
                 startActivity(intent);
                 finish();
             }

@@ -468,7 +468,8 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
                 }
                 if(myPosition!=null) {
                     if (!marker.getId().equals(myPosition.getId())) {
-                        toInformacionEvento(myPosition.getTitle(), tipo);
+                        toInformacionEvento(marker.getTitle(), tipo);
+
                     }
                 }
                 else
