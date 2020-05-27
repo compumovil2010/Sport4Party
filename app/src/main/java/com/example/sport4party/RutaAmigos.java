@@ -53,8 +53,10 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
     private DatabaseReference myRef;
     private SensorManager sensorManager;
     private ArrayList<Marker> markersViejos;
+    private String eventoId;
     Sensor lightSensor;
     SensorEventListener lightSensorListener;
+    private String idUbicacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +77,7 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
 
         Bundle parametros = this.getIntent().getExtras();
 
-        posicionEvento = new LatLng(4.5927,-74.1379);
-        String eventoId = "-1";
+        //posicionEvento = new LatLng(4.5927,-74.1379);
         if(parametros != null){
             eventoId = parametros.getString("id");
         }
@@ -91,6 +92,50 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
             toast1.show();
         }
         activarSensorDeLuz();
+
+
+
+        myRef=database.getReference("Evento");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleSnapShot: dataSnapshot.getChildren()) {
+                    if(singleSnapShot.getKey().equals(RutaAmigos.this.eventoId)){
+                        HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
+
+                        if(datos.containsKey("ubicacion")){
+                            String dato = (String) datos.get("ubicacion");
+                            RutaAmigos.this.idUbicacion = dato.trim();
+                            Log.i("VALOR ASIGNADO -----", RutaAmigos.this.idUbicacion);
+
+
+                            //------- ESTE ES EL OTRO
+                            myRef=database.getReference("Ubicacion");
+                            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot singleSnapShot : dataSnapshot.getChildren()) {
+                                        if(singleSnapShot.getKey().equals(RutaAmigos.this.idUbicacion)){
+                                            HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
+                                            RutaAmigos.this.posicionEvento = new LatLng((Double) datos.get("latitud"), (Double) datos.get("Longitud"));
+                                        }
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                }
+                            });
+                            // ----- ESTE ES EL OTRO
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
     }
 
@@ -200,13 +245,13 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
             public void onLocation(Location location) {
                 if (location != null && mMap != null) {
 
-                    Marker marker2 = mMap.addMarker(new MarkerOptions().position(posicionEvento).title("Evento").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));//gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
 
                     if(posicionEvento == null){
-                        Toast.makeText(RutaAmigos.this, "Ubicación no encontrada", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(RutaAmigos.this, "Ubicación no encontrada", Toast.LENGTH_LONG).show();
                     }
                     else{
                         //mMap.clear();
+                        Marker marker2 = mMap.addMarker(new MarkerOptions().position(posicionEvento).title("Evento").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));//gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
                         LatLng actual = new LatLng(location.getLatitude(), location.getLongitude());
                         markerRoute(actual, RutaAmigos.this.posicionEvento);
                         RutaAmigos.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
