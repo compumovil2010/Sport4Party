@@ -61,7 +61,7 @@ public class MisEventos extends AppCompatActivity {
         Almacenamiento almacenamiento = new Almacenamiento() {
             @Override
             public void leerDatosSubscrito(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
-                if(datos != null) {
+                if (datos != null) {
                     if (datos.containsKey("eventos")) {
                         DataSnapshot eventos = singleSnapShot.child("eventos/");
                         idEventos.clear();
@@ -69,16 +69,34 @@ public class MisEventos extends AppCompatActivity {
                         for (DataSnapshot i : eventos.getChildren()) {
                             idEventos.add(i.getValue().toString());
                         }
+                        leerEventos();
                     }
                 }
             }
         };
         almacenamiento.obtenerPorID("Jugador/", perfilId);
 
+        listEventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent info = new Intent(view.getContext(), InformacionEvento.class);
+                info.putExtra("pantalla", 2);
+                info.putExtra("id", misEventos.get(position).getId());
+                startActivity(info);
+            }
+        });
+    }
+
+    protected void onResume() {
+        super.onResume();
+        actualizar();
+    }
+
+    private void leerEventos() {
         Almacenamiento almacenamiento2 = new Almacenamiento() {
             @Override
-            public void leerDatosSubscrito(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
-                if(singleSnapShot == null)
+            public void leerDatos(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
+                if (singleSnapShot == null)
                     return;
                 String eventoId = singleSnapShot.getKey();
                 if (idEventos.contains(eventoId)) {
@@ -88,22 +106,7 @@ public class MisEventos extends AppCompatActivity {
                 actualizarEventosUsuario();
             }
         };
-        almacenamiento2.loadSubscription("Evento/");
-
-        listEventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent info = new Intent(view.getContext(), InformacionEvento.class);
-                info.putExtra("pantalla", 2);
-                info.putExtra("id",misEventos.get(position).getId());
-                startActivity(info);
-            }
-        });
-    }
-
-    protected void onResume() {
-        super.onResume();
-        actualizar();
+        almacenamiento2.loadOnce("Evento/");
     }
 
     private Evento obtenerEvento(DataSnapshot singleSnapShot) {
@@ -140,7 +143,7 @@ public class MisEventos extends AppCompatActivity {
 
     private void actualizarEventosUsuario() {
         misEventos = perfil.getEventos();
-        if(misEventos != null) {
+        if (misEventos != null) {
             eventosAdapter = new EventosAdapter(this, misEventos, true, false);
             listEventos.setAdapter(eventosAdapter);
         }
