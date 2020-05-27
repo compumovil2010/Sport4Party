@@ -56,7 +56,6 @@ public class EventosAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.evento,parent,false);
             final TextView idEvento = (TextView)convertView.findViewById(R.id.idEventoList);
             TextView nombreEvento = (TextView)convertView.findViewById(R.id.nombreEventoList);
-            ImageButton chatEvento = (ImageButton) convertView.findViewById(R.id.botonInfoEventoList);
             ImageButton rutaEvento = (ImageButton) convertView.findViewById(R.id.botonRuta);
 
             final Evento evento = eventos.get(position);
@@ -65,22 +64,11 @@ public class EventosAdapter extends BaseAdapter {
             idEvento.setText(dateFormat.format(evento.getFecha())+" - "+evento.getDeporte().getNombre()+" - $"+evento.getPrecio());
             nombreEvento.setText(evento.getNombre());
 
-            chatEvento.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent chat = new Intent(v.getContext(), ChatEvento.class);
-                    chat.putExtra("eventoId",eventos.get(position).getId());
-                    context.startActivity(chat);
-                }
-            });
-
             rutaEvento.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent change = new Intent(v.getContext(), RutaEvento.class);
                     change.putExtra("id",eventos.get(position).getId());
-                    //change.putExtra("latitud", eventos.get(position).getUbicacion().getLatitud().doubleValue());
-                    //change.putExtra("longitud", eventos.get(position).getUbicacion().getLongitud().doubleValue());
                     context.startActivity(change);
                 }
             });
