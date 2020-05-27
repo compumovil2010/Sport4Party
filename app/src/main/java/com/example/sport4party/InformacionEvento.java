@@ -59,6 +59,9 @@ public class InformacionEvento extends AppCompatActivity {
         chatT = (TextView)findViewById(R.id.chatText);
         editarEinscribir = (TextView)findViewById(R.id.editarText);
         participantesT=(TextView)findViewById(R.id.ParticipantesText);
+        chatB.setVisibility(View.INVISIBLE);
+        chatB.setClickable(false);
+        chatT.setVisibility(View.INVISIBLE);
     }
     private void imprimirInfo()
     {
