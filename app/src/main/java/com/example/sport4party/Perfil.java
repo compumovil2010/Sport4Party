@@ -72,6 +72,7 @@ public class Perfil extends AppCompatActivity {
     //Popup de la imagen de perfil
     private Dialog imgPopup;
     private ImageView imgPopProf;
+    private Almacenamiento imgStorage;
     //Autenticación
     private FirebaseAuth mAuth;
     //Funcionalidad
@@ -85,6 +86,12 @@ public class Perfil extends AppCompatActivity {
 
         iniciarVista();
         mAuth = FirebaseAuth.getInstance();
+        imgStorage = new Almacenamiento(){
+            @Override
+            public void onSuccessImg(Bitmap bitMapRecovery) {
+                usrImage.setImageBitmap(bitMapRecovery);
+            }
+        };
 
         Intent intent = getIntent();
         if (intent.getStringExtra("jugador") != null) {
@@ -189,10 +196,7 @@ public class Perfil extends AppCompatActivity {
     }
 
     private void actualizar() {
-
-        //if (perfil.getImagenPerfil() != null)
-        //usrImage.setImageBitmap(perfil.getImagenPerfil());
-
+        imgStorage.GetStorage(perfilId);
         nombreUsuario.setText(perfil.getNombreUsuario());
         amigos.setText(Integer.toString(idAmigos.size()));
         switch (tipo) {
@@ -246,6 +250,7 @@ public class Perfil extends AppCompatActivity {
     private void actualizarEventosUsuario() {
         if (perfil.getEventosCreados() != null) {
             EventosAdapter eventosAdapter = new EventosAdapter(this, perfil.getEventosCreados(), false, true);
+            eventosAdapter.setTipo(tipo);
             listEventos.setAdapter(eventosAdapter);
         }
     }
@@ -311,7 +316,7 @@ public class Perfil extends AppCompatActivity {
     }
 
     public void aceptarImagenPerfil(View view) {
-        //perfil.setImagenPerfil(getBitmap(imgPopProf));
+        imgStorage.addStorage(getBitmap(imgPopProf), perfilId);
         actualizar();
         imgPopup.dismiss();
     }

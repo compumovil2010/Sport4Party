@@ -25,12 +25,14 @@ public class EventosAdapter extends BaseAdapter {
     List<Evento> eventos;
     boolean enMisEventos;
     boolean enPerfil;
+    int tipo;
 
     public EventosAdapter(Context context, List<Evento> eventos, boolean nEnMisEventos, boolean nEnPerfil) {
         this.context = context;
         this.eventos = eventos;
         this.enMisEventos = nEnMisEventos;
         this.enPerfil = nEnPerfil;
+        this.tipo = 0;
     }
 
     @Override
@@ -102,7 +104,10 @@ public class EventosAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Intent info = new Intent(v.getContext(), InformacionEvento.class);
-                    info.putExtra("pantalla",0);
+                    if(tipo > 0)
+                        info.putExtra("pantalla",2);
+                    else
+                        info.putExtra("pantalla",0);
                     info.putExtra("id", eventos.get(position).getId());
                     context.startActivity(info);
                 }
@@ -140,4 +145,11 @@ public class EventosAdapter extends BaseAdapter {
         return convertView;
     }
 
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
 }
