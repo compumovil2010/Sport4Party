@@ -86,6 +86,12 @@ public class InformacionLugar extends AppCompatActivity {
         star4=findViewById(R.id.star4);
         star5=findViewById(R.id.star5);
 
+        star1.setImageResource(R.drawable.star_empty);
+        star2.setImageResource(R.drawable.star_empty);
+        star3.setImageResource(R.drawable.star_empty);
+        star4.setImageResource(R.drawable.star_empty);
+        star5.setImageResource(R.drawable.star_empty);
+
 
 
         //nombreLugar.setText("Centro deportivo de los andes");
@@ -172,8 +178,10 @@ private void verSiYaVoto()
         @Override
         public void leerDatos(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
             super.leerDatos(datos, singleSnapShot);
+            Log.i("lal","lal");
             if(((String)datos.get("detalles")).equals(key))
             {
+                Log.i("lel","lel");
                 promedioCalificaciones=promedioCalificaciones+ (Long) datos.get("calificacion");
                 cantCalificaciones++;
                 actualizarCalificacion();
@@ -210,6 +218,11 @@ public  void actualizarCalificacion()
     Double promedio=promedioCalificaciones/cantCalificaciones;
     Log.i("Calificacion actual",promedio.toString());
 
+    star1.setImageResource(R.drawable.star);
+    star2.setImageResource(R.drawable.star);
+    star3.setImageResource(R.drawable.star);
+    star4.setImageResource(R.drawable.star);
+    star5.setImageResource(R.drawable.star);
     if(promedio<5)
     {
         star5.setImageResource(R.drawable.star_empty);
@@ -310,13 +323,18 @@ private void buscarDeportes(HashMap<String, Object> data, final String key)
     }
     private void actualizarLista()
     {
-        evAdapter=new EventosAdapter(this,eventos,false,false);
-        opiniones.setAdapter(evAdapter);
+        if(!(getIntent().getIntExtra("pantalla",-1)==3)) {
+            evAdapter = new EventosAdapter(this, eventos, false, false);
+            opiniones.setAdapter(evAdapter);
+        }
+
     }
     private void actualizaOpiniones()
     {
-        opnAdapter = new OpinionesAdapter(this, opns);
-        opiniones.setAdapter(opnAdapter);
+        if(getIntent().getIntExtra("pantalla",-1)==3) {
+            opnAdapter = new OpinionesAdapter(this, opns);
+            opiniones.setAdapter(opnAdapter);
+        }
     }
 
     private void quemarEventos()

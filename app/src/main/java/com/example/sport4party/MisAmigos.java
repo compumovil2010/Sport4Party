@@ -20,7 +20,6 @@ public class MisAmigos extends AppCompatActivity {
 
     ListView misAmigos;
     JugadorAdapter adapter;
-    ArrayList<Jugador> amigos;
     private FirebaseAuth mAuth;
     private String rutaJugadores = "Jugador/";
     @Override
@@ -80,7 +79,7 @@ public class MisAmigos extends AppCompatActivity {
 
     private void pintar(final ArrayList<Jugador>amigos, Jugador base){
         base.setAmigos(amigos);
-        adapter = new JugadorAdapter(this, amigos, false, false, base, null);
+        adapter = new JugadorAdapter(this, amigos, false, false, base, null,0);
         misAmigos.setAdapter(adapter);
 
         misAmigos.setOnItemClickListener(new AdapterView.OnItemClickListener() {

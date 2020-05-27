@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.sport4party.Modelo.Evento;
 import com.example.sport4party.Modelo.Jugador;
+import com.example.sport4party.Utils.Almacenamiento;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -28,14 +29,18 @@ public class JugadorAdapter extends BaseAdapter {
     private Jugador perfilApp;
     //Evento sobre el cual se va a verficar (unicamnete necesario en InvitarAmigos)
     private Evento eventoAct;
+    //Cantidad de gente inscrita
+    private int inscritos = 0;
+    private String rutaJugadores = "Jugador/";
 
-    public JugadorAdapter(Context nContext, ArrayList<Jugador>nDeports, boolean nparticipantes, boolean ninvitar, Jugador nPerfil, Evento nEvent){
+    public JugadorAdapter(Context nContext, ArrayList<Jugador>nDeports, boolean nparticipantes, boolean ninvitar, Jugador nPerfil, Evento nEvent, int nInsc){
         this.aContext = nContext;
         this.deports = nDeports;
         this.enParticipantes = nparticipantes;
         this.invitarAmigos = ninvitar;
         this.perfilApp = nPerfil;
         this.eventoAct = nEvent;
+        this.inscritos = nInsc;
     }
 
     @Override
@@ -58,11 +63,11 @@ public class JugadorAdapter extends BaseAdapter {
         View vista = View.inflate(aContext, R.layout.casilla_participante,null);
 
         TextView userName = vista.findViewById(R.id.userName);
-        TextView lastTime = vista.findViewById(R.id.lastTimeCon);
+        TextView correo = vista.findViewById(R.id.lastTimeCon);
         final Button add = vista.findViewById(R.id.addButton);
 
         userName.setText(deports.get(position).getNombreUsuario());
-        lastTime.setText(deports.get(position).getCorreo());
+        correo.setText(deports.get(position).getCorreo());
 
         if(enParticipantes){
             if(esAmigo(deports.get(position))){
@@ -71,16 +76,22 @@ public class JugadorAdapter extends BaseAdapter {
                 add.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(v.getContext(),"Este participante es tu amigo",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(v.getContext(),"Este participante es tu amigo",Toast.LENGTH_LONG).show();
                     }
                 });
-            }else{
+            }else if(deports.get(position).getId().equals(perfilApp.getId())){
+                add.setText("Este eres tu");
+                add.setBackgroundResource(R.drawable.boton_general2);
+                add.setClickable(false);
+            }
+            else{
                 add.setText("Agregar a mis amigos");
                 add.setBackgroundResource(R.drawable.boton_general3);
                 add.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(v.getContext(),"Participante agregado a la lista de amigos",Toast.LENGTH_LONG).show();
+                        agregarAMisAmigos(deports.get(position));
+                        //Toast.makeText(v.getContext(),"Participante agregado a la lista de amigos",Toast.LENGTH_LONG).show();
                         //agregarAMisAmigos(deports.get(position));
                         add.setText("Ya eres amigo de este usuario");
                         add.setBackgroundResource(R.drawable.boton_general);
@@ -88,22 +99,33 @@ public class JugadorAdapter extends BaseAdapter {
                 });
             }
         }else if(invitarAmigos){
-            add.setText("Invitar");
-            add.setBackgroundResource(R.drawable.boton_general);
-            add.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //if(cantidadDeGenteInscrita + 1 <= eventoAct.getCupos()){
-                        //agregarAmigoAEvento(deports.get(position));
+            if(estaEnEvento(deports.get(position))){
+                add.setText("Ya esta en el evento");
+                add.setBackgroundResource(R.drawable.boton_general2);
+            }else{
+                add.setText("Invitar");
+                add.setBackgroundResource(R.drawable.boton_general);
+                add.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        System.out.println("Cupos totales: "+eventoAct.getCupos());
+                        System.out.println("Inscritos: "+inscritos);
+                        if(inscritos + 1 <= eventoAct.getCupos()){
+                        agregarAmigoAEvento(deports.get(position));
                         Toast.makeText(v.getContext(),"Amigo agregado al evento",Toast.LENGTH_LONG).show();
                         add.setText("Agregado");
                         add.setBackgroundResource(R.drawable.boton_general2);
                         add.setClickable(false);
-                    //}else{
+                        //}else{
                         //Toast.makeText(v.getContext(),"No se pueden agregar mas personas",Toast.LENGTH_LONG).show();
-                    //}
-                }
-            });
+                        }
+                        else{
+                            Toast.makeText(v.getContext(),"No se pueden agregar mas personas",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+
         }else if(!enParticipantes && !invitarAmigos){
             add.setVisibility(View.INVISIBLE);
             add.setClickable(false);
@@ -116,20 +138,76 @@ public class JugadorAdapter extends BaseAdapter {
         if(perfilApp==null){
             return false;
         }else{
-            return perfilApp.getAmigos().contains(aBuscar);
+            for (Jugador j: perfilApp.getAmigos()) {
+                System.out.println(j.getNombreUsuario()+"es amigo de "+perfilApp.getNombreUsuario());
+                if(aBuscar.getId().equals(j.getId())){
+                    System.out.println("si lo encontre como amigo");
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
+    boolean estaEnEvento(Jugador aBuscar){
+        if(eventoAct != null){
+            System.out.println("Hay evento");
+            for (Evento e: aBuscar.getEventos()) {
+                System.out.println("id evento"+ eventoAct.getId());
+                System.out.println("id a ver"+e.getId());
+                if(eventoAct.getId().equals(e.getId())){
+                    System.out.println(aBuscar.getNombreUsuario()+" fue encontrado xD");
+                    return true;
+                }
+            }
+        }else{
+            System.out.println("no hay evento jaja");
+            return false;
+        }
+
+        return false;
+    }
+
     void agregarAMisAmigos(Jugador aAgregar){
-        perfilApp.getAmigos().add(aAgregar);
-        perfilApp.pushFireBaseBD();
+        boolean yaEsta=false;
+        System.out.println("Voy a agregar desde le adapter");
+        System.out.println(perfilApp.getNombreUsuario()+": "+perfilApp.getId());
+        System.out.println(rutaJugadores+perfilApp.getId());
+        System.out.println(aAgregar.getNombreUsuario()+": "+aAgregar.getId());
+        System.out.println(rutaJugadores+aAgregar.getId());
+        Almacenamiento almacenamiento = new Almacenamiento();
+        almacenamiento.push(aAgregar.getId(), "Jugador/" + perfilApp.getId() + "/amigos/", aAgregar.getId());
+        almacenamiento.push(perfilApp.getId(), "Jugador/" + aAgregar.getId() + "/amigos/", perfilApp.getId());
+        for (Jugador j: perfilApp.getAmigos()) {
+            if(j.getId().equals(aAgregar.getId())){
+                yaEsta = true;
+            }
+        }
+        if(!yaEsta){
+            perfilApp.getAmigos().add(aAgregar);
+        }
+
     }
 
     void agregarAmigoAEvento(Jugador aAgregar){
-        aAgregar.addEventos(eventoAct);
-        aAgregar.pushFireBaseBD();
-        eventoAct.setCupos(eventoAct.getCupos()+1);
-        eventoAct.pushFireBaseBD();
+        boolean inscrito = false;
+        boolean propio = false;
+        for (Evento e: aAgregar.getEventos()) {
+            if(e.getId().equals(eventoAct.getId())){
+                inscrito = true;
+            }
+        }
+        if(!inscrito){
+            for (Evento e: aAgregar.getEventosCreados()) {
+                if(e.getId().equals(eventoAct.getId())){
+                    propio = true;
+                }
+            }
+        }
+        if(!inscrito && !propio){
+            Almacenamiento ala = new Almacenamiento();
+            ala.push(eventoAct.getId(),"Jugador/"+aAgregar.getId()+"/eventos/",eventoAct.getId());
+        }
     }
 
 

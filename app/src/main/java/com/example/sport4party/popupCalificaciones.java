@@ -95,6 +95,8 @@ public class popupCalificaciones extends AppCompatActivity {
             public void onBuscarResult(HashMap<String, Object> data, String key) {
                 super.onBuscarResult(data, key);
                 HashMap<String,Object> mapa=(HashMap<String, Object>) data.get("opiniones");
+                if(mapa==null)
+                    mapa=new HashMap<String, Object>();
                 mapa.put(idOpinion, idOpinion);
                 this.push(mapa,"Jugador/", key +"/opiniones/");
             }

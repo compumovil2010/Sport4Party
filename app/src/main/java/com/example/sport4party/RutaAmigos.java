@@ -34,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
@@ -45,10 +46,11 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
     private Polyline currentPolyline;
     private LatLng posicionEvento;
     private String nombreEvento;
-    private HashMap<String, String> eventoAsignado;
+    private HashMap<String, LatLng> eventoAsignado;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private SensorManager sensorManager;
+    private ArrayList<Marker> markersViejos;
     Sensor lightSensor;
     SensorEventListener lightSensorListener;
 
@@ -64,58 +66,74 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
         gCoderHandler = new LocationFinder(RutaAmigos.this);
         myPosition = null;
         database=FirebaseDatabase.getInstance();
-        eventoAsignado = new HashMap<String, String>();
+        eventoAsignado = new HashMap<String, LatLng>();
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        markersViejos = new ArrayList<>();
 
         Bundle parametros = this.getIntent().getExtras();
 
         posicionEvento = new LatLng(4.5927,-74.1379);
-        Integer eventoId = 7;
+        String eventoId = "-1";
         if(parametros != null){
-            eventoId = parametros.getInt("id");
+            eventoId = parametros.getString("id");
         }
 
-        generarMarkets(7);
+        Log.i("DATOS NUEVOS", eventoId.toString());
+
+        if(!eventoId.equals("-1")) {
+            generarMarkets(eventoId);
+        }
+        else{
+            Toast toast1 = Toast.makeText(getApplicationContext(), "Error de carga, no se encontro el evento", Toast.LENGTH_LONG);
+            toast1.show();
+        }
         activarSensorDeLuz();
 
     }
 
 
     //_----------------------------------------------------------------------------------------
-    private void generarMarkets(final Integer numEvento){
-        myRef=database.getReference("Jugador");
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void generarMarkets(final String numEvento) {
+        myRef = database.getReference("Jugador");
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot singleSnapShot: dataSnapshot.getChildren()) {
+                for (DataSnapshot singleSnapShot : dataSnapshot.getChildren()) {
                     HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
-                    if(datos.containsKey("eventos")){
+                    if (datos.containsKey("eventos")) {
                         HashMap<String, String> eventos = (HashMap<String, String>) datos.get("eventos");
                         for (String i : eventos.keySet()) {
-                            if(eventos.containsKey(numEvento.toString())){
-                                RutaAmigos.this.eventoAsignado.put(singleSnapShot.getKey(), singleSnapShot.getKey()); //cambiar esto por un hashmap <STRING, LATLONG> y almacenar las ubiacaciones y un <String, String> con el nombre para facilitar las cosas
+                            if (eventos.containsKey(numEvento)) {
+                                if (datos.containsKey("latitud") && datos.containsKey("longitud")) {
+                                    RutaAmigos.this.eventoAsignado.put((String) datos.get("nombreUsuario"), new LatLng((Double) (datos.get("latitud")), (Double) (datos.get("longitud"))));
+                                }
                             }
                         }
                     }
                 }
-
                 //PRUEBA
-                for(String i: RutaAmigos.this.eventoAsignado.keySet()){  //Cambiar este recorrido por inserciones de markerts
-                    Log.i("PRUEBA DE USUARIOS", i);
-                }
-                Marker marker3 = RutaAmigos.this.mMap.addMarker(new MarkerOptions().position(new LatLng(4.572, -74.1337)).title("Evento"));//gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
 
+                for(Marker i : markersViejos){
+                    i.remove();
+                }
+
+                for (String i : RutaAmigos.this.eventoAsignado.keySet()) {
+                    Marker markerAux = RutaAmigos.this.mMap.addMarker(new MarkerOptions().position(RutaAmigos.this.eventoAsignado.get(i)).title(i));
+                    markersViejos.add(markerAux);
+                }
+                /*for (LatLng i : RutaAmigos.this.eventoAsignado.values()) {
+                    Marker markerAux = RutaAmigos.this.mMap.addMarker(new MarkerOptions().position(i).title("AMIGOS"));
+                    markersViejos.add(markerAux);
+                }*/
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
-
     //_----------------------------------------------------------------------------------------
 
 

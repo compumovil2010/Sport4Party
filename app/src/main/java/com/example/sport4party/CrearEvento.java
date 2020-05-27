@@ -181,8 +181,8 @@ public class CrearEvento extends AppCompatActivity {
         inflate();
         int modo=getIntent().getIntExtra("pantalla",-1); //1 modo crear 0 modo editar
         String idEvento=getIntent().getStringExtra("id");
-        modo=0;
-        idEvento="11";
+        //modo=0;
+        //idEvento="11";
 
 
         if(modo==1)
@@ -251,15 +251,37 @@ private boolean extraerInformación()
     }
     if(this.fechaPuesta && this.horaPuesta)
     {
-        evento.setFecha(this.fechaAux);
+        Date today=new Date();
+        if(today.before(fechaAux)) {
+            evento.setFecha(this.fechaAux);
+        }
+        else
+        {
+            Toast.makeText(this,"Fecha u hora invalida",Toast.LENGTH_LONG).show();
+            return false;
+        }
     }
     else
     {
         return false;
     }
-    if(this.cupos.getText().length()>0)
+    if(this.cupos.getText().length()>0) {
+        if(Long.parseLong(this.cupos.getText().toString().trim())>1) {
+            evento.setCupos(Long.parseLong(this.cupos.getText().toString().trim()));
+        }
+        else
+        {
+            Toast.makeText(this,"Debe haber por lo menos 2 cupos",Toast.LENGTH_LONG).show();
+            return false;
+        }
+    }
+    else
     {
-        evento.setCupos(Long.parseLong(this.cupos.getText().toString().trim()));
+        return false;
+    }
+    if(this.precio.getText().length()>0)
+    {
+        evento.setPrecio(precio.getText().toString());
     }
     else
     {
@@ -273,7 +295,7 @@ private boolean extraerInformación()
     {
         return  false;
     }
-    evento.setPrecio(precio.getText().toString());
+
     evento.setNivelHabilidad(habilidad.getSelectedItem().toString());
 
 
@@ -370,7 +392,7 @@ private boolean extraerInformación()
 
                 fechaAux.setMonth(month);
                 fechaAux.setDate(dayOfMonth);
-                fechaAux.setYear(year-1990);
+                fechaAux.setYear(year-1900);
                 fecha.setText(date);
                 fechaPuesta=true;
             }
