@@ -43,25 +43,6 @@ public class InvitarAmigos extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         rutaEvento = getIntent().getStringExtra("idEvento");
-        //obtenerJugadorActual(origin, rutaJugadores+mAuth.getUid());
-        //Con esto de arriba solo se queda lo de idEvento y el listener que pues ya depende de lo que pida el perfil
-
-        //Extraigo el Bundle con la información de los amigos del usuario actual
-        //Bundle bundleInfo = getIntent().getBundleExtra("listaDeAmigos");
-
-        //Asigno la lista de amigos al ArrayList que va a manejar el adaptador
-        //friends = (ArrayList<Jugador>) bundleInfo.getSerializable("amigos");
-        //origin = (Jugador) bundleInfo.getSerializable("perfilActual");
-
-        //adapter = new JugadorAdapter(getApplicationContext(), friends, false, true, origin,null);
-        //inivitarAmigos.setAdapter(adapter);
-
-        //Funcionalidad que debe "evitar" que el usuario añada a amigos que ya estén inscritos en el evento
-        //Utilizar la información del límite de personas para el evento, con tal de no añadir de más
-        /*
-
-         */
-
     }
 
     @Override
@@ -248,10 +229,6 @@ public class InvitarAmigos extends AppCompatActivity {
             }
         };
         almaEvento.obtenerPorID(rutaEventos,rutaEvento);
-
-    }
-
-    private void generarEventoActual(final Evento aGenerar){
 
     }
 }

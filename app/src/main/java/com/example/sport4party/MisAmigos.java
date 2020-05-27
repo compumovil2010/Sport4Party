@@ -22,6 +22,7 @@ public class MisAmigos extends AppCompatActivity {
     JugadorAdapter adapter;
     private FirebaseAuth mAuth;
     private String rutaJugadores = "Jugador/";
+    Jugador origin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,12 +31,17 @@ public class MisAmigos extends AppCompatActivity {
         misAmigos = findViewById(R.id.listaamigos);
         mAuth = FirebaseAuth.getInstance();
 
-        Jugador origin = new Jugador();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        origin = new Jugador();
+        origin.setAmigos(new ArrayList<Jugador>());
         obtenerJugadorActual(origin);
     }
 
     private void obtenerJugadorActual(final Jugador actual){
-        final int[] conta = {0};
         Almacenamiento almJugador = new Almacenamiento(){
             @Override
             public void leerDatosSubscrito(final HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
@@ -47,7 +53,6 @@ public class MisAmigos extends AppCompatActivity {
 
                     if(datos.get("amigos") != null){
                         final HashMap<String,String> amigos= (HashMap<String,String>)datos.get("amigos");
-                        final ArrayList<Jugador> listAmigos = new ArrayList<>();
                         for (String j: amigos.keySet()) {
                             Almacenamiento almacenamientoAmigos = new Almacenamiento(){
                                 @Override
@@ -55,20 +60,25 @@ public class MisAmigos extends AppCompatActivity {
                                     super.leerDatosSubscrito(datos, singleSnapShot);
                                     if(datos != null){
                                         Jugador amigo = new Jugador();
+                                        boolean esta = false;
                                         amigo.setNombreUsuario(datos.get("nombreUsuario").toString());
                                         amigo.setCorreo(datos.get("correo").toString());
                                         amigo.setId(singleSnapShot.getKey());
                                         amigo.setSexo(datos.get("sexo").toString());
-                                        listAmigos.add(amigo);
-                                    }
-                                    if(conta[0] == amigos.size()){
-                                        pintar(listAmigos, actual);
+                                        for (Jugador j: actual.getAmigos()) {
+                                            if(j.getId().equals(amigo.getId())){
+                                                esta = true;
+                                            }
+                                        }
+                                        if(!esta){
+                                            actual.getAmigos().add(amigo);
+                                            pintar((ArrayList<Jugador>) actual.getAmigos(), actual);
+                                        }
                                     }
 
                                 }
                             };
                             almacenamientoAmigos.obtenerPorID(rutaJugadores, j);
-                            conta[0] += 1;
                         }
                     }
                 }
@@ -78,7 +88,6 @@ public class MisAmigos extends AppCompatActivity {
     }
 
     private void pintar(final ArrayList<Jugador>amigos, Jugador base){
-        base.setAmigos(amigos);
         adapter = new JugadorAdapter(this, amigos, false, false, base, null,0);
         misAmigos.setAdapter(adapter);
 

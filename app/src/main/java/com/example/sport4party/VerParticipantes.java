@@ -205,9 +205,6 @@ public class VerParticipantes extends AppCompatActivity {
             }
         }
         origin = base;
-        //Almacenamiento almacenamiento = new Almacenamiento();
-        //almacenamiento.push("SQTAjpRSpQQKtfT76J5O5WSfZ3P2", "Jugador/" + origin.getId() + "/amigos/", "SQTAjpRSpQQKtfT76J5O5WSfZ3P2");
-        //almacenamiento.push(origin.getId(), "Jugador/" + "SQTAjpRSpQQKtfT76J5O5WSfZ3P2" + "/amigos/", origin.getId());
 
         for (Jugador j: origin.getAmigos()          ) {
             System.out.println("EN MIS AMIGOS ESTAN: "+j.getNombreUsuario());
