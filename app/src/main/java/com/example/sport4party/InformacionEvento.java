@@ -210,6 +210,40 @@ public class InformacionEvento extends AppCompatActivity {
                                        }
         );
     }
+    public void validarSiEsDuenio()
+    {
+        Almacenamiento almacenamiento =new Almacenamiento()
+        {
+            @Override
+            public void onBuscarResult(HashMap<String, Object> data, String key) {
+                super.onBuscarResult(data, key);
+                HashMap<String,Object> eventosCreados=(HashMap<String, Object>) data.get("eventosCreados");
+                if(eventosCreados!=null)
+                {
+                    for (String llave : eventosCreados.keySet())
+                    {
+                        if(llave.trim().toLowerCase().equals(idEvento.trim().toLowerCase()))
+                        {
+                            editarEinscribir.setText("Editar");
+                            inscribirse.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    Intent intent=new Intent(v.getContext(), CrearEvento.class);
+                                    intent.putExtra("id",idEvento);
+                                    intent.putExtra("pantalla",0);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
+
+                    }
+                }
+            }
+        };
+        almacenamiento.buscarPorID("Jugador/",FirebaseAuth.getInstance().getUid());
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,6 +266,7 @@ public class InformacionEvento extends AppCompatActivity {
         if(opcion == 2){
             mostrarParaInscrito();
         }
+        validarSiEsDuenio();
         participantes.setOnClickListener(new View.OnClickListener() {
                                            @Override
                                            public void onClick(View v) {
