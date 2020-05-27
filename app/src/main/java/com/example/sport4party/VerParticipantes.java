@@ -44,6 +44,10 @@ public class VerParticipantes extends AppCompatActivity {
 
         rutaEvento = getIntent().getStringExtra("idEvento");
 
+        invitarAmigos.setClickable(false);
+        invitarAmigos.setVisibility(View.INVISIBLE);
+        localizar.setClickable(false);
+        localizar.setVisibility(View.INVISIBLE);
 
 
         localizar.setOnClickListener(new View.OnClickListener() {
