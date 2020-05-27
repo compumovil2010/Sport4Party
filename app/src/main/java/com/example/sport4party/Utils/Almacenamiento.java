@@ -4,6 +4,7 @@ package com.example.sport4party.Utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -210,6 +211,7 @@ public class Almacenamiento{
             @Override
             public void onSuccess(byte[] bytes) {
                 Almacenamiento.this.bitMapRecovery = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                onSuccessImg(Almacenamiento.this.bitMapRecovery);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -219,6 +221,10 @@ public class Almacenamiento{
             }
         });
         return Almacenamiento.this.bitMapRecovery;
+    }
+
+    public void onSuccessImg(Bitmap bitMapRecovery) {
+
     }
 
 }
