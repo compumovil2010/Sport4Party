@@ -70,19 +70,41 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
         if(parametros != null){
             final String id = parametros.getString("id");
 
+            RutaEvento.this.idUbicacion = "0";
+
+
+            // --------- Posicion Evento
             myRef=database.getReference("Evento");
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                  @Override
                  public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                     RutaEvento.this.idUbicacion = "0";
                      for(DataSnapshot singleSnapShot: dataSnapshot.getChildren()) {
-                         //
                          if(singleSnapShot.getKey().equals(id)){
                              HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
+
                              if(datos.containsKey("ubicacion")){
                                  String dato = (String) datos.get("ubicacion");
                                  RutaEvento.this.idUbicacion = dato.trim();
-                                 Log.i("VALOR ASIGNADO", RutaEvento.this.idUbicacion);
+                                 Log.i("VALOR ASIGNADO -----", RutaEvento.this.idUbicacion);
+
+
+                                //------- ESTE ES EL OTRO
+                                 myRef=database.getReference("Ubicacion");
+                                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                     @Override
+                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                         for (DataSnapshot singleSnapShot : dataSnapshot.getChildren()) {
+                                             if(singleSnapShot.getKey().equals(RutaEvento.this.idUbicacion)){
+                                                 HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
+                                                 RutaEvento.this.posicionEvento = new LatLng((Double) datos.get("latitud"), (Double) datos.get("Longitud"));
+                                             }
+                                         }
+                                     }
+                                     @Override
+                                     public void onCancelled(@NonNull DatabaseError databaseError) {
+                                     }
+                                 });
+                                 // ----- ESTE ES EL OTRO
                              }
                          }
 
@@ -93,35 +115,9 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
                  public void onCancelled(@NonNull DatabaseError databaseError) {
                  }
             });
+            // ------------------
 
-            myRef=database.getReference("Ubicacion");
-            myRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot singleSnapShot : dataSnapshot.getChildren()) {
-                        if(singleSnapShot.getKey().equals(RutaEvento.this.idUbicacion)){
-                            HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
-                            posicionEvento = new LatLng((Double) datos.get("latitud"), (Double) datos.get("Longitud"));
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
-
-            //generarMarkets();
-
-
-            //Manejo de excepciones
-            //else{
-            //    posicionEvento = new LatLng(4.57, -74.13);
-            //}
         }
-        //else{
-        //    posicionEvento = new LatLng(4.57, -74.13);
-        //}
         activarSensorDeLuz();
     }
 
@@ -185,13 +181,13 @@ public class RutaEvento extends AppCompatActivity implements OnMapReadyCallback,
             public void onLocation(Location location) {
                 if (location != null && mMap != null) {
 
-                    Marker marker2 = mMap.addMarker(new MarkerOptions().position(posicionEvento).title("Evento"));//gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
 
                     if(posicionEvento == null){
-                        Toast.makeText(RutaEvento.this, "Ubicación no encontrada", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(RutaEvento.this, "Ubicación no encontrada", Toast.LENGTH_LONG).show();
                     }
                     else{
                         //mMap.clear();
+                        Marker marker2 = mMap.addMarker(new MarkerOptions().position(posicionEvento).title("Evento"));//gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
                         LatLng actual = new LatLng(location.getLatitude(), location.getLongitude());
                         markerRoute(actual, RutaEvento.this.posicionEvento);
                         RutaEvento.this.addMyPosition(new LatLng(location.getLatitude(), location.getLongitude()));
