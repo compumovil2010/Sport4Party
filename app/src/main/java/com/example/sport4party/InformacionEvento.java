@@ -40,7 +40,8 @@ public class InformacionEvento extends AppCompatActivity {
     ArrayList<Jugador> jugadores;
     Button seleccionarLugar;
     private String idEvento;
-    private int cuposOcupados=0;
+    private int cuposOcupados=1;
+
     private long cuposTotales;
     void inflate()
     {
@@ -273,6 +274,7 @@ public class InformacionEvento extends AppCompatActivity {
                         cupos.setText(cuposOcupados+"/"+cuposTotales);
                         if(cuposOcupados >= cuposTotales)
                         {
+                            editarEinscribir.setVisibility(View.INVISIBLE);
                             inscribirse.setVisibility(View.INVISIBLE);
                             inscribirse.setClickable(false);
                         }

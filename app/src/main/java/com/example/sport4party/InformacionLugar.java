@@ -25,12 +25,14 @@ import com.google.firebase.database.DataSnapshot;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class InformacionLugar extends AppCompatActivity {
     ArrayList<Evento>eventos=new ArrayList<>();
     ArrayList<Opinion> opns = new ArrayList<>();
     OpinionesAdapter opnAdapter;
     TextView nombreLugar;
+    int i=-1;
     TextView deportesDisp;
     int cantCalificaciones=0;
     TextView horario;
@@ -100,7 +102,14 @@ public class InformacionLugar extends AppCompatActivity {
 
 
         idLocalizacion=getIntent().getStringExtra("id");
-        idLocalizacion="69";
+        Log.i("bug1", idLocalizacion);
+        this.i=getIntent().getIntExtra("parchado",-1);
+        if(i==1)
+        {
+         this.miCalificacion.setVisibility(View.INVISIBLE);
+         this.miCalificacion.setClickable(false);
+        }
+        //idLocalizacion="69";
         Almacenamiento buscarLocalizacion=new Almacenamiento()
         {
             @Override
@@ -108,6 +117,7 @@ public class InformacionLugar extends AppCompatActivity {
                 nombreLugar.setText((String)data.get("descripcion"));
                 opiniones.setAdapter(opnAdapter);
                 buscarCalificaciones(data, key);
+                Log.i("bug", key);
                 buscarDeportes(data,key);
             }
         };
@@ -266,24 +276,39 @@ public  void actualizarCalificacion()
     }
 }
 
-private void buscarDeportes(HashMap<String, Object> data, final String key)
-{
-    HashMap<String, Object>deportesID=(HashMap<String, Object>) data.get("deportesDisponibles");
-    for(String id : deportesID.keySet())
-    {
-        Almacenamiento buscarTitulo=new Almacenamiento()
-        {
-            @Override
-            public void onBuscarResult(HashMap<String, Object> data, String key) {
-                super.onBuscarResult(data, key);
-                //Log.i("Deportes", (String) data.get("nombre"));
-                deportesDisp.setText(deportesDisp.getText()+((String)data.get("nombre"))+" ");
-            }
-        };
-        //Log.i("Deportes",id.toString());
-        buscarTitulo.buscarPorID("Deporte",id);
-    }
+private void buscarDeportes(HashMap<String, Object> data, final String key) {
+        if(data.get("deportesDisponibles")==null)
+            return;
+    if (data.get("deportesDisponibles") instanceof HashMap) {
+        HashMap<String, Object> deportesID = (HashMap<String, Object>) data.get("deportesDisponibles");
+        for (String id : deportesID.keySet()) {
+            Almacenamiento buscarTitulo = new Almacenamiento() {
+                @Override
+                public void onBuscarResult(HashMap<String, Object> data, String key) {
+                    super.onBuscarResult(data, key);
+                    //Log.i("Deportes", (String) data.get("nombre"));
+                    deportesDisp.setText(deportesDisp.getText() + ((String) data.get("nombre")) + " ");
+                }
+            };
+            //Log.i("Deportes",id.toString());
+            buscarTitulo.buscarPorID("Deporte", id);
+        }
+    } else {
+        List<String> lista = (List<String>) data.get("deportesDisponibles");
+        for (String id : lista) {
+            Almacenamiento buscarTitulo = new Almacenamiento() {
+                @Override
+                public void onBuscarResult(HashMap<String, Object> data, String key) {
+                    super.onBuscarResult(data, key);
+                    //Log.i("Deportes", (String) data.get("nombre"));
+                    deportesDisp.setText(deportesDisp.getText() + ((String) data.get("nombre")) + " ");
+                }
+            };
+            //Log.i("Deportes",id.toString());
+            buscarTitulo.buscarPorID("Deporte", id);
+        }
 
+    }
 }
     private void buscarEventosBD(final ArrayList<Evento> eventos, final String idLocalizacion) {
         Almacenamiento buscarEventos=new Almacenamiento()
