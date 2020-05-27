@@ -181,9 +181,12 @@ public class InformacionEvento extends AppCompatActivity {
                     {
                         if(eventoKey.equals(idEvento))
                         {
+                            editarEinscribir.setText("");
                             inscribirse.setVisibility(View.INVISIBLE);
                             inscribirse.setClickable(false);
-                            editarEinscribir.setText("");
+                            chatB.setVisibility(View.INVISIBLE);
+                            chatB.setClickable(false);
+                            chatT.setVisibility(View.INVISIBLE);
                         }
                     }
                 }
@@ -258,16 +261,17 @@ public class InformacionEvento extends AppCompatActivity {
         Log.i("idEvento",idEvento);
         inflate();
         imprimirInfo();
+        mostrarParaUnaPersonaNormal();
         if(opcion==1)
         {
-            mostrarParaUnaPersonaNormal();
+
         }
         if(opcion==0)
         {
-            mostrarParaOrganizador();
+            //mostrarParaOrganizador();
         }
         if(opcion == 2){
-            mostrarParaInscrito();
+            //mostrarParaInscrito();
         }
         validarSiEsDuenio();
         participantes.setOnClickListener(new View.OnClickListener() {
@@ -296,7 +300,7 @@ public class InformacionEvento extends AppCompatActivity {
 
     int buscarCupos()
     {
-        cupos.setText(0+"/"+cuposTotales);
+        cupos.setText(1+"/"+cuposTotales);
         Almacenamiento buscarGenteLigada=new Almacenamiento()
         {
             @Override
