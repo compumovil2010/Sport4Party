@@ -125,27 +125,13 @@ public class Perfil extends AppCompatActivity {
                             idEventosCreados.add(i.getValue().toString());
                         }
                     }
+                    leerEventos();
                     actualizar();
                 }else
                     finish();
             }
         };
         almacenamiento.obtenerPorID("Jugador/", perfilId);
-
-        Almacenamiento almacenamiento2 = new Almacenamiento() {
-            @Override
-            public void leerDatosSubscrito(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
-                if (singleSnapShot == null)
-                    return;
-                String eventoCreadoId = singleSnapShot.getKey();
-                if (idEventosCreados.contains(eventoCreadoId)) {
-                    perfil.addEventoCreado(obtenerEvento(singleSnapShot));
-                    idEventosCreados.remove(eventoCreadoId);
-                }
-                actualizarEventosUsuario();
-            }
-        };
-        almacenamiento2.loadSubscription("Evento/");
     }
 
     @Override
@@ -157,6 +143,23 @@ public class Perfil extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    private void leerEventos() {
+        Almacenamiento almacenamiento2 = new Almacenamiento() {
+            @Override
+            public void leerDatos(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
+                if (singleSnapShot == null)
+                    return;
+                String eventoCreadoId = singleSnapShot.getKey();
+                if (idEventosCreados.contains(eventoCreadoId)) {
+                    perfil.addEventoCreado(obtenerEvento(singleSnapShot));
+                    idEventosCreados.remove(eventoCreadoId);
+                }
+                actualizarEventosUsuario();
+            }
+        };
+        almacenamiento2.loadOnce("Evento/");
     }
 
     public void crearEvento(View view) {
