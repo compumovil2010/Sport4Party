@@ -3,6 +3,7 @@ package com.example.sport4party;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -111,6 +113,17 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
                             }
                         }
                     }
+
+                    if (datos.containsKey("eventosCreados")) {
+                        HashMap<String, String> eventos = (HashMap<String, String>) datos.get("eventosCreados");
+                        for (String i : eventos.keySet()) {
+                            if (eventos.containsKey(numEvento)) {
+                                if (datos.containsKey("latitud") && datos.containsKey("longitud")) {
+                                    RutaAmigos.this.eventoAsignado.put((String) datos.get("nombreUsuario"), new LatLng((Double) (datos.get("latitud")), (Double) (datos.get("longitud"))));
+                                }
+                            }
+                        }
+                    }
                 }
                 //PRUEBA
 
@@ -187,7 +200,7 @@ public class RutaAmigos extends AppCompatActivity implements OnMapReadyCallback,
             public void onLocation(Location location) {
                 if (location != null && mMap != null) {
 
-                    Marker marker2 = mMap.addMarker(new MarkerOptions().position(posicionEvento).title("Evento"));//gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
+                    Marker marker2 = mMap.addMarker(new MarkerOptions().position(posicionEvento).title("Evento").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));//gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
 
                     if(posicionEvento == null){
                         Toast.makeText(RutaAmigos.this, "Ubicación no encontrada", Toast.LENGTH_LONG).show();

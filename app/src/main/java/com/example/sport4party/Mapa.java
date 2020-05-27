@@ -35,6 +35,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -216,11 +217,8 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             }
 
         };
-
-
-
-
     }
+
 
     public void updateWhitDataBase(){
         Almacenamiento almacenamiento = new Almacenamiento();
@@ -439,7 +437,7 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
                 for(DataSnapshot singleSnapShot: dataSnapshot.getChildren()) {
                     HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
                     LatLng posicionAux = new LatLng((Double) datos.get("latitud"), (Double) datos.get("Longitud"));
-                    Marker markerAux = Mapa.this.mMap.addMarker(new MarkerOptions().position(posicionAux).title(singleSnapShot.getKey()));//gCoderHandler.searchFromLocation(posicionAux, 1).getAddressLine(0).toString()));//gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
+                    Marker markerAux = Mapa.this.mMap.addMarker(new MarkerOptions().position(posicionAux).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).title(singleSnapShot.getKey()));//gCoderHandler.searchFromLocation(posicionAux, 1).getAddressLine(0).toString()));//gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
                     //markerAux.set
                     Mapa.this.eventos.put(singleSnapShot.getKey(), markerAux);
                 }
