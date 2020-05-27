@@ -61,16 +61,16 @@ public class MisEventos extends AppCompatActivity {
         Almacenamiento almacenamiento = new Almacenamiento() {
             @Override
             public void leerDatosSubscrito(HashMap<String, Object> datos, DataSnapshot singleSnapShot) {
-                if(datos != null) {
-                    if (datos.containsKey("eventos")) {
-                        DataSnapshot eventos = singleSnapShot.child("eventos/");
-                        idEventos.clear();
-                        perfil.setEventos(new ArrayList<Evento>());
-                        for (DataSnapshot i : eventos.getChildren()) {
-                            idEventos.add(i.getValue().toString());
-                        }
+            if(datos != null) {
+                if (datos.containsKey("eventos")) {
+                    DataSnapshot eventos = singleSnapShot.child("eventos/");
+                    idEventos.clear();
+                    perfil.setEventos(new ArrayList<Evento>());
+                    for (DataSnapshot i : eventos.getChildren()) {
+                        idEventos.add(i.getValue().toString());
                     }
                 }
+            }
             }
         };
         almacenamiento.obtenerPorID("Jugador/", perfilId);

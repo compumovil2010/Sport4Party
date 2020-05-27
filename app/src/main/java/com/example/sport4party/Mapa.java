@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -42,6 +43,10 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -71,9 +76,11 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
     private Jugador jugador;
     NavigationView navigationView;
     private FirebaseAuth mAuth;
-    private List<Evento> eventos;
+    private HashMap<String, Marker> eventos;
     private SearchView buscarEnMapa;
     private SensorManager sensorManager;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
     Sensor lightSensor;
     SensorEventListener lightSensorListener;
 
@@ -87,13 +94,13 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         Deporte deportePrueba3 = new Deporte(12, "volleyball");
         Deporte deportePrueba4 = new Deporte(12, "atletismo");
         deportePrueba1.setId("1");
-        deportePrueba1.pushFireBaseBD();
+        //deportePrueba1.pushFireBaseBD();
         deportePrueba2.setId("2");
-        deportePrueba2.pushFireBaseBD();
+        //deportePrueba2.pushFireBaseBD();
         deportePrueba3.setId("3");
-        deportePrueba3.pushFireBaseBD();
+        //deportePrueba3.pushFireBaseBD();
         deportePrueba4.setId("4");
-        deportePrueba4.pushFireBaseBD();
+        //deportePrueba4.pushFireBaseBD();
 
 
         List<Deporte> deportes=new ArrayList<Deporte>();
@@ -102,25 +109,31 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         Ubicacion ubicacion1 = new Ubicacion("Prueba 1", new Date(), new Double(4.618234), new Double(-74.069133), true);
         ubicacion1.setDeportesDisponibles(deportes);
         ubicacion1.setId("69");
-        ubicacion1.pushFireBaseBD();
+        //ubicacion1.pushFireBaseBD();
+
+        List<Deporte> deportes99=new ArrayList<Deporte>();
+        Ubicacion ubicacion99 = new Ubicacion("Prueba 4", new Date(), new Double(4.572), new Double(-74.1337), true);
+        ubicacion99.setDeportesDisponibles(deportes99);
+        ubicacion99.setId("10");
+        //ubicacion99.pushFireBaseBD();
 
         deportes.add(deportePrueba2);
         Ubicacion ubicacion2 = new Ubicacion("Prueba 2", new Date(), new Double(4.630430), new Double(-74.0822808), true);
         ubicacion2.setDeportesDisponibles(deportes);
         ubicacion2.setId("5");
-        ubicacion2.pushFireBaseBD();
+        //ubicacion2.pushFireBaseBD();
 
         Ubicacion ubicacion3 = new Ubicacion("Prueba 3", new Date(), new Double(4.588268), new Double(-74.100860), true);
         ubicacion3.setDeportesDisponibles(deportes);
         ubicacion3.setId("6");
-        ubicacion3.pushFireBaseBD();
+        //ubicacion3.pushFireBaseBD();
 
         deportes.add(deportePrueba3);
         deportes.add(deportePrueba4);
         Ubicacion ubicacion4 = new Ubicacion("Prueba 4", new Date(), new Double(4.638389), new Double(-74.141524), false);
         ubicacion4.setDeportesDisponibles(deportes);
         ubicacion4.setId("6");
-        ubicacion4.pushFireBaseBD();
+        //ubicacion4.pushFireBaseBD();
         //almacenamiento.push(ubicacion1.returnMap(),"Ubicacion/");
 
 
@@ -130,21 +143,21 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         Evento evento2 = new Evento(1, "evento 2",6, new Date(), "Bajo", "Evento 2", "5000", true, false, deportePrueba3, ubicacion1);
         Evento evento3 = new Evento(2, "evento 3",10, new Date(), "Bajo", "Evento 3", "0", false, false, deportePrueba2, ubicacion3);
         Evento evento4 = new Evento(3, "evento 4",20, new Date(), "Bajo", "Evento 4", "0", false, true, deportePrueba1, ubicacion3);
-        evento1.setId("7");
-        evento2.setId("8");
-        evento3.setId("9");
-        evento4.setId("10");
+        //evento1.setId("7");
+        //evento2.setId("8");
+        //evento3.setId("9");
+        //evento4.setId("10");
 
-        evento1.pushFireBaseBD();
-        evento2.pushFireBaseBD();
-        evento3.pushFireBaseBD();
-        evento4.pushFireBaseBD();
+        //evento1.pushFireBaseBD();
+        //evento2.pushFireBaseBD();
+        //evento3.pushFireBaseBD();
+        //evento4.pushFireBaseBD();
 
-        eventos = new ArrayList<>();
-        this.eventos.add(evento1);
-        this.eventos.add(evento2);
-        this.eventos.add(evento3);
-        this.eventos.add(evento4);
+        //eventos = new ArrayList<>();
+        //this.eventos.add(evento1);
+        //this.eventos.add(evento2);
+        //this.eventos.add(evento3);
+        //this.eventos.add(evento4);
 
         jugador.addEventos(evento1);
         jugador.addEventos(evento2);
@@ -170,8 +183,8 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         Opinion opinion2= new Opinion( (Double) 5.0,"lel",ubicacion1,jugador);
         opinion1.setId("15");
         opinion2.setId("14");
-        opinion1.pushFireBaseBD();
-        opinion2.pushFireBaseBD();
+        //opinion1.pushFireBaseBD();
+        //opinion2.pushFireBaseBD();
 
         opiniones.add(opinion1);
         opiniones.add(opinion2);
@@ -183,15 +196,15 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         mensaje2=new  Mensaje("adios", new Date(), jugador);
         mensaje1.setId("11");
         mensaje2.setId("12");
-        mensaje1.pushFireBaseBD();
-        mensaje2.pushFireBaseBD();
+        //mensaje1.pushFireBaseBD();
+        //mensaje2.pushFireBaseBD();
         List<Mensaje> mensajes=new ArrayList<Mensaje>();
         mensajes.add(mensaje1);
         mensajes.add(mensaje2);
         jugador.setEnviados(mensajes);
 
         jugador.setId(FirebaseAuth.getInstance().getUid());
-        jugador.pushFireBaseBD();
+        //jugador.pushFireBaseBD();
 
 
         Almacenamiento buscar=new Almacenamiento()
@@ -227,10 +240,13 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);
 
+        database=FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         hora = findViewById(R.id.spinnerHour);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        eventos = new HashMap<>();
+        //cargarEventos();
 
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.hours, R.layout.text_color_spinner_deportes);
         adapter.setDropDownViewResource(R.layout.deportes_dropdown);
@@ -295,6 +311,10 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             }
         }
         return;
+    }
+
+    private void cargarEventos(){
+
     }
 
     @Override
@@ -371,23 +391,22 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
         }
     }
 
-    public void toInformacionEvento(Marker marker, int pantalla){
-            Intent intent = new Intent(this, InformacionLugar.class);
-            if(myPosition!=null)
-                myPosition.remove();
-            if(pantalla==1)
-            {
-                intent.putExtra("pantalla",pantalla);
-                intent.putExtra("id", "iwdoiwhodqhwoidhwoi");
-                startActivity(intent);
-            }
-            if(pantalla==3)
-            {
-                intent.putExtra("pantalla",pantalla);
-                intent.putExtra("id", "iwdoiwhodqhwoidhwoi");
-                startActivityForResult(intent,666);
-            }
-
+    public void toInformacionEvento(String id, int pantalla){
+        Intent intent = new Intent(this, InformacionLugar.class);
+        if(myPosition!=null)
+            myPosition.remove();
+        if(pantalla==1)
+        {
+            intent.putExtra("pantalla",pantalla);
+            intent.putExtra("id", id);
+            startActivity(intent);
+        }
+        if(pantalla==3)
+        {
+            intent.putExtra("pantalla",pantalla);
+            intent.putExtra("id", id);
+            startActivityForResult(intent,666);
+        }
     }
 
     //MAP HANDLER
@@ -408,13 +427,29 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
             myPosition = mMap.addMarker(new MarkerOptions().position(position).title(address.getAddressLine(0)));
     }
 
-    public void loadMarkers(List<Evento> eventos){
-        for (Evento evento: eventos) {
-            if(!evento.isPrivado() && evento.getUbicacion().isValida()){
-                LatLng position = new LatLng(evento.getUbicacion().getLatitud(), evento.getUbicacion().getLongitud());
-                addMarkerUbication(position);
+    public void loadMarkers(){
+        myRef=database.getReference("Ubicacion");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //for (Marker i : Mapa.this.eventos.values()){
+                //    i.remove();
+                //}
+
+                for(DataSnapshot singleSnapShot: dataSnapshot.getChildren()) {
+                    HashMap<String, Object> datos = (HashMap<String, Object>) singleSnapShot.getValue();
+                    LatLng posicionAux = new LatLng((Double) datos.get("latitud"), (Double) datos.get("Longitud"));
+                    Marker markerAux = Mapa.this.mMap.addMarker(new MarkerOptions().position(posicionAux).title(singleSnapShot.getKey()));//gCoderHandler.searchFromLocation(posicionAux, 1).getAddressLine(0).toString()));//gCoderHandler.searchFromLocation(posicionEvento, 1).getAddressLine(0)));
+                    //markerAux.set
+                    Mapa.this.eventos.put(singleSnapShot.getKey(), markerAux);
+                }
             }
-        }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -435,18 +470,18 @@ public class Mapa extends AppCompatActivity implements NavigationView.OnNavigati
                 }
                 if(myPosition!=null) {
                     if (!marker.getId().equals(myPosition.getId())) {
-                        toInformacionEvento(marker, tipo);
+                        toInformacionEvento(myPosition.getTitle(), tipo);
                     }
                 }
                 else
                 {
-                    toInformacionEvento(marker,tipo);
+                    toInformacionEvento(marker.getTitle(),tipo);
                 }
                 return false;
             }
 
         });
-        loadMarkers(this.eventos);
+        loadMarkers();
 
         ubicationFinder = new UbicationFinder(this){
             @Override

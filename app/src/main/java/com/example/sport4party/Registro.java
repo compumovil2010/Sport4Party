@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,12 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.sport4party.Modelo.Jugador;
 import com.example.sport4party.Utils.Almacenamiento;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,8 +40,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,6 +69,7 @@ public class Registro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
 
+        consumeRESTVolley();
         //Tomo los datos de la vista
         imagenPerfil = findViewById(R.id.userIMG);
         nombreUsuario = findViewById(R.id.nombreUsuarioRegistro);
@@ -70,6 +82,37 @@ public class Registro extends AppCompatActivity {
         imagenBitMap = null;
     }
 
+    public void consumeRESTVolley(){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "https://restcountries.eu/rest/v2/";
+        String path = "";
+        String query = "?fields=name;capital";
+        StringRequest req = new StringRequest(Request.Method.GET, url+path+query,
+            new Response.Listener() {
+                @Override
+                public void onResponse(Object response) {
+                    String data = (String)response;
+                    Log.i("DatosDelREST", data);
+                    JSONObject json = null;
+                    try {
+                        json = new JSONObject(data);
+                        //ArrayList<String> datos = json.
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            },
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("TAG", "Error handling rest invocation"+error.getCause());
+                }
+            }
+        );
+        queue.add(req);
+    }
+
+
     private void updateUI(FirebaseUser currentUser){
         if(currentUser!=null){
 
@@ -81,14 +124,18 @@ public class Registro extends AppCompatActivity {
             //Jugador jugador = new Jugador(correoElectronico, nombreusuario, sexoUsuario, "0");
 
             //almacenamientoBase.push(jugador, "Usuarios/"+mAuth.getUid());
-            //almacenamientoBase.addValueToReference("Jugadores/" + mAuth.getUid() + "/mundo", "hola");
+            //almacenamientoBase.push(datos,"Jugadores/", mAuth.getUid());
 
             HashMap<String, Object> datos = new HashMap<String, Object>();
             datos.put("correo", correoElectronico);
             datos.put("nombreUsuario", nombreusuario);
             datos.put("sexo", sexoUsuario);
             datos.put("tipo", "0");
-            almacenamientoBase.push(datos, "Jugador/",mAuth.getUid());
+            almacenamientoBase.push(datos, "Jugador/", mAuth.getUid());
+
+            if(imagenBitMap != null){
+                almacenamientoBase.addStorage(imagenBitMap, mAuth.getUid());
+            }
             //jugador.pushFireBaseBD();
 
 
@@ -119,6 +166,7 @@ public class Registro extends AppCompatActivity {
                 }
             });
         }
+
     }
 
     public boolean validateForm(){
@@ -191,8 +239,6 @@ public class Registro extends AppCompatActivity {
 
     public void buscarImagen(View v){
         //requestPermission(this, Manifest.permission.CAMERA, "Es necesario para usar la camamara", REQUEST_IMAGE_CAPTURE );
-
-
         Intent pickImage = new Intent(Intent.ACTION_PICK);
         pickImage.setType("image/*");
         startActivityForResult(pickImage, IMAGE_PICKER_REQUEST);
